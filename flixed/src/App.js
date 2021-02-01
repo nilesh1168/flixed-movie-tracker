@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react'
 import Container from "react-bootstrap/Container";
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row'
@@ -8,32 +9,69 @@ import WatchedMovies from './components/WatchedMovies'
 
 const DATE = new Date()
 
-function App() {
-  return (
-    <Container>
+class App extends React.Component {
+  constructor(){
+    super();
+    this.state={
+      watchedList:[],
+      watchList:[],
+      searchedMovie:{},
+    }
+    this.handleWatchListChange = this.handleWatchListChange.bind(this);
+    this.handleWatchedListChange = this.handleWatchedListChange.bind(this);
+    this.handleSearchedMovie = this.handleSearchedMovie.bind(this);
+  }
+
+  handleSearchedMovie(movie){
+    this.setState({
+      searchedMovie:movie
+    })
+  }
+
+  handleWatchListChange(watchMovie){
+    this.setState(
+      {
+        watchList:[...this.state.watchList,watchMovie]
+      }
+    )
+  }
+
+  handleWatchedListChange(watchedMovie){
+    this.setState(
+      {
+        watchedList:[...this.state.watchedList,watchedMovie]
+      }
+    )
+  }
+
+
+  render() {
+    return (
+      <Container>
         <Row>
           <Container>
             <Row className='justify-content-center'>
-              <h2 style={{color:'red'}}>FLIXED</h2>
+              <h2 style={{ color: 'red' }}>FLIXED</h2>
             </Row>
             <Row>
               <Container>{DATE.toDateString()}</Container>
             </Row>
-            <hr/>
+            <hr />
             <Row></Row>
           </Container>
         </Row>
-        <SearchMovies/>
+        <SearchMovies searchedMovie={this.state.searchedMovie} handleSearchedMovie={this.handleSearchedMovie} handleWatchListChange={this.handleWatchListChange} handleWatchedListChange={this.handleWatchedListChange} />
         <Row>
           <Col>
-              <WatchedMovies/>
+            <WatchedMovies watchedList={this.state.watchedList} />
           </Col>
           <Col>
-              <WatchList/>
+            <WatchList watchList={this.state.watchList} />
           </Col>
         </Row>
-    </Container>
-  );
+      </Container>
+    )
+  }
 }
 
 export default App;
