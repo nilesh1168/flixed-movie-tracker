@@ -16,10 +16,25 @@ function SearchMovies(props) {
     }
     const searchMovie= ()=>{
         fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&t=${document.getElementById('movie_name').value}`)
-        .then(response => response.json())
+        .then(response => {
+            if(response.ok)
+                return response.json()
+            else{
+                  if(response.status === 401)
+                        throw new Error("Unauthorized Access")
+                }
+            })
         .then((data) => {
-            var obj = {'id':data.imdbID,'Title':data.Title,'Genre':data.Genre,'Rating':data.imdbRating,'Year':data.Year}
-            props.handleSearchedMovie(obj)
+            if(data.Error === undefined){
+                var obj = {'id':data.imdbID,'Title':data.Title,'Genre':data.Genre,'Rating':data.imdbRating,'Year':data.Year}
+                props.handleSearchedMovie(obj)
+            }
+            else
+                props.handleError(data.Error)
+            
+        })
+        .catch(error =>{
+            props.handleError(error.message)
         })
     }
 
@@ -39,6 +54,11 @@ function SearchMovies(props) {
                         <Form.Group>
                             <Form.Control id='movie' as="textarea" readOnly value={props.searchedMovie.Title === undefined?"":`Title: ${props.searchedMovie.Title}\nGenre: ${props.searchedMovie.Genre}\nRating: ${props.searchedMovie.Rating}\nYear: ${props.searchedMovie.Year}`} rows={4} /> 
                         </Form.Group>
+                        <Row>
+                            <Container>
+                                <p style={{color:"red"}}>{props.error}</p>
+                            </Container>
+                        </Row>
                         <Button variant="primary" onClick = {()=>addToWatched()} type="button">Add to Watched</Button>
                         <Button className='mx-3' onClick = {()=>addToWatch()} variant="primary" type="button">Add to Watch List</Button>
                     </Container>

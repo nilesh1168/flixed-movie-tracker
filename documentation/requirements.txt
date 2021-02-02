@@ -1,2 +1,6 @@
 ReactJS
 react-bootstrap
+
+Database
+    watched_movie_details(id,title,rating,year,runtime,watched_date)
+    watchlist_movie_details(id,title,rating,year,runtime)

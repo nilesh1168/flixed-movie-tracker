@@ -10,36 +10,44 @@ import WatchedMovies from './components/WatchedMovies'
 const DATE = new Date()
 
 class App extends React.Component {
-  constructor(){
+  constructor() {
     super();
-    this.state={
-      watchedList:[],
-      watchList:[],
-      searchedMovie:{},
+    this.state = {
+      watchedList: [],
+      watchList: [],
+      searchedMovie: {},
+      error: "",
     }
     this.handleWatchListChange = this.handleWatchListChange.bind(this);
     this.handleWatchedListChange = this.handleWatchedListChange.bind(this);
     this.handleSearchedMovie = this.handleSearchedMovie.bind(this);
+    this.handleError = this.handleError.bind(this);
   }
 
-  handleSearchedMovie(movie){
+  handleError(message) {
     this.setState({
-      searchedMovie:movie
+      error: message
     })
   }
 
-  handleWatchListChange(watchMovie){
+  handleSearchedMovie(movie) {
+    this.setState({
+      searchedMovie: movie
+    })
+  }
+
+  handleWatchListChange(watchMovie) {
     this.setState(
       {
-        watchList:[...this.state.watchList,watchMovie]
+        watchList: [...this.state.watchList, watchMovie]
       }
     )
   }
 
-  handleWatchedListChange(watchedMovie){
+  handleWatchedListChange(watchedMovie) {
     this.setState(
       {
-        watchedList:[...this.state.watchedList,watchedMovie]
+        watchedList: [...this.state.watchedList, watchedMovie]
       }
     )
   }
@@ -60,7 +68,7 @@ class App extends React.Component {
             <Row></Row>
           </Container>
         </Row>
-        <SearchMovies searchedMovie={this.state.searchedMovie} handleSearchedMovie={this.handleSearchedMovie} handleWatchListChange={this.handleWatchListChange} handleWatchedListChange={this.handleWatchedListChange} />
+        <SearchMovies error={this.state.error} handleError={this.handleError} searchedMovie={this.state.searchedMovie} handleSearchedMovie={this.handleSearchedMovie} handleWatchListChange={this.handleWatchListChange} handleWatchedListChange={this.handleWatchedListChange} />
         <Row>
           <Col>
             <WatchedMovies watchedList={this.state.watchedList} />
