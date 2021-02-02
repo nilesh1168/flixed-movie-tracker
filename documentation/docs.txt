@@ -1,0 +1,17 @@
+Backend
+    -Python( Django, DRF)
+Frontend    
+    -ReactJS
+    -react-bootstrap
+
+Database
+    watched_movie_details(id,title,rating,year,runtime,watched_date,times_watched)
+    watchlist_movie_details(id,title,rating,year,runtime)
+
+API
+    - GET /movies/watched list all watched movies
+    - POST /movies/watched add movie to watched
+    - PUT  /movies/watched/<id> to increase number of times watched
+    - GET /movies/watch_list list all watch_list movies
+    - POST /movies/watch_list add movie to watched
+
