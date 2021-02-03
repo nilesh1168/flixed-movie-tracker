@@ -5,12 +5,22 @@ Frontend
     -react-bootstrap
 
 Database
-    watched_movie_details(id,title,rating,year,runtime,watched_date,times_watched)
-    watchlist_movie_details(id,title,rating,year,runtime)
+    watched_movie_details(id,title,rating,genre,year,runtime,watched_date,times_watched)
+    watchlist_movie_details(id,title,rating,genre,year,runtime)
 
 API
     - GET /movies/watched list all watched movies
     - POST /movies/watched add movie to watched
+        {
+            "id":"tt0848228",
+            "title":"The Avengers",
+            "rating":"8.0",
+            "genre":"Action, Adventure, Sci-Fi",
+            "year":"2012",
+            "runtime":"143",
+            "watched_date":"01/01/2013",
+            "times_watched":"1"
+        }
     - PUT  /movies/watched/<id> to increase number of times watched
     - GET /movies/watch_list list all watch_list movies
     - POST /movies/watch_list add movie to watched
