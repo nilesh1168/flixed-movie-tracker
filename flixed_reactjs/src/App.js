@@ -24,6 +24,29 @@ class App extends React.Component {
     this.handleError = this.handleError.bind(this);
   }
 
+  componentDidMount() {
+    const request = new Request('http://127.0.0.1:8000/movies/watched', { method: 'GET' })
+    fetch(request)
+      .then(response => {
+        if (response.ok)
+          return response.json()
+        else
+          throw new Error("Something went wrong!!!")
+      })
+      .then(data => {
+        var movies = []
+        data.map(movie => (
+          movies.push(movie.title)
+        ))
+        this.setState({
+          watchedList: movies
+        })
+      })
+      .catch(error => {
+        console.log(error.message)
+      })
+  }
+
   handleError(message) {
     this.setState({
       error: message

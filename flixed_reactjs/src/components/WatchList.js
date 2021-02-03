@@ -9,9 +9,9 @@ function WatchList(props) {
             <Form.Group controlId="exampleForm.ControlSelect2">
                 <Form.Control as="select" multiple>
                     {
-                        props.watchList.length === 0 ? <Movie movieName="Empty"></Movie> : props.watchList.map((movie) =>(
-                            <Movie movieName={movie}></Movie>
-                        ))
+                        props.watchList.length === 0 ? <Movie movieName="Empty"></Movie> : props.watchList.map(movie=>(
+                            <Movie movieName={movie.title}></Movie>
+                ))   
                     }
                 </Form.Control>
             </Form.Group>

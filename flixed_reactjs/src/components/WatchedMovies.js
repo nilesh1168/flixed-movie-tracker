@@ -8,9 +8,9 @@ function WatchedMovies(props) {
         <ListGroup variant='flush' style={{overflow:'auto', height:'30vh'}}>
             {
                 
-                props.watchedList.length === 0 ? <ListGroup.Item>Empty</ListGroup.Item>  :props.watchedList.map(movie=>(
-                    <ListGroup.Item key={movie}>{movie}</ListGroup.Item>
-                ))
+                props.watchedList.length === 0 ? <ListGroup.Item>Empty</ListGroup.Item> : props.watchedList.map(movie=>(
+                    <ListGroup.Item key={movie.id} >{movie.title}</ListGroup.Item>
+                ))  
                 
             }
         </ListGroup>
