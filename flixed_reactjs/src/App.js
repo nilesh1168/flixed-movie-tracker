@@ -36,7 +36,7 @@ class App extends React.Component {
       .then(data => {
         var movies = []
         data.map(movie => (
-          movies.push(movie.title)
+          movies.push({"title":movie.title,"id":movie.id})
         ))
         this.setState({
           watchedList: movies

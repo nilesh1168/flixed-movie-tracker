@@ -3,12 +3,26 @@ import FormGroup from 'react-bootstrap/FormGroup'
 import Form from 'react-bootstrap/Form'
 import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button'
-const API_KEY = "98b08ef6"
+const API_KEY = "98b08e"
 
 
 
 function SearchMovies(props) {
     const addToWatchList = ()=>{
+        let options = { 
+            method: 'POST', 
+            body : JSON.stringify(props.searchedMovie), 
+            headers: {'Content-Type': 'application/json;charset=utf-8'},
+        }
+        let request = new Request('http://127.0.0.1:8000/movies/watch_list', options)
+        fetch(request)
+        .then(response => {
+            if(response.status === 201)
+                console.log("POST success!!")
+        })
+        .catch(error=>{
+            console.log(error.message)
+        })
         props.handleWatchListChange({"title":props.searchedMovie.title,"id":props.searchedMovie.id})
     }
     const addToWatchedList = ()=>{
