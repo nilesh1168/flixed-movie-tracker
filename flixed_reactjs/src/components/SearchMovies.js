@@ -21,7 +21,7 @@ function SearchMovies(props) {
                 console.log("POST success!!")
         })
         .catch(error=>{
-            console.log(error.message)
+            props.handleError(error.message)
         })
         props.handleWatchListChange({"title":props.searchedMovie.title,"id":props.searchedMovie.id})
     }
@@ -38,7 +38,7 @@ function SearchMovies(props) {
                 console.log("POST success!!")
         })
         .catch(error=>{
-            console.log(error.message)
+            props.handleError(error.message)
         })
         props.handleWatchedListChange({"title":props.searchedMovie.title,"id":props.searchedMovie.id})
     }
