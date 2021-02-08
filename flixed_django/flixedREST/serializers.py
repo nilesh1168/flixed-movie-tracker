@@ -11,3 +11,9 @@ class WatchListMoviesSerializer(serializers.ModelSerializer):
     class Meta:
         model = WatchListMovies
         fields = '__all__'
+
+class IdSerializer(serializers.Serializer):
+    """
+        Custom serializer which takes only array of id
+    """
+    ids = serializers.ListField(child=serializers.JSONField())        
