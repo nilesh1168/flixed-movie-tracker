@@ -41,7 +41,6 @@ class WatchedMoviesList(APIView):
         movies.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
 class WatchedMovieDetail(APIView):
     """
         This view class is to perform operations on
@@ -105,6 +104,7 @@ class WatchListMoviesList(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
 
     def patch(self,request):
         """
@@ -120,9 +120,9 @@ class WatchListMoviesList(APIView):
                     watchedMovieSerializer.save()
                     movie.delete()
                 else:
-                    print("Some error in movie data")    
+                    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
         else:
-            print("Some error in Id data")    
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
         return Response(status=status.HTTP_200_OK)
 
 
