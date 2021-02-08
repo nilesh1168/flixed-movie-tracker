@@ -10,6 +10,7 @@ class WatchedMovies(models.Model):
     runtime = models.IntegerField()
     watched_date = models.DateField(auto_now_add = True)
     times_watched = models.IntegerField(default=1)
+    language = models.CharField(max_length=100)
 
     class Meta:
         verbose_name = "Watched Movie"
@@ -25,6 +26,7 @@ class WatchListMovies(models.Model):
     genre = models.CharField(max_length=300)
     year = models.IntegerField()
     runtime = models.IntegerField()
+    language = models.CharField(max_length=100)
 
     class Meta:
         verbose_name = "Watch List Movie"
