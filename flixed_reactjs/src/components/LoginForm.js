@@ -31,7 +31,7 @@ class LoginForm extends React.Component {
                         <Card.Body>
                             <Card.Title className='text-center my-3'>Log In</Card.Title>
                             <Card.Text>
-                                <Form onSubmit={e => this.props.handle_login(e, this.state)}>
+                                <Form onSubmit={e => this.props.handle_login(e, this.state)} method="post">
                                     <Form.Group controlId="formBasicEmail">
                                         <Form.Label>Username</Form.Label>
                                         <Form.Control name="username" value={this.state.username}

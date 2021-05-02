@@ -11,6 +11,7 @@ import LoginForm from './components/LoginForm'
 import RegisterForm from './components/RegisterForm'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
+import Home from './components/Home'
 import { isEqual } from 'lodash';
 import {
   BrowserRouter as Router,
@@ -221,14 +222,17 @@ class App extends React.Component {
   // }
 
   render() {
-    return (
+    return(
       <Router>
         <div className={styles.App}>
-          <NavBar user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} />
+          <NavBar user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} handle_logout={this.handle_logout} />
           <div className={styles.main}>
             <Switch>
+              <Route path='/home'>
+                <Home logged_in={this.state.logged_in}/>
+              </Route>
               <Route path="/login">
-                <LoginForm />
+                <LoginForm handle_login={this.handle_login} />
               </Route>
               <Route path="/register">
                 <RegisterForm />
