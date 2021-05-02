@@ -26,7 +26,7 @@ class LoginForm extends React.Component {
     render() {
         return (
             <Container>
-                <Row className="py-5">
+                <Row>
                     <Col className="my-5 ml-auto col-md-4"><Card>
                         <Card.Body>
                             <Card.Title className='text-center my-3'>Log In</Card.Title>

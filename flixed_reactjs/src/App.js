@@ -1,4 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import styles from './styles/App.module.css'
 import React from 'react'
 import Container from "react-bootstrap/Container";
 import Col from 'react-bootstrap/Col';
@@ -6,10 +7,10 @@ import Row from 'react-bootstrap/Row'
 import SearchMovies from './components/SearchMovies'
 import WatchList from './components/WatchList'
 import WatchedMovies from './components/WatchedMovies'
-import LandingPage from './components/LandingPage'
-import LoginPage from './components/LoginPage'
-import RegisterPage from './components/RegisterPage'
+import LoginForm from './components/LoginForm'
+import RegisterForm from './components/RegisterForm'
 import NavBar from './components/NavBar'
+import Footer from './components/Footer'
 import { isEqual } from 'lodash';
 import {
   BrowserRouter as Router,
@@ -20,7 +21,6 @@ import {
   useHistory,
   useLocation
 } from "react-router-dom";
-import LoginForm from './components/LoginForm';
 
 class App extends React.Component {
   constructor() {
@@ -223,17 +223,22 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <Switch>
-          <Route path="/login">
-            <LoginPage/>
-          </Route>
-          <Route path="/register">
-            <RegisterPage />
-          </Route>
-          <Route path="/">
-            <LandingPage />
-          </Route>
-        </Switch>
+        <div className={styles.App}>
+          <NavBar user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} />
+          <div className={styles.main}>
+            <Switch>
+              <Route path="/login">
+                <LoginForm />
+              </Route>
+              <Route path="/register">
+                <RegisterForm />
+              </Route>
+              <Route path="/">
+              </Route>
+            </Switch>
+          </div>
+          <Footer />
+        </div>
       </Router>
     )
   }

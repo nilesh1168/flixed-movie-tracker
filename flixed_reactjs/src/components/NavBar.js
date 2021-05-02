@@ -4,22 +4,12 @@ import {
     NavLink,
     Link
 } from "react-router-dom";
-
-const styles={
-    navbar:{
-        backgroundColor:"#dbd9d3"
-    },
-    link:{
-        color:"inherit",
-        textDecoration:"none"
-    }
-}
-
+import styles from '../styles/App.module.css'
 
 function NavBar(props) {
     return (
-            <Navbar style={styles.navbar} collapseOnSelect expand="lg">
-                <NavLink to="/"><Navbar.Brand><h2>Flixed</h2></Navbar.Brand></NavLink>
+            <Navbar collapseOnSelect>
+                <NavLink to="/"><Navbar.Brand><h2 className={styles.productName}>Flixed</h2></Navbar.Brand></NavLink>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <span className='mr-auto'></span>
@@ -33,8 +23,8 @@ function NavBar(props) {
                             </Nav>
                             :
                             <Nav>
-                            <Nav.Link as="span"><Link style={styles.link} to="/login">Sign In</Link></Nav.Link>
-                            <Nav.Link as="span"><Link style={styles.link} to="/register">Register</Link></Nav.Link>
+                            <Nav.Link as="span"><Link className={styles.navLink} to="/login">Sign In</Link></Nav.Link>
+                            <Nav.Link as="span"><Link className={styles.navLink} to="/register">Register</Link></Nav.Link>
                             </Nav>
                     }
                 </Navbar.Collapse>

@@ -1,0 +1,33 @@
+/* body{
+    background-image: url('./images/3.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+} */
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@200&family=Rye&display=swap');
+
+.productName{
+    font-family: 'Rye', cursive;
+    color: tomato;
+}
+
+.App{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    font-family: 'Kanit', sans-serif;
+    
+}
+
+.main{
+    flex:1;
+    background-image: url(images/2.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.navLink{
+    color:inherit;
+    text-decoration:none;
+}

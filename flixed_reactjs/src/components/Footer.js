@@ -1,19 +1,29 @@
-import { Navbar,Container } from 'react-bootstrap'
+import { productName } from "../styles/App.module.css";
 function Footer() {
-    const styles={
-        footer:{
-            textAlign:"center",
-            position:"absolute",
-            bottom:"0",
-            backgroundColor:"#dbd9d3",
+
+    const styles = {
+        footerStyle: {
+            display: 'flex',
+            height: '80px',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
+        },
+        verticalLine: {
+            borderLeft: '1px solid black',
+            height: '40px'
         }
     }
+
     return (
-            <Container fluid style={styles.footer}>
-                <p><h3>Flixed</h3></p>
-                <p>&copy; Copyright 2021</p> 
+        <footer style={styles.footerStyle}>
+            <p><h3 className={productName}>Flixed</h3></p>
+            <div style={styles.verticalLine}></div>
+            <div style={{textAlign:'center'}}>
+                <p>&copy; Copyright 2021 </p>
                 <p>Designed & Developed by <a href="http://nilesh1168.github.io">Nilesh Suryawanshi</a></p>
-                </Container>
+            </div>
+
+        </footer>
     )
 }
 
