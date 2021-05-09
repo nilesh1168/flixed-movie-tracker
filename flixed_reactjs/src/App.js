@@ -35,7 +35,13 @@ class App extends React.Component {
       })
         .then(res => res.json())
         .then(json => {
-          this.setState({ user: json.username });
+          if(json.detail != null){
+            this.setState({ logged_in : false })
+          }
+          else{
+            console.log("alreadyt logged in "+JSON.stringify(json))
+            this.setState({ user: json.username });
+          }
         });
     }
     else {
@@ -88,12 +94,14 @@ class App extends React.Component {
   };
 
   render() {
-    console.log("app.js render")
+    var main_style = styles.main + " " +styles.main_background
+    if(this.state.logged_in)
+      main_style = styles.main
     return (
       <Router>
         <div className={styles.App}>
           <NavBar user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} handle_logout={this.handle_logout} />
-          <div className={styles.main}>
+          <div  id="main" className={main_style}>
             <Switch>
               <Route path='/home'>
                 <Home logged_in={this.state.logged_in} />

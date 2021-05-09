@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import Movie from './Movie'
 
 function WatchList(props) {
+
     const getIds = () => {
         var selected_options = [...document.getElementById('selected_movies').selectedOptions]
         var ids = []
@@ -19,7 +20,10 @@ function WatchList(props) {
         var options = {
             method: 'PATCH',
             body: JSON.stringify({ "ids": ids }),
-            headers: { 'Content-Type': 'application/json;charset=utf-8' }
+            headers: { 
+                'Content-Type': 'application/json;charset=utf-8',
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
         }
         var moveRequest = new Request('http://127.0.0.1:8000/movies/watch_list', options)
         fetch(moveRequest).then(response => {
@@ -41,7 +45,10 @@ function WatchList(props) {
         var options = {
             method: 'DELETE',
             body: JSON.stringify({ "ids": ids }),
-            headers: { 'Content-Type': 'application/json;charset=utf-8' }
+            headers: { 
+                'Content-Type': 'application/json;charset=utf-8',
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
         }
         var moveRequest = new Request('http://127.0.0.1:8000/movies/watch_list', options)
         fetch(moveRequest).then(response => {
