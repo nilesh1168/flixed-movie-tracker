@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-
+import datetime
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -71,6 +71,8 @@ REST_FRAMEWORK = {
 }
 
 JWT_AUTH = {
+    # how long the original token is valid for
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=2),
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'flixed_django.utils.my_jwt_response_handler'
 }
 
