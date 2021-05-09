@@ -22,16 +22,12 @@ function SearchMovies(props) {
         fetch(request)
             .then(response => {
                 if (response.status === 201) {
+                    console.log(props.searchedMovie.id)
                     props.handleWatchListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
                 }
-                else
-                    return response.json()
-            })
-            .then(idError => {
-                console.log(idError)
-                props.handleError(idError.id)
             })
             .catch(error => {
+                console.log(error.message)
                 props.handleError(error.message)
             })
     }
@@ -51,11 +47,6 @@ function SearchMovies(props) {
                 if (response.status === 201) {
                     props.handleWatchedListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
                 }
-                else
-                    return response.json()
-            })
-            .then(idError => {
-                props.handleError(idError.id)
             })
             .catch(error => {
                 props.handleError(error.message)

@@ -71,7 +71,7 @@ class App extends React.Component {
 
   handle_signup = (e, data) => {
     e.preventDefault();
-    fetch('http://127.0.0.1:8000/users', {
+    fetch('http://127.0.0.1:8000/users/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -110,7 +110,7 @@ class App extends React.Component {
                 <LoginForm handle_login={this.handle_login} />
               </Route>
               <Route path="/register">
-                <RegisterForm />
+                <RegisterForm handle_signup={ this.handle_signup }/>
               </Route>
               <Route path="/">
               </Route>
