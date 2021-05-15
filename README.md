@@ -14,6 +14,6 @@
 ### v1.0
 - User can login and access the home
 - Search movies
-- Add them to watched movies or add them to watchlist
+- Add them to watched movies or watchlist
 - Added eye-catching UI 
-- Currently personalised user experience
+- Personalised user experience

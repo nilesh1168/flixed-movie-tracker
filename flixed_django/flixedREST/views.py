@@ -18,7 +18,6 @@ def current_user(request):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
-
 class UserList(APIView):
     """
     Create a new user. It's called 'UserList' because normally we'd have a get
@@ -33,7 +32,6 @@ class UserList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class WatchedMoviesList(APIView):
     """
