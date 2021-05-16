@@ -4,7 +4,7 @@ import ListGroup from 'react-bootstrap/ListGroup'
 function WatchedMovies(props) {
     return (
         <Container>
-        <h4>Watched Movies</h4>
+        <h4>This week's Watched Movies</h4>
         <ListGroup variant='flush' style={{overflow:'auto', height:'30vh'}}>
             {
                 

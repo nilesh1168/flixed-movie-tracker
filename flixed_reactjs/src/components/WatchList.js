@@ -67,7 +67,7 @@ function WatchList(props) {
 
     return (
         <Container>
-            <h4>Watch List</h4>
+            <h4>Top 5 Movies to Watch </h4>
             <Form.Group>
                 <Form.Control id="selected_movies" as="select" multiple>
                     {
@@ -78,7 +78,8 @@ function WatchList(props) {
                 </Form.Control>
             </Form.Group>
             <Button onClick={() => moveToWatched()}>Move to Watched</Button>
-            <Button onClick={() => removeFromWatch()} className='mx-3'>Remove</Button>
+            <Button onClick={() => removeFromWatch()} className='ml-3'>Remove</Button>
+            <Button disabled className="ml-3" >See complete WatchList</Button>
         </Container>
     )
 }

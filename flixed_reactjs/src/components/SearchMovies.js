@@ -4,10 +4,13 @@ import Form from 'react-bootstrap/Form'
 import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button'
 import { Col } from "react-bootstrap";
+import {useState} from 'react';
+
 const API_KEY = process.env.REACT_APP_API_KEY
 
 
 function SearchMovies(props) {
+    const [year,setYear] = useState(false);
 
     const addToWatchList = () => {
         let options = {
@@ -54,7 +57,7 @@ function SearchMovies(props) {
     }
 
     const searchMovie = () => {
-        fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&t=${encodeURIComponent(document.getElementById('movie_name').value)}`)
+        fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&t=${encodeURIComponent(document.getElementById('movie_name').value)}&y=$`)
             .then(response => {
                 if (response.ok) {
                     return response.json()
@@ -88,6 +91,7 @@ function SearchMovies(props) {
                                 <Form.Control id="movie_name" type="text" placeholder="Enter Movie Name" />
                             </FormGroup>
                             <Button variant="primary" onClick={() => searchMovie()} type="button">Search</Button>
+                            <Button className="ml-3" disabled>Advanced Search</Button>
                         </Col>
                         <Col className="col-md-8">
                             <Container className="text-center">
@@ -100,7 +104,8 @@ function SearchMovies(props) {
                                     </Container>
                                 </Row>
                                 <Button id="add2watched" variant="primary" onClick={() => addToWatchedList()} type="button">Add to Watched</Button>
-                                <Button id="add2watchlist" className='mx-3' onClick={() => addToWatchList()} variant="primary" type="button" >Add to Watch List</Button>
+                                <Button id="add2watchlist" className='ml-3' onClick={() => addToWatchList()} variant="primary" type="button" >Add to Watch List</Button>
+                                <Button disabled className="ml-3">Advanced Add</Button>
                             </Container>
                         </Col>
                 </Row>
