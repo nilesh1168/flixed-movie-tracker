@@ -1,4 +1,4 @@
-from .models import WatchedMovies, WatchListMovies
+from .models import WatchedMovie, WatchList
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.models import User
@@ -40,15 +40,16 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         fields = ('token', 'username', 'password', 'email', 'first_name','last_name')
 
 
-class WatchedMoviesSerializer(serializers.ModelSerializer):
+class WatchedMovieSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = WatchedMovies
+        model = WatchedMovie
         fields = '__all__'
 
 
-class WatchListMoviesSerializer(serializers.ModelSerializer):
+class WatchListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = WatchListMovies
+        model = WatchList
         fields = '__all__'
 
 class IdSerializer(serializers.Serializer):
