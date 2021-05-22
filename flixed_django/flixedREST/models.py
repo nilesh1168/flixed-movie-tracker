@@ -22,7 +22,13 @@ class WatchedMovie(models.Model):
     def __str__(self):
         return self.title
 
+    def getUser(self):
+        return self.user    
 
+    def getTimesWatched(self):
+        return self.times_watched
+
+        
 class WatchList(models.Model):
     id = models.CharField(max_length=50,primary_key=True,null=False)
     title = models.CharField(max_length=300,null=False)
@@ -40,4 +46,6 @@ class WatchList(models.Model):
 
     def __str__(self):
         return self.title
-     
+
+    def getUser(self):
+        return self.user     

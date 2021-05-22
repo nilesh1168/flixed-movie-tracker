@@ -39,13 +39,11 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         model = User
         fields = ('token', 'username', 'password', 'email', 'first_name','last_name')
 
-
 class WatchedMovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = WatchedMovie
         fields = '__all__'
-
 
 class WatchListSerializer(serializers.ModelSerializer):
     class Meta:
