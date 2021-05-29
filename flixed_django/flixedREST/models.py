@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import datetime
 
 # Create your models here.
 class WatchedMovie(models.Model):
@@ -10,7 +10,7 @@ class WatchedMovie(models.Model):
     genre = models.CharField(max_length=300)
     year = models.IntegerField()
     runtime = models.IntegerField(null=False)
-    watched_date = models.DateField(auto_now_add = True)
+    watched_date = models.DateField(default=datetime.date.today)
     times_watched = models.IntegerField(default=1)
     language = models.CharField(max_length=100)
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="watched_movies")
