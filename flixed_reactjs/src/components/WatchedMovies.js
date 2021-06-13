@@ -1,20 +1,18 @@
-import Container from 'react-bootstrap/Container'
-import ListGroup from 'react-bootstrap/ListGroup'
 
 function WatchedMovies(props) {
     return (
-        <Container>
+        <div>
         <h4>This week's Watched Movies</h4>
-        <ListGroup variant='flush' style={{overflow:'auto', height:'30vh'}}>
+        <div variant='flush' style={{overflow:'auto', height:'30vh'}}>
             {
                 
-                props.watchedList.length === 0 ? <ListGroup.Item>Empty</ListGroup.Item> : props.watchedList.map(movie=>(
-                    <ListGroup.Item key={movie.id} >{movie.title}</ListGroup.Item>
+                props.watchedList.length === 0 ? <div>Empty</div> : props.watchedList.map(movie=>(
+                    <div key={movie.id} >{movie.title}</div>
                 ))  
                 
             }
-        </ListGroup>
-        </Container>
+        </div>
+        </div>
     )
 }
 

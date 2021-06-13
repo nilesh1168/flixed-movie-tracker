@@ -1,6 +1,3 @@
-import Form from 'react-bootstrap/Form'
-import Container from 'react-bootstrap/Container'
-import Button from 'react-bootstrap/Button'
 import Movie from './Movie'
 
 function WatchList(props) {
@@ -66,20 +63,20 @@ function WatchList(props) {
 
 
     return (
-        <Container>
+        <div>
             <h4>Top 5 Movies to Watch </h4>
-            <Form.Group>
-                <Form.Control id="selected_movies" as="select" multiple>
+            <div>
+                <div id="selected_movies" as="select" multiple>
                     {
                         props.watchList.length === 0 ? <Movie movieName="Empty"></Movie> : props.watchList.map(movie => (
                             <Movie key={movie.id} id={movie.id} movieName={movie.title}></Movie>
                         ))
                     }
-                </Form.Control>
-            </Form.Group>
-            <Button onClick={() => moveToWatched()}>Move to Watched</Button>
-            <Button onClick={() => removeFromWatch()} className='ml-3'>Remove</Button>
-        </Container>
+                </div>
+            </div>
+            <button onClick={() => moveToWatched()}>Move to Watched</button>
+            <button onClick={() => removeFromWatch()} className='ml-3'>Remove</button>
+        </div>
     )
 }
 

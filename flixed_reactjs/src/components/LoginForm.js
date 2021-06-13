@@ -1,11 +1,4 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-
 
 class LoginForm extends React.Component {
     state = {
@@ -25,31 +18,29 @@ class LoginForm extends React.Component {
 
     render() {
         return (
-            <Container>
-                <Row>
-                    <Col className="my-5 ml-auto col-md-4"><Card>
-                        <Card.Body>
-                            <Card.Title className='text-center my-3'>Log In</Card.Title>
-                            <Card.Text>
-                                <Form onSubmit={e => this.props.handle_login(e, this.state)} method="post">
-                                    <Form.Group controlId="formBasicEmail">
-                                        <Form.Label>Username</Form.Label>
-                                        <Form.Control name="username" value={this.state.username}
-                                            onChange={this.handle_change} type="text" placeholder="Username" />
-                                    </Form.Group>
+            <div className="container mx-auto flex flex-wrap min-h-screen justify-center content-center md:justify-end">
+                <div className="bg-gray-100 flex flex-col rounded-lg p-8">
+                    <div className='text-center text-xl my-3'>Log In</div>
+                    <form onSubmit={e => this.props.handle_login(e, this.state)} method="post">
+                        <div className='mb-4' controlId="formBasicEmail">
+                            <label class="leading-7 text-base text-gray-600">Username</label>
+                            <input name="username" value={this.state.username}
+                                class="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                                onChange={this.handle_change} type="text" placeholder="Username" />
+                        </div>
 
-                                    <Form.Group controlId="formBasicPassword">
-                                        <Form.Label>Password</Form.Label>
-                                        <Form.Control name="password" value={this.state.password}
-                                            onChange={this.handle_change} type="password" placeholder="Password" />
-                                    </Form.Group>
-                                    <Button className='my-4 mx-auto d-block' variant="primary" type="submit">Submit</Button>
-                                </Form>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card></Col>
-                </Row>
-            </Container>
+                        <div className="mb-4" controlId="formBasicPassword">
+                            <label class="leading-7 text-base text-gray-600">Password</label>
+                            <input name="password" value={this.state.password}
+                                class="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                                onChange={this.handle_change} type="password" placeholder="Password" />
+                        </div>
+                        <div className="flex justify-center">
+                            <button class="text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         );
     }
 }

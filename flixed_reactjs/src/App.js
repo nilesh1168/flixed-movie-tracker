@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './styles/App.module.css'
 import React from 'react'
 import LoginForm from './components/LoginForm'
