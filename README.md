@@ -18,3 +18,6 @@
 - Add them to watched movies or watchlist
 - Added eye-catching UI 
 - Personalised user experience
+
+### v1.1
+- Added test cases for REST API
