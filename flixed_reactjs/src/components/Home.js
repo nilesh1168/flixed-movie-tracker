@@ -22,13 +22,13 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        const watchedRequest = new Request('http://127.0.0.1:8000/movies/watched/thisweek', { 
+        const watchedRequest = new Request('http://127.0.0.1:8000/movies/watched/thisweek', {
             method: 'GET',
-            headers: { Authorization: `JWT ${localStorage.getItem('token')}`}
-         })
-        const watchListRequest = new Request('http://127.0.0.1:8000/movies/watch_list/top_five', { 
+            headers: { Authorization: `JWT ${localStorage.getItem('token')}` }
+        })
+        const watchListRequest = new Request('http://127.0.0.1:8000/movies/watch_list/top_five', {
             method: 'GET',
-            headers: { Authorization: `JWT ${localStorage.getItem('token')}`}
+            headers: { Authorization: `JWT ${localStorage.getItem('token')}` }
         })
         fetch(watchedRequest)
             .then(response => {
@@ -120,20 +120,17 @@ class Home extends Component {
         if (this.props.logged_in) {
             console.log("logged in Home!")
             return (
-                <div className='container'>
+                <div className='container mx-auto grid-flow-row'>
                     <div>
-                        <div>
-                            <div></div>
-                        </div>
+                        <SearchMovies error={this.state.error}
+                            handleError={this.handleError}
+                            searchedMovie={this.state.searchedMovie}
+                            handleSearchedMovie={this.handleSearchedMovie}
+                            handleWatchListAdd={this.handleWatchListAdd}
+                            handleWatchedListAdd={this.handleWatchedListAdd}
+                        />
                     </div>
-                    <SearchMovies error={this.state.error}
-                        handleError={this.handleError}
-                        searchedMovie={this.state.searchedMovie}
-                        handleSearchedMovie={this.handleSearchedMovie}
-                        handleWatchListAdd={this.handleWatchListAdd}
-                        handleWatchedListAdd={this.handleWatchedListAdd}
-                    />
-                    <div className="mb-4">
+                    <div className="container mx-auto my-3 md:grid md:grid-rows-1 md:grid-cols-2 md:my-2">
                         <div>
                             <WatchedMovies watchedList={this.state.watchedList} />
                         </div>

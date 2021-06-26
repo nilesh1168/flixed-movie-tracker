@@ -63,19 +63,21 @@ function WatchList(props) {
 
 
     return (
-        <div>
-            <h4>Top 5 Movies to Watch </h4>
+        <div className="flex flex-col justify-center items-center">
+            <h4 className="font-bold">Top 5 Movies to Watch </h4>
             <div>
-                <div id="selected_movies" as="select" multiple>
+                <ol className="list-decimal" id="selected_movies" multiple>
                     {
                         props.watchList.length === 0 ? <Movie movieName="Empty"></Movie> : props.watchList.map(movie => (
                             <Movie key={movie.id} id={movie.id} movieName={movie.title}></Movie>
                         ))
                     }
-                </div>
+                </ol>
             </div>
-            <button onClick={() => moveToWatched()}>Move to Watched</button>
-            <button onClick={() => removeFromWatch()} className='ml-3'>Remove</button>
+            {/* <button className="md:mt-0 mt-3 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
+                onClick={() => moveToWatched()}>Move to Watched</button>
+            <button className="md:mt-0 my-3 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
+                onClick={() => removeFromWatch()} >Remove</button> */}
         </div>
     )
 }

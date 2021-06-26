@@ -10,13 +10,13 @@ function Footer() {
         },
         verticalLine: {
             borderLeft: '1px solid black',
-            height: '40px'
+            height: '40px',
         }
     }
 
     return (
         <footer style={styles.footerStyle}>
-            <p><h3 className={productName}>Flixed</h3></p>
+            <div><h3 className={productName}>Flixed</h3></div>
             <div style={styles.verticalLine}></div>
             <div style={{textAlign:'center'}}>
                 <p>&copy; Copyright 2021 </p>
