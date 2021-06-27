@@ -24,7 +24,7 @@ function NavBar(props) {
         <header>
             <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
                 <div className="flex items-center text-gray-900 mb-4 md:mb-0">
-                    <NavLink to="/">
+                    <NavLink to="/home">
                         <h2 className={styles.productName}>Flixed</h2>
                     </NavLink>
                 </div>
@@ -33,9 +33,9 @@ function NavBar(props) {
                         props.logged_in === true ?
                             <>
                                 <div className="mr-5 hover:text-gray-900">{props.user}</div>
-                                <div className="mr-5 hover:text-gray-900">Dashboard</div>
+                                <div className="mr-5 hover:text-gray-900"><Link className={styles.navLink} to="/dashboard">Dashboard</Link></div>
                                 <div className="mr-5 hover:text-gray-900">Statistics</div>
-                                <div className="mr-5 hover:text-gray-900" onClick={() => props.handle_logout()}>Logout</div>
+                                <div className="mr-5 hover:text-gray-900 cursor-pointer" onClick={() => props.handle_logout()}>Logout</div>
                             </>
                             :
                             <>
