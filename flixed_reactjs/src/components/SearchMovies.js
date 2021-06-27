@@ -97,7 +97,7 @@ function SearchMovies(props) {
 
     return (
         <>
-            <div className='grid-flow-col grid-rows-2 my-2 md:grid-rows-1 md:grid-cols-2'>
+            <div className='grid-flow-col grid-rows-2 my-2 md:grid md:grid-rows-1 md:grid-cols-2'>
                 <div className="flex flex-col items-center justify-center mb-3">
                     <input id="movie_name" type="text" placeholder="Enter Movie Name" className="mb-3 w-3/5 bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
                             text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
@@ -127,16 +127,15 @@ function SearchMovies(props) {
                     }
                     <p style={{ color: "red" }}>{props.error}</p>
                     <div className="flex flex-col md:flex-row md:mt-3">
-                        <button className="md:ml-3 my-3 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
+                        <button className="md:mt-0 my-3 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
                             onClick={() => { setDate(!(date)) }} >Add Watched Date</button>
-                        <button className="md:mt-0 mb-3 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
+                        <button className="md:ml-3 mb-3 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
                             id="add2watched" onClick={() => addToWatchedList()} >Add to Watched</button>
                         <button className="md:ml-3 mb-3 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
                             id="add2watchlist" onClick={() => addToWatchList()} >Add to Watch List</button>
                     </div>
                 </div>
             </div>
-            <hr />
         </>
     )
 }
