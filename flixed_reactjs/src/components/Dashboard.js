@@ -1,6 +1,7 @@
 import { Component } from "react";
 import ListMovies from "./ListMovies"
 import WatchList from "./WatchList";
+import { isEqual } from "lodash";
 
 class Dashboard extends Component {
     constructor() {
@@ -73,11 +74,25 @@ class Dashboard extends Component {
         })
     }
 
-    // componentDidUpdate(prevProps){
-    //     if(prevProps.watchedList.length != this.props.watchedList.length){
-    //         console.log(prevProps.watchedList.length+"  "+this.props.watchedList.length)
-    //     }
-    // }
+    handleComponentWatchListDelete = (watchMovieIds) => {
+        watchMovieIds.forEach(delmovie => {
+            this.state.watchList.map((movie, index) => (
+                isEqual(JSON.stringify(delmovie), JSON.stringify(movie)) ? this.state.watchList.splice(index, 1) : console.log("false")
+            ))
+        });
+        this.setState({
+            watchList: this.state.watchList
+        })
+    }
+
+    handleComponentWatchedListAdd = (watchedMovie) => {
+        this.setState(
+            {
+                watchedList: this.state.watchedList.concat(watchedMovie)
+            }
+        )
+    }
+
 
     render() {
         return (
@@ -101,7 +116,9 @@ class Dashboard extends Component {
                     <div className="mb-3">
                         <div className="text-center">
                             <h4 className="font-bold">Watched Movies</h4>
-                            <ListMovies movieList={this.props.watchedList} />
+                            <div>
+                                <ListMovies movieList={this.props.watchedList} />
+                            </div>
                         </div>
                     </div>
                     <hr className="my-3 w-9/12 self-center md:w-0" />
@@ -109,6 +126,10 @@ class Dashboard extends Component {
                         <div className="text-center">
                             <h4 className="font-bold">WatchList</h4>
                             <WatchList watchList={this.props.watchList}
+                                componentWatchList={this.state.watchList}
+                                componentWatchedList={this.state.watchedList}
+                                handleComponentWatchListDelete={this.handleComponentWatchListDelete}
+                                handleComponentWatchedListAdd={this.handleComponentWatchedListAdd}
                                 handleWatchListDelete={this.props.handleWatchListDelete}
                                 handleWatchedListAdd={this.props.handleWatchedListAdd} />
                         </div>

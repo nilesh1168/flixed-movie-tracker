@@ -31,28 +31,7 @@ class App extends React.Component {
     this.handleWatchListDelete = this.handleWatchListDelete.bind(this);
   }
 
-
-  componentDidMount() {
-    if (this.state.logged_in) {
-      fetch('http://127.0.0.1:8000/current_user/', {
-        headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`
-        }
-      })
-        .then(res => res.json())
-        .then(json => {
-          if (json.detail != null) {
-            this.setState({ logged_in: false })
-          }
-          else {
-            console.log("alreadyt logged in " + JSON.stringify(json))
-            this.setState({ user: json.username });
-          }
-        });
-    }
-    else {
-      console.log('User needs to log in')
-    }
+  populateData = () => {
     const watchedRequest = new Request('http://127.0.0.1:8000/movies/watched', {
       method: 'GET',
       headers: { Authorization: `JWT ${localStorage.getItem('token')}` }
@@ -69,13 +48,15 @@ class App extends React.Component {
           throw new Error("Something went wrong!!!")
       })
       .then(data => {
-        var movies = []
-        data.map(movie => (
-          movies.push({ "title": movie.title, "id": movie.id })
-        ))
-        this.setState({
-          watchedList: movies
-        })
+        if (data.length != 0) {
+          var movies = []
+          data.map(movie => (
+            movies.push({ "title": movie.title, "id": movie.id })
+          ))
+          this.setState({
+            watchedList: movies
+          })
+        }
       })
       .catch(error => {
         this.setState({
@@ -90,19 +71,45 @@ class App extends React.Component {
           throw new Error("Something went wrong!!!")
       })
       .then(data => {
-        var movies = []
-        data.map(movie => (
-          movies.push({ "title": movie.title, "id": movie.id })
-        ))
-        this.setState({
-          watchList: movies
-        })
+        if (data.length != 0) {
+          var movies = []
+          data.map(movie => (
+            movies.push({ "title": movie.title, "id": movie.id })
+          ))
+          this.setState({
+            watchList: movies
+          })
+        }
       })
       .catch(error => {
         this.setState({
           error: error.message
         })
       })
+  }
+
+  componentDidMount() {
+    if (this.state.logged_in) {
+      fetch('http://127.0.0.1:8000/current_user/', {
+        headers: {
+          Authorization: `JWT ${localStorage.getItem('token')}`
+        }
+      })
+        .then(res => res.json())
+        .then(json => {
+          if (json.detail != null) {
+            this.setState({ logged_in: false })
+          }
+          else {
+            console.log("alreadyt logged in " + JSON.stringify(json))
+            this.setState({ user: json.username });
+            this.populateData()
+          }
+        });
+    }
+    else {
+      console.log('User needs to log in')
+    }
   }
 
   handle_login = (e, data) => {
@@ -122,7 +129,9 @@ class App extends React.Component {
           user: json.user.username
         });
         console.log("login success!!")
+        this.populateData()
       });
+
   };
 
   handle_signup = (e, data) => {
@@ -147,9 +156,13 @@ class App extends React.Component {
   handle_logout = () => {
     localStorage.removeItem('token');
     this.setState({ logged_in: false, user: '' });
+    this.setState({
+      watchedList: [],
+      watchList: [],
+    })
   };
 
-  handleWatchListAdd =(watchMovie) =>{
+  handleWatchListAdd = (watchMovie) => {
     this.setState(
       {
         watchList: [...this.state.watchList, watchMovie]
