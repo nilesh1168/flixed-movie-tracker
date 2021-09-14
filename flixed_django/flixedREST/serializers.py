@@ -1,8 +1,8 @@
-from .models import WatchedMovie, WatchList
+from .models import Movie, Watched_Movie, To_Watch_Movie
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 from django.contrib.auth.models import User
-
+from django.db import IntegrityError
 
 class UserSerializer(serializers.ModelSerializer):
     """
@@ -39,15 +39,23 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         model = User
         fields = ('token', 'username', 'password', 'email', 'first_name','last_name')
 
-class WatchedMovieSerializer(serializers.ModelSerializer):
-
+class Movie_Serializer(serializers.ModelSerializer):
     class Meta:
-        model = WatchedMovie
+        model = Movie
         fields = '__all__'
 
-class WatchListSerializer(serializers.ModelSerializer):
+class Watched_Movie_Serializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    movie = Movie_Serializer() 
     class Meta:
-        model = WatchList
+        model = Watched_Movie
+        fields = '__all__'
+
+class To_Watch_Movie_Serializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    movie = Movie_Serializer() 
+    class Meta:
+        model = To_Watch_Movie
         fields = '__all__'
 
 class IdSerializer(serializers.Serializer):

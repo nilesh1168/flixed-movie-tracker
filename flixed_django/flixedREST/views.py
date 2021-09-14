@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.http import Http404
+from django.contrib.auth.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import HttpRequest
 from rest_framework import status, permissions
 from rest_framework.decorators import api_view
-from .models import WatchList, WatchedMovie
-from .serializers import WatchListSerializer, WatchedMovieSerializer, IdSerializer, UserSerializer, UserSerializerWithToken
+from .models import Movie, Watched_Movie, To_Watch_Movie
+from .serializers import IdSerializer, UserSerializer, UserSerializerWithToken, Movie_Serializer, Watched_Movie_Serializer, To_Watch_Movie_Serializer
 from datetime import datetime, timedelta
 from django.db.models import Q, Sum
 
@@ -20,29 +21,33 @@ def current_user(request):
 
 @api_view(['GET'])
 def getTopFiveMoviesToWatch(request):
-    watchList = WatchList.objects.filter(user=request.user).order_by('-rating')[:5]
-    serializer = WatchListSerializer(watchList,many=True)
+    user = User.objects.filter(username = request.user).first()
+    watchList = user.watchlist.order_by('-movie__rating')[:5]
+    serializer = To_Watch_Movie_Serializer(watchList,many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def getWatchListCount(request):
-    watchList = WatchList.objects.filter(user=request.user)
+    user = User.objects.filter(username = request.user).first()
+    watchList = user.watchlist.all()
     return Response(len(watchList))
 
-@api_view(['GET'])
-def getWatchedMoviesOfThisWeek(request):
-    watchedList = WatchedMovie.objects.filter(user=request.user).filter(Q(watched_date__lte = datetime.today()),Q(watched_date__gte = datetime.now()-timedelta(days=6)))
-    serializer = WatchedMovieSerializer(watchedList,many=True)
-    return Response(serializer.data)
+# @api_view(['GET'])
+# def getWatchedMoviesOfThisWeek(request):
+#     watchedList = WatchedMovie.objects.filter(user=request.user).filter(Q(watched_date__lte = datetime.today()),Q(watched_date__gte = datetime.now()-timedelta(days=6)))
+#     serializer = WatchedMovieSerializer(watchedList,many=True)
+#     return Response(serializer.data)
 
 @api_view(['GET'])
 def getTotalWatchTime(request):
-    totalWatchTime = WatchedMovie.objects.filter(user=request.user).aggregate(Sum('runtime'))
+    user = User.objects.filter(username = request.user).first()
+    totalWatchTime = user.watched_movies.aggregate(total_watch_time=Sum('movie__runtime'))
     return Response(totalWatchTime)
 
 @api_view(['GET'])
 def getTotalWatchedMoviesCount(request):
-    watchedMovies = WatchedMovie.objects.filter(user=request.user)
+    user = User.objects.filter(username = request.user).first()
+    watchedMovies = user.watched_movies.all()
     return Response(len(watchedMovies))    
 
 class UserList(APIView):
@@ -60,133 +65,185 @@ class UserList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class WatchedMovieList(APIView):
-    """
-        This view class is to perform operations on
-        WHOLE list of WatchedMovies i.e Aggregate operation 
-    """
 
-    def get(self,request):
-        """
-            List all watched movies
-        """
-        watchedMovies = WatchedMovie.objects.filter(user=request.user)
-        serializer = WatchedMovieSerializer(watchedMovies,many=True)
-        return Response(serializer.data)
-
-    def post(self,request):
-        """
-            Add movie as watched
-        """
-        request.data['user'] = request.user.id
-        serializer = WatchedMovieSerializer(data=request.data)
-        print(serializer.initial_data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        print(serializer.errors)    
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)        
-
-    def delete(self,request):
-        """
-            Delete all movies / Empty watched movies
-        """
-        movies = WatchedMovie.objects.all()
-        movies.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-class WatchedMovieDetail(APIView):
-    """
-        This view class is to perform operations on
-        SINGLE movie of WatchedMovies i.e selective operation 
-    """
-    def get_Movie(self,id):
-        """
-            return movie with given 'id'
-        """
-        try:
-            return WatchedMovie.objects.get(id=id)
-        except WatchedMovie.DoesNotExist:
-            raise Http404
+# class WatchedMovieDetail(APIView):
+#     """
+#         This view class is to perform operations on
+#         SINGLE movie of WatchedMovies i.e selective operation 
+#     """
+#     def get_Movie(self,id):
+#         """
+#             return movie with given 'id'
+#         """
+#         try:
+#             return WatchedMovie.objects.get(id=id)
+#         except WatchedMovie.DoesNotExist:
+#             raise Http404
             
-    def put(self,request,id):
-        """
-            Update the number of times movie is watched
-        """
-        watchedMovie = self.get_Movie(id)
-        serializer = WatchedMovieSerializer(watchedMovie, data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)       
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     def put(self,request,id):
+#         """
+#             Update the number of times movie is watched
+#         """
+#         watchedMovie = self.get_Movie(id)
+#         serializer = WatchedMovieSerializer(watchedMovie, data = request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)       
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self,request,id):
-        """
-            Delete single watched movie
-        """
-        movie = self.get_Movie(id)
-        movie.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+#     def delete(self,request,id):
+#         """
+#             Delete single watched movie
+#         """
+#         movie = self.get_Movie(id)
+#         movie.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class WatchListList(APIView):
-    """
-        This view class is to perform operations on
-        WHOLE list of WatchListMovies i.e Aggregate operation 
-    """
-    def get_Movie(self,id):
-        """
-            return movie with given 'id'
-        """
-        try:
-            return WatchList.objects.get(id=id)
-        except WatchList.DoesNotExist:
-            raise Http404
+# class WatchListList(APIView):
+#     """
+#         This view class is to perform operations on
+#         WHOLE list of WatchListMovies i.e Aggregate operation 
+#     """
+#     def get_Movie(self,id):
+#         """
+#             return movie with given 'id'
+#         """
+#         try:
+#             return Watch_List.objects.get(id=id)
+#         except Watch_List.DoesNotExist:
+#             raise Http404
 
+#     def get(self,request):
+#         """
+#             List the Watch List. Returning top 5 
+#         """
+#         watchList = Watch_List.objects.filter(user=request.user)
+#         serializer = WatchListSerializer(watchList,many=True)
+#         return Response(serializer.data)
+
+#     def post(self,request):
+#         """
+#             Add movie to Watch List
+#         """
+#         request.data['user'] = request.user.id
+#         serializer = WatchListSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data,status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
+
+#     def patch(self,request):
+#         """
+#             Move movie from watchlist to watched
+#         """
+#         serializer = IdSerializer(data=request.data)
+#         if serializer.is_valid():
+#             for delMovie in serializer.data['ids']:
+#                 movie = self.get_Movie(delMovie['id'])
+#                 watchListSerializer = WatchListSerializer(movie)
+#                 watchedMovieSerializer = WatchedMovieSerializer(data=watchListSerializer.data) 
+#                 if watchedMovieSerializer.is_valid():
+#                     watchedMovieSerializer.save()
+#                     movie.delete()
+#                 else:
+#                     return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
+#         else:
+#             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
+#         return Response(status=status.HTTP_200_OK)
+
+#     def delete(self,request):
+#         """
+#             Delete selected movies from watchlist
+#         """
+#         serializer = IdSerializer(data=request.data)
+#         if serializer.is_valid():
+#             for delMovie in serializer.data['ids']:
+#                 movie = self.get_Movie(delMovie['id'])
+#                 movie.delete()
+#         return Response(status=status.HTTP_204_NO_CONTENT)        
+
+class Watched_Movie_List(APIView):
     def get(self,request):
-        """
-            List the Watch List. Returning top 5 
-        """
-        watchList = WatchList.objects.filter(user=request.user)
-        serializer = WatchListSerializer(watchList,many=True)
-        return Response(serializer.data)
+        user = User.objects.filter(username=request.user).first()
+        print(user)
+        watched_movies = user.watched_movies.all()
+        watched_movie_serializer = Watched_Movie_Serializer(watched_movies,many=True)
+        print(watched_movie_serializer.data)
+        return Response(watched_movie_serializer.data,status=status.HTTP_200_OK)
 
     def post(self,request):
-        """
-            Add movie to Watch List
-        """
-        request.data['user'] = request.user.id
-        serializer = WatchListSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
-
-    def patch(self,request):
-        """
-            Move movie from watchlist to watched
-        """
-        serializer = IdSerializer(data=request.data)
-        if serializer.is_valid():
-            for delMovie in serializer.data['ids']:
-                movie = self.get_Movie(delMovie['id'])
-                watchListSerializer = WatchListSerializer(movie)
-                watchedMovieSerializer = WatchedMovieSerializer(data=watchListSerializer.data) 
-                if watchedMovieSerializer.is_valid():
-                    watchedMovieSerializer.save()
-                    movie.delete()
-                else:
-                    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
+        # print(request.user)
+        # print(request.data)
+        # print(request.auth)
+        # print(request.authenticators)
+        # print(request.method)
+        user = User.objects.filter(username=request.user).first()
+        movie_serializer = Movie_Serializer(data=request.data)
+        # save movie in db
+        if movie_serializer.is_valid():
+            movie_serializer.save()
+            movie = Movie.objects.filter(id=request.data['id']).first()
+            watched_movie = Watched_Movie(user = user, movie = movie)
+            try:
+                watched_movie.save()
+            except Exception as e:
+                print(e)
+            return Response(data={"message":"Added movie to watched!"}, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
-        return Response(status=status.HTTP_200_OK)
+            # get the existing movie
+            print(movie_serializer.errors)
+            for key in movie_serializer.errors:
+                if key == 'id' and len(movie_serializer.errors)==1:
+                    for error in movie_serializer.errors[key]:
+                        if error.casefold().__eq__("movie with this id already exists.".casefold()):
+                            movie = Movie.objects.filter(id=request.data['id']).first()
+                            watched_movie = Watched_Movie.objects.filter(user = user,movie=movie).first()
+                            if watched_movie is not None:
+                                times_watched = watched_movie.getTimesWatched() + 1
+                                watched_movie.setTimesWatched(times_watched)
+                            else:
+                                Watched_Movie.objects.create(user=user, movie=movie)
+                                return Response(data={"message":"Added movie to watched!"}, status=status.HTTP_201_CREATED)
+                            watched_movie.save()
+                            return Response(data={"message":"Movie already exists, increased the count of times_watched"},status=status.HTTP_202_ACCEPTED)
+                else:
+                    return Response(data=movie_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self,request):
-        """
-            Delete selected movies from watchlist
-        """
-        serializer = IdSerializer(data=request.data)
-        if serializer.is_valid():
-            for delMovie in serializer.data['ids']:
-                movie = self.get_Movie(delMovie['id'])
-                movie.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)        
+class Watch_List_List(APIView):
+    
+    def get(self,request):    
+        user = User.objects.filter(username=request.user).first()
+        watchlist = user.watchlist.all()
+        watchlist_serializer = To_Watch_Movie_Serializer(watchlist,many=True)
+        return Response(data = watchlist_serializer.data, status = status.HTTP_200_OK)
+
+    def post(self,request):
+        user = User.objects.filter(username=request.user).first()
+        movie_serializer = Movie_Serializer(data=request.data)
+        # save movie in db
+        if movie_serializer.is_valid():
+            movie_serializer.save()
+            movie = Movie.objects.filter(id=request.data['id']).first()
+            to_watch_movie = To_Watch_Movie(user = user, movie = movie)
+            try:
+                to_watch_movie.save()
+            except Exception as e:
+                print(e)
+            return Response(data={"message":"Added movie to Watchlist!"}, status=status.HTTP_201_CREATED)
+        else:
+            for key in movie_serializer.errors:
+                if key == 'id' and len(movie_serializer.errors)==1:
+                    movie = Movie.objects.filter(id=request.data['id']).first()
+                    to_watch_movie = To_Watch_Movie.objects.filter(user = request.user, movie = movie).first()
+                    print(to_watch_movie)
+                    if to_watch_movie is None:
+                        watched_movie = Watched_Movie.objects.filter(user = user, movie = movie)
+                        if watched_movie is not None:
+                            return Response(data = {"message":"Movie already watched!"}, status = status.HTTP_302_FOUND)    
+                        else:
+                            To_Watch_Movie.objects.create(user = user, movie = movie)
+                            return Response(data = {"message":"Added movie to WatchList!"}, status = status.HTTP_201_CREATED)
+                    return Response(data = {"message":"Movie already added to WatchList!"}, status = status.HTTP_302_FOUND)
+                else:
+                    return Response(data=movie_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        
