@@ -33,8 +33,8 @@ class Dashboard extends Component {
             })
             .then(data => {
                 var movies = []
-                data.map(movie => (
-                    movies.push({ "title": movie.title, "id": movie.id })
+                data.map(object => (
+                    movies.push({ "title": object.movie.title, "id": object.movie.id })
                 ))
                 this.setState({
                     watchedList: movies
@@ -54,8 +54,8 @@ class Dashboard extends Component {
             })
             .then(data => {
                 var movies = []
-                data.map(movie => (
-                    movies.push({ "title": movie.title, "id": movie.id })
+                data.map(object => (
+                    movies.push({ "title": object.movie.title, "id": object.movie.id })
                 ))
                 this.setState({
                     watchList: movies
