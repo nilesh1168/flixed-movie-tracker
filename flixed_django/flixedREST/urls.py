@@ -11,7 +11,7 @@ urlpatterns = [
     # path('movies/watched/<int:pk>/', views.WatchedMovieDetail.as_view(),name='watched-movie-detail-view'),
     path('current_user/', views.current_user,name='current-user-view'),
     path('users/', views.UserList.as_view(),name='post-users-view'),
-    # path('movies/watched/thisweek',views.getWatchedMoviesOfThisWeek,name='watched-movies-this-week-view'),
+    path('movies/watched/thisweek',views.getWatchedMoviesOfThisWeek,name='watched-movies-this-week-view'),
     path('movies/watched/totaltime',views.getTotalWatchTime,name='total-watch-time-view'),
     path('movies/watched/totalcount',views.getTotalWatchedMoviesCount,name='total-watched-count-view')
     

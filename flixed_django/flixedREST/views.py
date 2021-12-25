@@ -32,11 +32,11 @@ def getWatchListCount(request):
     watchList = user.watchlist.all()
     return Response(len(watchList))
 
-# @api_view(['GET'])
-# def getWatchedMoviesOfThisWeek(request):
-#     watchedList = WatchedMovie.objects.filter(user=request.user).filter(Q(watched_date__lte = datetime.today()),Q(watched_date__gte = datetime.now()-timedelta(days=6)))
-#     serializer = WatchedMovieSerializer(watchedList,many=True)
-#     return Response(serializer.data)
+@api_view(['GET'])
+def getWatchedMoviesOfThisWeek(request):
+    watchedList = Watched_Movie.objects.filter(user=request.user).filter(Q(date_watched__lte = datetime.today()),Q(date_watched__gte = datetime.now()-timedelta(days=6)))
+    serializer = Watched_Movie_Serializer(watchedList,many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def getTotalWatchTime(request):
@@ -238,7 +238,8 @@ class Watch_List_List(APIView):
                     print(to_watch_movie)
                     if to_watch_movie is None:
                         watched_movie = Watched_Movie.objects.filter(user = user, movie = movie)
-                        if watched_movie is not None:
+                        print(watched_movie)
+                        if len(watched_movie) != 0:
                             return Response(data = {"message":"Movie already watched!"}, status = status.HTTP_302_FOUND)    
                         else:
                             To_Watch_Movie.objects.create(user = user, movie = movie)
@@ -246,4 +247,35 @@ class Watch_List_List(APIView):
                     return Response(data = {"message":"Movie already added to WatchList!"}, status = status.HTTP_302_FOUND)
                 else:
                     return Response(data=movie_serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-        
+
+    def patch(self,request):
+        print(request.user)
+        print(request.data)
+        user = User.objects.filter(username = request.user).first()
+        id_list = [x['id'] for x in request.data['ids']]
+        movies_to_move=[]
+        print(id_list)
+        for id in id_list:
+            watchlist_movie = user.watchlist.get(movie=id)
+            if watchlist_movie is not None:
+                print(watchlist_movie)
+                movies_to_move.append(watchlist_movie)
+                watchlist_movie.delete()    
+        for to_watch in movies_to_move:
+            movie_to_add = Watched_Movie(user = request.user, movie = to_watch.movie)
+            print(movie_to_add)
+            movie_to_add.save()
+        return Response(data={"message":"Added movie to Watchedlist!"}, status=status.HTTP_201_CREATED)    
+    
+    def delete(self,request):
+        print(request.user)
+        print(request.data)
+        user = User.objects.filter(username = request.user).first()
+        id_list = [x['id'] for x in request.data['ids']]
+        print(id_list)
+        for id in id_list:
+            watchlist_movie = user.watchlist.get(movie=id)
+            if watchlist_movie is not None:
+                print(watchlist_movie)
+                watchlist_movie.delete() 
+        return Response(status=status.HTTP_204_NO_CONTENT)
