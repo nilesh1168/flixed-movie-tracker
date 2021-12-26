@@ -25,7 +25,7 @@ SECRET_KEY = os.getenv('SECRET_KEY_FLIXED',"this_is_your_default_secret_key")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','community.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1','nileshs.pythonanywhere.com']
 
 CORS_ORIGIN_ALLOW_ALL = False
 
