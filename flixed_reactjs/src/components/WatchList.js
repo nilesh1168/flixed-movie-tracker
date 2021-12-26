@@ -1,4 +1,4 @@
-import ListMovies from './ListMovies'
+import {base_url, port} from '../config/config'
 
 function WatchList(props) {
 
@@ -22,7 +22,7 @@ function WatchList(props) {
                 Authorization: `JWT ${localStorage.getItem('token')}`
             }
         }
-        var moveRequest = new Request('http://127.0.0.1:8000/movies/watch_list', options)
+        var moveRequest = new Request(base_url+':'+port+'/movies/watch_list', options)
         fetch(moveRequest).then(response => {
             if (response) {
                 console.log(response)
@@ -49,7 +49,7 @@ function WatchList(props) {
                 Authorization: `JWT ${localStorage.getItem('token')}`
             }
         }
-        var moveRequest = new Request('http://127.0.0.1:8000/movies/watch_list', options)
+        var moveRequest = new Request(base_url+':'+port+'/movies/watch_list', options)
         fetch(moveRequest).then(response => {
             if (response) {
                 console.log(response.status)

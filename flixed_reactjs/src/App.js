@@ -13,6 +13,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import {base_url, port } from './config/config' 
 
 class App extends React.Component {
   constructor() {
@@ -32,11 +33,11 @@ class App extends React.Component {
   }
 
   populateData = () => {
-    const watchedRequest = new Request('http://127.0.0.1:8000/movies/watched', {
+    const watchedRequest = new Request(base_url+':'+port+'/movies/watched', {
       method: 'GET',
       headers: { Authorization: `JWT ${localStorage.getItem('token')}` }
     })
-    const watchListRequest = new Request('http://127.0.0.1:8000/movies/watch_list', {
+    const watchListRequest = new Request(base_url+':'+port+'/movies/watch_list', {
       method: 'GET',
       headers: { Authorization: `JWT ${localStorage.getItem('token')}` }
     })
@@ -90,7 +91,7 @@ class App extends React.Component {
 
   componentDidMount() {
     if (this.state.logged_in) {
-      fetch('http://127.0.0.1:8000/current_user/', {
+      fetch(base_url+':'+port+'/current_user/', {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
@@ -114,7 +115,7 @@ class App extends React.Component {
 
   handle_login = (e, data) => {
     e.preventDefault();
-    fetch('http://127.0.0.1:8000/token-auth/', {
+    fetch(base_url+':'+port+'/token-auth/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -136,7 +137,7 @@ class App extends React.Component {
 
   handle_signup = (e, data) => {
     e.preventDefault();
-    fetch('http://127.0.0.1:8000/users/', {
+    fetch(base_url+':'+port+'/users/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
