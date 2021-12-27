@@ -2,7 +2,7 @@ import { Component } from "react";
 import ListMovies from "./ListMovies"
 import WatchList from "./WatchList";
 import { isEqual } from "lodash";
-import { base_url, port } from '../config/config';
+import { base_url } from '../config/config';
 
 class Dashboard extends Component {
     constructor() {
@@ -17,11 +17,11 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        const watchedRequest = new Request(base_url+':'+port+'/movies/watched/thisweek', {
+        const watchedRequest = new Request(base_url+'/movies/watched/thisweek', {
             method: 'GET',
             headers: { Authorization: `JWT ${localStorage.getItem('token')}` }
         })
-        const watchListRequest = new Request(base_url+':'+port+'/movies/watch_list/top_five', {
+        const watchListRequest = new Request(base_url+'/movies/watch_list/top_five', {
             method: 'GET',
             headers: { Authorization: `JWT ${localStorage.getItem('token')}` }
         })

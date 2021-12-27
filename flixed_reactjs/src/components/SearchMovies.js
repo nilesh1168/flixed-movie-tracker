@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {base_url , port } from '../config/config'
+import {base_url } from '../config/config'
 
 const API_KEY = process.env.REACT_APP_API_KEY
 
@@ -26,7 +26,7 @@ function SearchMovies(props) {
                 Authorization: `JWT ${localStorage.getItem('token')}`
             },
         }
-        let request = new Request(base_url+':'+port+'/movies/watch_list', options)
+        let request = new Request(base_url+'/movies/watch_list', options)
         fetch(request)
             .then(response => {
                 if (response.status === 201) {
@@ -54,7 +54,7 @@ function SearchMovies(props) {
                 Authorization: `JWT ${localStorage.getItem('token')}`
             },
         }
-        let request = new Request(base_url+':'+port+'/movies/watched', options)
+        let request = new Request(base_url+'/movies/watched', options)
         fetch(request)
             .then(response => {
                 if (response.status === 201) {

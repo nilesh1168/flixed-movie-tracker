@@ -13,7 +13,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import {base_url, port } from './config/config' 
+import {base_url } from './config/config' 
 
 class App extends React.Component {
   constructor() {
@@ -33,11 +33,11 @@ class App extends React.Component {
   }
 
   populateData = () => {
-    const watchedRequest = new Request(base_url+':'+port+'/movies/watched', {
+    const watchedRequest = new Request(base_url+'/movies/watched', {
       method: 'GET',
       headers: { Authorization: `JWT ${localStorage.getItem('token')}` }
     })
-    const watchListRequest = new Request(base_url+':'+port+'/movies/watch_list', {
+    const watchListRequest = new Request(base_url+'/movies/watch_list', {
       method: 'GET',
       headers: { Authorization: `JWT ${localStorage.getItem('token')}` }
     })
@@ -49,7 +49,7 @@ class App extends React.Component {
           throw new Error("Something went wrong!!!")
       })
       .then(data => {
-        if (data.length != 0) {
+        if (data.length !== 0) {
           var movies = []
           data.map(object => (
             movies.push({ "title": object.movie.title, "id": object.movie.id })
@@ -72,7 +72,7 @@ class App extends React.Component {
           throw new Error("Something went wrong!!!")
       })
       .then(data => {
-        if (data.length != 0) {
+        if (data.length !== 0) {
           var movies = []
           data.map(object => (
             movies.push({ "title": object.movie.title, "id": object.movie.id })
@@ -91,7 +91,7 @@ class App extends React.Component {
 
   componentDidMount() {
     if (this.state.logged_in) {
-      fetch(base_url+':'+port+'/current_user/', {
+      fetch(base_url+'/current_user/', {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
@@ -115,7 +115,7 @@ class App extends React.Component {
 
   handle_login = (e, data) => {
     e.preventDefault();
-    fetch(base_url+':'+port+'/token-auth/', {
+    fetch(base_url+'/token-auth/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -137,7 +137,7 @@ class App extends React.Component {
 
   handle_signup = (e, data) => {
     e.preventDefault();
-    fetch(base_url+':'+port+'/users/', {
+    fetch(base_url+'/users/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
