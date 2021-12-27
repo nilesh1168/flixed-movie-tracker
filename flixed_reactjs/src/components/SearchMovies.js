@@ -71,7 +71,7 @@ function SearchMovies(props) {
         var year = document.getElementById('movie_year')
         if (year === null)
             year = ""
-        fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&t=${encodeURIComponent(document.getElementById('movie_name').value)}&y=${year.value}`)
+        fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&t=${encodeURIComponent(document.getElementById('movie_name').value)}&y=${year.value}`)
             .then(response => {
                 if (response.ok) {
                     return response.json()
