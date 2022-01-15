@@ -34,7 +34,7 @@ def getWatchListCount(request):
 
 @api_view(['GET'])
 def getWatchedMoviesOfThisWeek(request):
-    watchedList = Watched_Movie.objects.filter(user=request.user).filter(Q(date_watched__lte = datetime.today()),Q(date_watched__gte = datetime.now()-timedelta(days=6)))
+    watchedList = Watched_Movie.objects.filter(user=request.user).filter(Q(date_watched__lte = datetime.today()),Q(date_watched__gte = datetime.now()-timedelta(days=7)))
     serializer = Watched_Movie_Serializer(watchedList,many=True)
     return Response(serializer.data)
 
