@@ -6,6 +6,7 @@ import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import Home from './components/Home'
 import Dashboard from './components/Dashboard'
+import UnderProduction from './components/Underconstruction'
 import { isEqual } from "lodash";
 import {
   BrowserRouter as Router,
@@ -13,7 +14,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import {base_url } from './config/config' 
+import { base_url } from './config/config'
 
 class App extends React.Component {
   constructor() {
@@ -32,12 +33,24 @@ class App extends React.Component {
     this.handleWatchListDelete = this.handleWatchListDelete.bind(this);
   }
 
+  emailValidation(enteredEmail) {
+    var mail_format = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (mail_format.test(enteredEmail)) {
+      console.log("Yeah! a valid email!");
+      return true;
+    } else {
+      console.log("Sorry! an invalid email!");
+      return false;
+    }
+  }
+
   populateData = () => {
-    const watchedRequest = new Request(base_url+'/movies/watched', {
+    const watchedRequest = new Request(base_url + '/movies/watched', {
       method: 'GET',
       headers: { Authorization: `JWT ${localStorage.getItem('token')}` }
     })
-    const watchListRequest = new Request(base_url+'/movies/watch_list', {
+    const watchListRequest = new Request(base_url + '/movies/watch_list', {
       method: 'GET',
       headers: { Authorization: `JWT ${localStorage.getItem('token')}` }
     })
@@ -91,7 +104,7 @@ class App extends React.Component {
 
   componentDidMount() {
     if (this.state.logged_in) {
-      fetch(base_url+'/current_user/', {
+      fetch(base_url + '/current_user/', {
         headers: {
           Authorization: `JWT ${localStorage.getItem('token')}`
         }
@@ -115,43 +128,80 @@ class App extends React.Component {
 
   handle_login = (e, data) => {
     e.preventDefault();
-    fetch(base_url+'/token-auth/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+    this.setState({
+      error: ""
     })
-      .then(res => res.json())
-      .then(json => {
-        localStorage.setItem('token', json.token);
-        this.setState({
-          logged_in: true,
-          user: json.user.username
-        });
-        console.log("login success!!")
-        this.populateData()
-      });
+    if (data.username === "" || data.password === "") {
+      this.setState(
+        { error: "Username/Password Required!!" }
+      );
+    }
+    else {
+      fetch(base_url + '/token-auth/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(res => res.json())
+        .then(json => {
+          if ("non_field_errors" in json) {
+            this.setState({
+              error: json.non_field_errors[0]
+            })
+          } else {
+            localStorage.setItem('token', json.token);
+            this.setState({
+              logged_in: true,
+              user: json.user.username
+            });
+            console.log("login success!!")
+            this.populateData()
+            this.setState({
+              error: ""
+            })
+          }
+        })
+    }
 
   };
 
   handle_signup = (e, data) => {
     e.preventDefault();
-    fetch(base_url+'/users/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+    this.setState({
+      error: ""
     })
-      .then(res => res.json())
-      .then(json => {
-        localStorage.setItem('token', json.token);
+    if (data.username === "" || data.password === "" ||
+      data.email === "" || data.first_name === "" || data.last_name === "") {
+      this.setState({
+        error: "All fields are mandatory!!"
+      })
+    } else {
+      if(!this.emailValidation(data.email)){
         this.setState({
-          logged_in: true,
-          user: json.username
-        });
-      });
+          error: "Invalid Email!!"
+        })
+      }
+      else{
+        fetch(base_url + '/users/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+          .then(res =>  res.json())
+          .then(json => {
+            localStorage.setItem('token', json.token);
+            this.setState({
+              logged_in: true,
+              user: json.username,
+              error:""
+            });
+          });
+      }
+    }
   };
 
   handle_logout = () => {
@@ -207,10 +257,13 @@ class App extends React.Component {
                 <Dashboard handleWatchListDelete={this.handleWatchListDelete} handleWatchedListAdd={this.handleWatchedListAdd} watchedList={this.state.watchedList} watchList={this.state.watchList} />
               </Route>
               <Route path="/login">
-                <LoginForm handle_login={this.handle_login} />
+                <LoginForm handle_login={this.handle_login} errors={this.state.error} />
               </Route>
               <Route path="/register">
-                <RegisterForm handle_signup={this.handle_signup} />
+                <RegisterForm handle_signup={this.handle_signup} errors={this.state.error} />
+              </Route>
+              <Route path="/statistics">
+                <UnderProduction />
               </Route>
               <Route path="/">
               </Route>

@@ -97,40 +97,13 @@ class RegisterForm extends React.Component {
                         <div className="flex justify-center">
                             <button class="text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg" onClick={e => this.validate(e)}>Submit</button>
                         </div>
+                        <div className="flex justify-center">
+                            <p class="text-red-500 test-lg text-center">{this.props.errors}</p>
+                            <p class="text-red-500 test-lg text-center">{this.state.error}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            // <div>
-            //     <div>
-            //         <div className="my-5 ml-auto col-md-8">
-            //             <div>
-            //                 <div>
-            //                     <div className='text-center my-3'>Sign Up</div>
-            //                     <div>
-            //                         <div>
-            //                             <div>
-            //                                 <div className="col-md-6">
-
-
-
-            //                                 </div>
-            //                                 <div className="col-md-6">
-
-            //                                 </div>
-            //                             </div>
-
-            //                             <div className="text-center">
-            //                                 <div><p style={{ color: "red" }}>{this.state.error}</p></div>
-            //                             </div>
-
-
-            //                         </div>
-            //                     </div>
-            //                 </div>
-            //             </div>
-            //         </div>
-            //     </div>
-            // </div>
         )
     }
 

@@ -38,6 +38,9 @@ class LoginForm extends React.Component {
                         <div className="flex justify-center">
                             <button class="text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg" type="submit">Submit</button>
                         </div>
+                        <div className="flex justify-center">
+                            <p class="text-red-500 text-lg text-center">{this.props.errors}</p>
+                        </div>
                     </form>
                 </div>
             </div>
