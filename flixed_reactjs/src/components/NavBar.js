@@ -35,7 +35,7 @@ function NavBar(props) {
                                 <div className="mr-5 hover:text-gray-900">{props.user}</div>
                                 <div className="mr-5 hover:text-gray-900"><Link className={styles.navLink} to="/home">Home</Link></div>
                                 <div className="mr-5 hover:text-gray-900"><Link className={styles.navLink} to="/dashboard">Dashboard</Link></div>
-                                <div className="mr-5 hover:text-gray-900">Statistics</div>
+                                <div className="mr-5 hover:text-gray-900"><Link className={styles.navLink} to="/statistics">Statistics</Link></div>
                                 <div className="mr-5 hover:text-gray-900 cursor-pointer" onClick={() => props.handle_logout()}>Logout</div>
                             </>
                             :

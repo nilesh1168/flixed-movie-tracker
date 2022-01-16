@@ -37,3 +37,8 @@
     text-decoration:none;
     cursor: pointer;
 }
+
+.working{
+    height: auto;
+    max-width: 100%;
+}
