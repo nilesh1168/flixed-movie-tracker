@@ -6,7 +6,7 @@ function UnderProduction() {
             <div class="grid-cols-3 gap-4 md:grid">
                 <div></div>
                 <div>
-                    <img className={styles.working} src={workingImage}></img>
+                    <img alt="under-construction" className={styles.working} src={workingImage}></img>
                 </div>
                 <div></div>
             </div>
