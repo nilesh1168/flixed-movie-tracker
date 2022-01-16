@@ -59,7 +59,7 @@ class WatchedMoviesViewTests(TestCase):
     def test_get_watched_movies_this_week(self):
         response = self.client.get(reverse('watched-movies-this-week-view'),
             HTTP_AUTHORIZATION="JWT "+self.token)
-        watchedMovies = WatchedMovie.objects.filter(Q(watched_date__lte=datetime.today()),Q(watched_date__gte=datetime.now()-timedelta(6)))
+        watchedMovies = WatchedMovie.objects.filter(Q(watched_date__lte=datetime.today()),Q(watched_date__gte=datetime.now()-timedelta(7)))
         serializer = WatchedMovieSerializer(watchedMovies, many = True)
         self.assertEquals(serializer.data, response.data)
 
