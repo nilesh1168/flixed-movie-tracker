@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {base_url } from '../config/config'
+import Modal from './MessageModal'
 
 const API_KEY = process.env.REACT_APP_API_KEY
 
@@ -7,13 +8,17 @@ const API_KEY = process.env.REACT_APP_API_KEY
 function SearchMovies(props) {
     const [year, setYear] = useState(false);
     const [date, setDate] = useState(false);
+    const [showModal,setShowModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState("Default Message");
+    const [status, setStatus] = useState("Success");
 
     const reset = () => {
+        document.getElementById('movie_name').value=""
+        props.handleSearchedMovie("")
         if (year)
             setYear(false)
         if (date)
             setDate(false)
-        document.getElementById('movie').value = ""
     }
 
 
@@ -32,6 +37,8 @@ function SearchMovies(props) {
                 if (response.status === 201) {
                     console.log(props.searchedMovie.id)
                     props.handleWatchListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
+                    setShowModal(true)
+                    setModalMessage("Movie Added to Watch List!!")
                     reset()
                 }
             })
@@ -59,6 +66,8 @@ function SearchMovies(props) {
             .then(response => {
                 if (response.status === 201) {
                     props.handleWatchedListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
+                    setShowModal(true)
+                    setModalMessage("Movie Added to Watched List!!")   
                     reset()
                 }
             })
@@ -137,6 +146,7 @@ function SearchMovies(props) {
                     </div>
                 </div>
             </div>
+            <Modal showModal={showModal} message={modalMessage} status={status} setShowModal={setShowModal}/>
         </>
     )
 }
