@@ -54,6 +54,7 @@ function WatchList(props) {
             if (response) {
                 console.log(response.status)
                 props.handleWatchListDelete(ids)
+                props.handleComponentWatchListDelete(ids)
             }
             else
                 throw new Error("Something went wrong!!")
