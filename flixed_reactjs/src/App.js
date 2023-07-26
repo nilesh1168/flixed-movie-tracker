@@ -13,6 +13,8 @@ import {
   Redirect,
 } from "react-router-dom";
 
+import jwt_decode from "jwt-decode";
+
 class App extends React.Component {
   constructor() {
     super();
@@ -30,7 +32,7 @@ class App extends React.Component {
     if (this.state.logged_in) {
       fetch('http://127.0.0.1:8000/current_user/', {
         headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       })
         .then(res => res.json())
@@ -39,7 +41,7 @@ class App extends React.Component {
             this.setState({ logged_in : false })
           }
           else{
-            console.log("alreadyt logged in "+JSON.stringify(json))
+            console.log("already logged in "+JSON.stringify(json))
             this.setState({ user: json.username });
           }
         });
@@ -60,10 +62,11 @@ class App extends React.Component {
     })
       .then(res => res.json())
       .then(json => {
-        localStorage.setItem('token', json.token);
+        console.log(json.access)
+        localStorage.setItem('token', json.access);
         this.setState({
           logged_in: true,
-          user: json.user.username
+          user: jwt_decode(json.access).username
         });
         console.log("login success!!")
       });
