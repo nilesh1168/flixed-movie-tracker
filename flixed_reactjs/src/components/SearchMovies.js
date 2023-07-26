@@ -18,7 +18,7 @@ function SearchMovies(props) {
             body: JSON.stringify(props.searchedMovie),
             headers: { 
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `JWT ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             },
         }
         let request = new Request('http://127.0.0.1:8000/movies/watch_list', options)
@@ -41,7 +41,7 @@ function SearchMovies(props) {
             body: JSON.stringify(props.searchedMovie),
             headers: { 
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `JWT ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             },
         }
         let request = new Request('http://127.0.0.1:8000/movies/watched', options)

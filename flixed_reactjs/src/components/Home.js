@@ -25,11 +25,11 @@ class Home extends Component {
     componentDidMount() {
         const watchedRequest = new Request('http://127.0.0.1:8000/movies/watched/thisweek', { 
             method: 'GET',
-            headers: { Authorization: `JWT ${localStorage.getItem('token')}`}
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}
          })
         const watchListRequest = new Request('http://127.0.0.1:8000/movies/watch_list/top_five', { 
             method: 'GET',
-            headers: { Authorization: `JWT ${localStorage.getItem('token')}`}
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}
         })
         fetch(watchedRequest)
             .then(response => {

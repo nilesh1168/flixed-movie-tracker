@@ -22,7 +22,7 @@ function WatchList(props) {
             body: JSON.stringify({ "ids": ids }),
             headers: { 
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `JWT ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }
         var moveRequest = new Request('http://127.0.0.1:8000/movies/watch_list', options)
@@ -47,7 +47,7 @@ function WatchList(props) {
             body: JSON.stringify({ "ids": ids }),
             headers: { 
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `JWT ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }
         var moveRequest = new Request('http://127.0.0.1:8000/movies/watch_list', options)
