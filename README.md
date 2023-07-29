@@ -1,56 +1,5 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-<!-- [![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url] -->
-
-
-
-<!-- PROJECT LOGO
-<br />
-<div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
-  <h3 align="center">Best-README-Template</h3>
-
-  <p align="center">
-    An awesome README template to jumpstart your projects!
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
-  </p>
-</div> -->
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -81,10 +30,6 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 ### Flixed
 
 - Keeps track of all movies watched  and want to watch.
@@ -168,6 +113,9 @@ You need to install Node, Python and Django.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+Here is a sample screen of the application
+
+[login-view-screenshot]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -178,7 +126,9 @@ You need to install Node, Python and Django.
 
 - [ ] Add back to top links
 - [ ] Dashboard with graphs and information
-
+- [ ] Optimise component loading for huge data
+- [ ] Display movies with poster; Use TMDB API
+- [ ] Add charts and comparisons in a page called statistics
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -224,6 +174,7 @@ Project Link: [https://github.com/nilesh1168/flixed-movie-tracker](https://githu
 
 Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
+* [OMDB API](https://www.omdbapi.com/)
 * [Best Readme Template](https://github.com/othneildrew/Best-README-Template/blob/master/README.md?plain=1)
 * [Choose an Open Source License](https://choosealicense.com)
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
@@ -240,4 +191,5 @@ Use this space to list resources you find helpful and would like to give credit 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
 [Django]: https://img.shields.io/badge/DJANGO-Django?style=for-the-badge&logo=Django&logoColor=white&color=%230B4B33
-[Django-url]: https://reactjs.org/
+[Django-url]: https://www.djangoproject.com
+[login-view-screenshot]: /documentation/login-screen.png
