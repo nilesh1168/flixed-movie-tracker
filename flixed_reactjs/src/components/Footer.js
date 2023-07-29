@@ -19,7 +19,7 @@ function Footer() {
             <p><h3 className={productName}>Flixed</h3></p>
             <div style={styles.verticalLine}></div>
             <div style={{textAlign:'center'}}>
-                <p>&copy; Copyright 2021 </p>
+                <p>&copy; Copyright 2023 </p>
                 <p>Designed & Developed by <a href="http://nilesh1168.github.io">Nilesh Suryawanshi</a></p>
             </div>
 

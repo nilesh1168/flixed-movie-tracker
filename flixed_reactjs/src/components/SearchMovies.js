@@ -90,8 +90,8 @@ function SearchMovies(props) {
                             <FormGroup>
                                 <Form.Control id="movie_name" type="text" placeholder="Enter Movie Name" />
                             </FormGroup>
-                            <Button variant="primary" onClick={() => searchMovie()} type="button">Search</Button>
-                            <Button className="ml-3" disabled>Advanced Search</Button>
+                            <Button className="mt-2" variant="primary" onClick={() => searchMovie()} type="button">Search</Button>
+                            <Button className="mt-2 ml-3" disabled>Advanced Search</Button>
                         </Col>
                         <Col className="col-md-8">
                             <Container className="text-center">

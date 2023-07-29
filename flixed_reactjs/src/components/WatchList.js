@@ -77,9 +77,9 @@ function WatchList(props) {
                     }
                 </Form.Control>
             </Form.Group>
-            <Button onClick={() => moveToWatched()}>Move to Watched</Button>
-            <Button onClick={() => removeFromWatch()} className='ml-3'>Remove</Button>
-            <Button disabled className="ml-3" >See complete WatchList</Button>
+            <Button className='mt-2' onClick={() => moveToWatched()}>Move to Watched</Button>
+            <Button className='mt-2 ml-3' onClick={() => removeFromWatch()}>Remove</Button>
+            <Button className='mt-2 ml-3 m-1' disabled>See complete WatchList</Button>
         </Container>
     )
 }
