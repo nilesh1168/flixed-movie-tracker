@@ -115,9 +115,9 @@ You need to install Node, Python and Django.
 ## Usage
 Here is a sample screen of the application
 
-[login-view-screenshot]
-[search-view-screenshot]
-[dashboard-view-screenshot]
+- [login-view-screenshot]
+- [search-view-screenshot]
+- [dashboard-view-screenshot]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
