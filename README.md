@@ -116,6 +116,8 @@ You need to install Node, Python and Django.
 Here is a sample screen of the application
 
 [login-view-screenshot]
+[search-view-screenshot]
+[dashboard-view-screenshot]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -124,11 +126,11 @@ Here is a sample screen of the application
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Add back to top links
+- [x] Add back to top links
 - [ ] Dashboard with graphs and information
-- [ ] Optimise component loading for huge data
-- [ ] Display movies with poster; Use TMDB API
 - [ ] Add charts and comparisons in a page called statistics
+- [ ] Display movies with poster; Use TMDB API
+- [ ] Optimise component loading for huge data
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -193,3 +195,5 @@ Use this space to list resources you find helpful and would like to give credit 
 [Django]: https://img.shields.io/badge/DJANGO-Django?style=for-the-badge&logo=Django&logoColor=white&color=%230B4B33
 [Django-url]: https://www.djangoproject.com
 [login-view-screenshot]: /documentation/login-screen.png
+[search-view-screenshot]: /documentation/search.png
+[dashboard-view-screenshot]: /documentation/dashboard.png
