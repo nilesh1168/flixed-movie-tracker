@@ -6,6 +6,8 @@ import RegisterForm from './components/RegisterForm'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import Home from './components/Home'
+import Dashboard from './components/Dashboard'
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -115,7 +117,8 @@ class App extends React.Component {
               <Route path="/register">
                 <RegisterForm handle_signup={ this.handle_signup }/>
               </Route>
-              <Route path="/">
+              <Route path="/dashboard">
+                <Dashboard logged_in={this.state.logged_in}></Dashboard>
               </Route>
             </Switch>
               {
