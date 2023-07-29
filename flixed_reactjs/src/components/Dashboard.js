@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Carousel from 'react-bootstrap/Carousel';
 import back_img1 from '../styles/images/image1.jpg'
 import { Col, Container, Row, Card, Stack } from "react-bootstrap";
-import styles from '../styles/App.module.css'
 
 class Dashboard extends Component {
     constructor() {
