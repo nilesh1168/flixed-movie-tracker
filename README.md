@@ -163,7 +163,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [Nilesh](https://www.linkedin.com/in/nilesh-suryawanshi1168/) - n.suryawanshi1168@gmail.com
+[Nilesh](https://www.linkedin.com/in/nilesh-suryawanshi1168/) - n.suryawanshi1168@gmail.com
 
 Project Link: [https://github.com/nilesh1168/flixed-movie-tracker](https://github.com/nilesh1168/flixed-movie-tracker)
 
@@ -173,8 +173,6 @@ Project Link: [https://github.com/nilesh1168/flixed-movie-tracker](https://githu
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
 * [OMDB API](https://www.omdbapi.com/)
 * [Best Readme Template](https://github.com/othneildrew/Best-README-Template/blob/master/README.md?plain=1)
