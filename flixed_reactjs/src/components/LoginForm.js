@@ -44,6 +44,11 @@ class LoginForm extends React.Component {
                                             onChange={this.handle_change} type="password" placeholder="Password" />
                                     </Form.Group>
                                     <Button className='my-4 mx-auto d-block' variant="primary" type="submit">Submit</Button>
+                                    <Row>
+                                    <Container className='text-center'>
+                                        <p style={{ color: "red" }}>{this.props.error}</p>
+                                    </Container>
+                                </Row>
                                 </Form>
                             </Card.Text>
                         </Card.Body>

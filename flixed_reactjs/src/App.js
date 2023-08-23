@@ -22,11 +22,14 @@ class App extends React.Component {
     super();
     this.state = {
       logged_in: localStorage.getItem('token') ? true : false,
-      user: ''
+      user: '',
+      error:'',
+      unauthorized_user: false
     }
     this.handle_login = this.handle_login.bind(this)
     this.handle_logout = this.handle_logout.bind(this)
     this.handle_signup = this.handle_signup.bind(this)
+    this.handleError = this.handleError.bind(this);
   }
 
 
@@ -62,16 +65,33 @@ class App extends React.Component {
       },
       body: JSON.stringify(data)
     })
-      .then(res => res.json())
-      .then(json => {
-        console.log(json.access)
-        localStorage.setItem('token', json.access);
-        this.setState({
-          logged_in: true,
-          user: jwt_decode(json.access).username
-        });
-        console.log("login success!!")
-      });
+      .then(res => {
+        if(res.status === 401){
+          this.setState({
+            unauthorized_user: true
+          })
+        }
+        else{
+          this.setState({
+            unauthorized_user: false,
+            error:""
+          })
+        }
+        return res.json()
+      })
+      .then(result => {
+        if(this.state.unauthorized_user){
+          console.log(result.detail)
+          this.handleError(result.detail)
+        }else{
+          localStorage.setItem('token', result.access);
+          this.setState({
+            logged_in: true,
+            user: jwt_decode(result.access).username
+          });
+          console.log("login success!!")
+        }
+      })
   };
 
   handle_signup = (e, data) => {
@@ -98,6 +118,12 @@ class App extends React.Component {
     this.setState({ logged_in: false, user: '' });
   };
 
+  handleError(message) {
+    this.setState({
+        error: message
+    })
+}
+
   render() {
     var main_style = styles.main + " " +styles.main_background
     if(this.state.logged_in)
@@ -112,7 +138,7 @@ class App extends React.Component {
                 <Home logged_in={this.state.logged_in} />
               </Route>
               <Route path="/login">
-                <LoginForm handle_login={this.handle_login} />
+                <LoginForm handle_login={this.handle_login} error={this.state.error}/>
               </Route>
               <Route path="/register">
                 <RegisterForm handle_signup={ this.handle_signup }/>
