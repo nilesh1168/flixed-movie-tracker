@@ -19,7 +19,7 @@ class UserSerializerWithToken(serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
     password = serializers.CharField(write_only=True)
 
-    def get_token(self, obj): # need to check here DEBUG
+    def get_token(self, obj): 
         print("inside get_token UserSerializerWithToken")
         refresh = RefreshToken.for_user(user)
         return {
