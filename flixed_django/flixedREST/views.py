@@ -25,25 +25,10 @@ def getTopFiveMoviesToWatch(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def getWatchListCount(request):
-    watchList = WatchList.objects.filter(user=request.user)
-    return Response(len(watchList))
-
-@api_view(['GET'])
 def getWatchedMoviesOfThisWeek(request):
     watchedList = WatchedMovie.objects.filter(user=request.user).filter(Q(watched_date__lte = datetime.today()),Q(watched_date__gte = datetime.now()-timedelta(days=6)))
     serializer = WatchedMovieSerializer(watchedList,many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def getTotalWatchTime(request):
-    totalWatchTime = WatchedMovie.objects.filter(user=request.user).aggregate(Sum('runtime'))
-    return Response(totalWatchTime)
-
-@api_view(['GET'])
-def getTotalWatchedMoviesCount(request):
-    watchedMovies = WatchedMovie.objects.filter(user=request.user)
-    return Response(len(watchedMovies))    
+    return Response(serializer.data) 
 
 class UserList(APIView):
     """
@@ -189,4 +174,5 @@ class WatchListList(APIView):
             for delMovie in serializer.data['ids']:
                 movie = self.get_Movie(delMovie['id'])
                 movie.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)        
+        return Response(status=status.HTTP_204_NO_CONTENT)
+                
