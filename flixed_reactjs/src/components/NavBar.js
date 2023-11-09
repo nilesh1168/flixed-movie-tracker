@@ -18,7 +18,7 @@ function NavBar(props) {
                             <Nav>
                                 <Nav.Link>{props.user}</Nav.Link>
                                 <Nav.Link><Link className={styles.navLink} to="/dashboard">Dashboard</Link></Nav.Link>
-                                <Nav.Link>Statistics</Nav.Link>
+                                <Nav.Link><Link className={styles.navLink} to="/statistics">Statistics</Link></Nav.Link>
                                 <Nav.Link onClick = { ()=> props.handle_logout() }>Logout</Nav.Link>
                             </Nav>
                             :
