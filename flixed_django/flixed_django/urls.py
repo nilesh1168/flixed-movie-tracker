@@ -19,11 +19,17 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from rest_framework.documentation import include_docs_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('token-auth/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # path('token-auth/', obtain_jwt_token),
+    path(
+        "api/docs/",
+        include_docs_urls(title="DevJunction API Docs"),
+        name='drf-doc'
+    ),
     path('',include('flixedREST.urls'))
 ]
+
