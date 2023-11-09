@@ -16,6 +16,7 @@ import {
 } from "react-router-dom";
 
 import jwt_decode from "jwt-decode";
+import Statistics from './components/Statistics';
 
 class App extends React.Component {
   constructor() {
@@ -144,7 +145,10 @@ class App extends React.Component {
                 <RegisterForm handle_signup={ this.handle_signup }/>
               </Route>
               <Route path="/dashboard">
-                <Dashboard logged_in={this.state.logged_in}></Dashboard>
+                <Dashboard/>
+              </Route>
+              <Route path="/statistics">
+                <Statistics/>
               </Route>
             </Switch>
               {
