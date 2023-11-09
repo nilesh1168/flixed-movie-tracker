@@ -27,7 +27,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path(
         "api/docs/",
-        include_docs_urls(title="DevJunction API Docs"),
+        include_docs_urls(title="FLIXED API Docs"),
         name='drf-doc'
     ),
     path('',include('flixedREST.urls'))
