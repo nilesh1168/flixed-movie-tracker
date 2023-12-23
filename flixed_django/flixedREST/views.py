@@ -9,6 +9,27 @@ from .models import WatchList, WatchedMovie
 from .serializers import WatchListSerializer, WatchedMovieSerializer, IdSerializer, UserSerializer, UserSerializerWithToken
 from datetime import datetime, timedelta
 from django.db.models import Q, Sum
+from .utils import Util
+import requests
+import os
+
+@api_view(['GET'])
+def searchMovieOrTV(request):
+    """
+    Search for Movie or TV. Get id of desired movie and call movie api or tv api
+    """
+    # send request to TMDB api, get data, post it to front end with pagination details
+    headers = {
+        "accept": "application/json",
+        "Authorization": "Bearer " + Util.TMDB_API_AUTH_ACCESS
+    }
+    url = Util.TMDB_URL + "search/multi"
+    response = requests.get(url = url, headers = headers,params = request.query_params)
+    if response.ok != True:
+        return Response(data = response.json(), status = response.status_code)
+
+    return Response(data = response.json(), status = response.status_code)
+
 
 @api_view(['GET'])
 def current_user(request):
@@ -61,16 +82,21 @@ class WatchedMovieList(APIView):
 
     def post(self,request):
         """
-            Add movie as watched
+            Add movie as watched. get the details of selected movie from /movie TMDB api use the imdb_id attribute to get rating from
+            omdb api. once you have all the details create the object and add it to watched movie DB. Need to get genres as well
         """
-        request.data['user'] = request.user.id
-        serializer = WatchedMovieSerializer(data=request.data)
+        print(len(request.data))
+        response = Util.getMovieDetailsById(request.data)
+        rating = Util.getIMDBRatingFromOMDB(response.data['imdb_id'])
+        response.data['rating'] = rating
+        response.data['user'] = request.user.id
+        serializer = WatchedMovieSerializer(data=response.data)
         print(serializer.initial_data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         print(serializer.errors)    
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)        
+        return Response(serializer.errors,status=status.HTTP_200_BAD_REQUEST)        
 
     def delete(self,request):
         """
