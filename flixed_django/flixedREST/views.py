@@ -85,18 +85,15 @@ class WatchedMovieList(APIView):
             Add movie as watched. get the details of selected movie from /movie TMDB api use the imdb_id attribute to get rating from
             omdb api. once you have all the details create the object and add it to watched movie DB. Need to get genres as well
         """
-        print(len(request.data))
         response = Util.getMovieDetailsById(request.data)
         rating = Util.getIMDBRatingFromOMDB(response.data['imdb_id'])
         response.data['rating'] = rating
         response.data['user'] = request.user.id
         serializer = WatchedMovieSerializer(data=response.data)
-        print(serializer.initial_data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
-        print(serializer.errors)    
-        return Response(serializer.errors,status=status.HTTP_200_BAD_REQUEST)        
+        return Response(serializer.errors,status=status.HTTP_200_OK)        
 
     def delete(self,request):
         """
@@ -163,14 +160,18 @@ class WatchListList(APIView):
 
     def post(self,request):
         """
-            Add movie to Watch List
+            Add movie to Watch List, get details of movie by id from TMDB, from imdb_id, get the rating from OMDB. finally add
+            into watch list
         """
-        request.data['user'] = request.user.id
-        serializer = WatchListSerializer(data=request.data)
+        response = Util.getMovieDetailsById(request.data)
+        rating = Util.getIMDBRatingFromOMDB(response.data['imdb_id'])
+        response.data['rating'] = rating
+        response.data['user'] = request.user.id
+        serializer = WatchListSerializer(data=response.data)
         if serializer.is_valid():
-            serializer.save()
+            # serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
+        return Response(serializer.errors,status=status.HTTP_200_OK)    
 
     def patch(self,request):
         """
