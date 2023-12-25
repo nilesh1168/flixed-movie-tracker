@@ -10,6 +10,7 @@ from .serializers import WatchListSerializer, WatchedMovieSerializer, IdSerializ
 from datetime import datetime, timedelta
 from django.db.models import Q, Sum
 from .utils import Util
+from django.shortcuts import get_object_or_404
 import requests
 import os
 
@@ -30,26 +31,25 @@ def searchMovieOrTV(request):
 
     return Response(data = response.json(), status = response.status_code)
 
-
 @api_view(['GET'])
 def current_user(request):
     """
     Determine the current user by their token, and return their data
     """
     serializer = UserSerializer(request.user)
-    return Response(serializer.data)
+    return Response(data = serializer.data, status = status.HTTP_200_OK)
 
 @api_view(['GET'])
 def getTopFiveMoviesToWatch(request):
     watchList = WatchList.objects.filter(user=request.user).order_by('-rating')[:5]
     serializer = WatchListSerializer(watchList,many=True)
-    return Response(serializer.data)
+    return Response(data = serializer.data, status = status.HTTP_200_OK)
 
 @api_view(['GET'])
 def getWatchedMoviesOfThisWeek(request):
     watchedList = WatchedMovie.objects.filter(user=request.user).filter(Q(watched_date__lte = datetime.today()),Q(watched_date__gte = datetime.now()-timedelta(days=6)))
     serializer = WatchedMovieSerializer(watchedList,many=True)
-    return Response(serializer.data) 
+    return Response(data = serializer.data, status = status.HTTP_200_OK) 
 
 class UserList(APIView):
     """
@@ -63,8 +63,8 @@ class UserList(APIView):
         serializer = UserSerializerWithToken(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data = serializer.data, status=status.HTTP_201_CREATED)
+        return Response(data = serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class WatchedMovieList(APIView):
     """
@@ -72,15 +72,15 @@ class WatchedMovieList(APIView):
         WHOLE list of WatchedMovies i.e Aggregate operation 
     """
 
-    def get(self,request):
+    def get(self, request):
         """
             List all watched movies
         """
         watchedMovies = WatchedMovie.objects.filter(user=request.user)
         serializer = WatchedMovieSerializer(watchedMovies,many=True)
-        return Response(serializer.data)
+        return Response(data = serializer.data, status = status.HTTP_200_OK)
 
-    def post(self,request):
+    def post(self, request):
         """
             Add movie as watched. get the details of selected movie from /movie TMDB api use the imdb_id attribute to get rating from
             omdb api. once you have all the details create the object and add it to watched movie DB. Need to get genres as well
@@ -92,10 +92,10 @@ class WatchedMovieList(APIView):
         serializer = WatchedMovieSerializer(data=response.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_200_OK)        
+            return Response(data = serializer.data,status=status.HTTP_201_CREATED)
+        return Response(data = serializer.errors,status=status.HTTP_200_OK)        
 
-    def delete(self,request):
+    def delete(self, request):
         """
             Delete all movies / Empty watched movies
         """
@@ -108,7 +108,12 @@ class WatchedMovieDetail(APIView):
         This view class is to perform operations on
         SINGLE movie of WatchedMovies i.e selective operation 
     """
-    def get_Movie(self,id):
+    def get(self, request, id):
+        movie = get_object_or_404(WatchedMovie, pk = id)
+        serializer = WatchedMovieSerializer(movie)
+        return Response(data = serializer.data, status = status.HTTP_200_OK)
+
+    def get_Movie(self, id):
         """
             return movie with given 'id'
         """
@@ -117,16 +122,16 @@ class WatchedMovieDetail(APIView):
         except WatchedMovie.DoesNotExist:
             raise Http404
             
-    def put(self,request,id):
+    def put(self, request ,id):
         """
             Update the number of times movie is watched
         """
         watchedMovie = self.get_Movie(id)
-        serializer = WatchedMovieSerializer(watchedMovie, data = request.data)
+        serializer = WatchedMovieSerializer(watchedMovie, data = {'times_watched': watchedMovie.times_watched + 1}, partial = True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)       
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(data = serializer.data, status = status.HTTP_200_OK)       
+        return Response(data = serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def delete(self,request,id):
         """
@@ -156,7 +161,7 @@ class WatchListList(APIView):
         """
         watchList = WatchList.objects.filter(user=request.user)
         serializer = WatchListSerializer(watchList,many=True)
-        return Response(serializer.data)
+        return Response(data = serializer.data, status = status.HTTP_200_OK)
 
     def post(self,request):
         """
@@ -169,9 +174,9 @@ class WatchListList(APIView):
         response.data['user'] = request.user.id
         serializer = WatchListSerializer(data=response.data)
         if serializer.is_valid():
-            # serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_200_OK)    
+            serializer.save()
+            return Response(data = serializer.data,status=status.HTTP_201_CREATED)
+        return Response(data = serializer.errors,status=status.HTTP_200_OK)    
 
     def patch(self,request):
         """
@@ -187,9 +192,9 @@ class WatchListList(APIView):
                     watchedMovieSerializer.save()
                     movie.delete()
                 else:
-                    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
+                    return Response(data = serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
         else:
-            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
+            return Response(data = serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
         return Response(status=status.HTTP_200_OK)
 
     def delete(self,request):
