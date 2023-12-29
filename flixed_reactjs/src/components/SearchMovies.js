@@ -4,16 +4,21 @@ import Form from 'react-bootstrap/Form'
 import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button'
 import { Col } from "react-bootstrap";
-
-const API_KEY = process.env.REACT_APP_API_KEY
+import MovieItem from "./MovieItem";
+import { useState } from "react";
+// import { Card } from "react-bootstrap";
+// const API_KEY = process.env.REACT_APP_API_KEY
 
 
 function SearchMovies(props) {
+    const [movieMap, setMovieMap] = useState([])
+    const [searchBtnClicked, setSearchBtnClicked] = useState(false);
+    const [pageNum, setPageNum] = useState(1);
 
     const addToWatchList = () => {
         if (document.getElementById('movie').value === "") {
             props.handleError("Movie Data cannot be empty!!")
-        }else{
+        } else {
             let options = {
                 method: 'POST',
                 body: JSON.stringify(props.searchedMovie),
@@ -40,7 +45,7 @@ function SearchMovies(props) {
     const addToWatchedList = () => {
         if (document.getElementById('movie').value === "") {
             props.handleError("Movie Data cannot be empty!!")
-        }else{
+        } else {
             let options = {
                 method: 'POST',
                 body: JSON.stringify(props.searchedMovie),
@@ -67,7 +72,16 @@ function SearchMovies(props) {
             props.handleError("Movie Name cannot be empty!!")
         }
         else {
-            fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&t=${encodeURIComponent(document.getElementById('movie_name').value)}&y=$`)
+            let options = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
+            }
+            let request = new Request(`${props.configs.BASE_URL}/search?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${props.configs.DEFAULT_LANG}&page=${props.configs.DEFAULT_PAGE_NUMBER}`, options)
+            // console.log(`${props.configs.BASE_URL}/search?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${props.configs.DEFAULT_LANG}&page=${props.configs.DEFAULT_PAGE_NUMBER}`)
+            fetch(request, options)
                 .then(response => {
                     if (response.ok) {
                         return response.json()
@@ -78,13 +92,32 @@ function SearchMovies(props) {
                     }
                 })
                 .then((data) => {
-                    if (data.Error === undefined) {
-                        var obj = { 'id': data.imdbID, 'title': data.Title, 'genre': data.Genre, 'rating': data.imdbRating, 'year': data.Year, 'runtime': data.Runtime.split(" ")[0], 'language': data.Language }
-                        props.handleSearchedMovie(obj)
-                        props.handleError("");
-                    }
-                    else
-                        props.handleError(data.Error)
+                    var movieList = []
+                    data.results.forEach(element => {
+                        var movieItem = {}
+                        movieItem.id = element.id
+                        movieItem.media_type = element.media_type
+                        if (element.media_type === "movie") {
+                            movieItem.title = element.title
+                            movieItem.release_date = element.release_date
+                        }
+                        else if (element.media_type === "tv") {
+                            movieItem.name = element.name
+                            movieItem.first_air_date = element.first_air_date
+                        }
+                        movieItem.poster_path = element.poster_path
+                        // console.log(movieItem)
+                        movieList.push(movieItem)
+                    });
+                    setMovieMap(movieList)
+                    setSearchBtnClicked(true)
+                    // if (data.Error === undefined) {
+                    //     var obj = { 'id': data.imdbID, 'title': data.Title, 'genre': data.Genre, 'rating': data.imdbRating, 'year': data.Year, 'runtime': data.Runtime.split(" ")[0], 'language': data.Language }
+                    //     props.handleSearchedMovie(obj)
+                    //     props.handleError("");
+                    // }
+                    // else
+                    //     props.handleError(data.Error)
 
                 })
                 .catch(error => {
@@ -120,12 +153,31 @@ function SearchMovies(props) {
                         <p style={{ color: "red" }}>{props.error}</p>
                     </Container>
                 </Row>
-                <hr />
+                <Row>
+                    <Container className="text-center">
+                        <Row>
+                            {
+                                searchBtnClicked ?
+                                    movieMap.map(element => (
+                                        element.media_type === "movie" ?
+                                            <MovieItem id={element.id} type={element.media_type} poster_path={element.poster_path} title={element.title} release_date={element.release_date} />
+                                            :
+                                            <MovieItem id={element.id} type={element.media_type} poster_path={element.poster_path} name={element.name} first_air_date={element.first_air_date} />
+                                    ))
+                                    :
+                                    <div>Perform Search</div>
+                            }
+                        </Row>
+                        <Row>
+                            <Container className="text-center">
+                                Pagination here
+                            </Container>
+                        </Row>
+                    </Container>
+                </Row>
             </Container>
         </Row>
     )
 }
-
-
 
 export default SearchMovies
