@@ -17,7 +17,7 @@ function Footer() {
 
     return (
         <footer style={styles.footerStyle}>
-            <p><h3 className={productName}>Flixed</h3></p>
+            <h3 className={productName}>Flixed</h3>
             <div style={styles.verticalLine}></div>
             <div style={{textAlign:'center'}}>
                 <p>&copy; Copyright 2023 </p>
