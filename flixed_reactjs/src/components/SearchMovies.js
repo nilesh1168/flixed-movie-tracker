@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import Button from 'react-bootstrap/Button'
 import { Col } from "react-bootstrap";
 import MovieItem from "./MovieItem";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { Card } from "react-bootstrap";
 // const API_KEY = process.env.REACT_APP_API_KEY
 
@@ -13,7 +13,30 @@ import { useState } from "react";
 function SearchMovies(props) {
     const [movieMap, setMovieMap] = useState([])
     const [searchBtnClicked, setSearchBtnClicked] = useState(false);
-    const [pageNum, setPageNum] = useState(1);
+    const [currentPage, setCurrentPage] = useState(props.configs.DEFAULT_PAGE_NUMBER);
+    const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
+    const [nextBtnDisabled, setNextBtnDisabled] = useState(false);
+
+    const totalPages = useRef(0)
+    const numberOfResults = useRef(0)
+
+    useEffect(()=>{
+        if(searchBtnClicked)
+            populateSearchResults()
+    }, [currentPage])
+    
+
+    const incrementPage = () =>{
+        // setPrevBtnDisabled(false)
+        setCurrentPage(currentPage => currentPage + 1);
+    }
+
+    const decrementPage = () =>{
+        if(currentPage <= 1) {
+            return
+        }
+        setCurrentPage(currentPage => currentPage - 1);
+    }
 
     const addToWatchList = () => {
         if (document.getElementById('movie').value === "") {
@@ -67,62 +90,70 @@ function SearchMovies(props) {
         }
     }
 
+    const populateSearchResults = () => {
+        let options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+        }
+        let request = new Request(`${props.configs.BASE_URL}/search?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${props.configs.DEFAULT_LANG}&page=${currentPage}`, options)
+        // console.log(`${props.configs.BASE_URL}/search?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${props.configs.DEFAULT_LANG}&page=${props.configs.DEFAULT_PAGE_NUMBER}`)
+        console.log(request.url)
+        fetch(request, options)
+            .then(response => {
+                if (response.ok) {
+                    return response.json()
+                }
+                else {
+                    if (response.status === 401)
+                        throw new Error("Unauthorized Access")
+                }
+            })
+            .then((data) => {
+                totalPages.current = data.total_pages
+                numberOfResults.current = data.total_results
+                var movieList = []
+                data.results.forEach(element => {
+                    var movieItem = {}
+                    movieItem.id = element.id
+                    movieItem.media_type = element.media_type
+                    if (element.media_type === "movie") {
+                        movieItem.title = element.title
+                        movieItem.release_date = element.release_date
+                    }
+                    else if (element.media_type === "tv") {
+                        movieItem.name = element.name
+                        movieItem.first_air_date = element.first_air_date
+                    }
+                    movieItem.poster_path = element.poster_path
+                    // console.log(movieItem)
+                    movieList.push(movieItem)
+                });
+                setMovieMap(movieList)
+                // if (data.Error === undefined) {
+                //     var obj = { 'id': data.imdbID, 'title': data.Title, 'genre': data.Genre, 'rating': data.imdbRating, 'year': data.Year, 'runtime': data.Runtime.split(" ")[0], 'language': data.Language }
+                //     props.handleSearchedMovie(obj)
+                //     props.handleError("");
+                // }
+                // else
+                //     props.handleError(data.Error)
+
+            })
+            .catch(error => {
+                props.handleError(error.message)
+            })
+    }
+
+
     const searchMovie = () => {
         if (document.getElementById('movie_name').value === "") {
             props.handleError("Movie Name cannot be empty!!")
         }
         else {
-            let options = {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                },
-            }
-            let request = new Request(`${props.configs.BASE_URL}/search?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${props.configs.DEFAULT_LANG}&page=${props.configs.DEFAULT_PAGE_NUMBER}`, options)
-            // console.log(`${props.configs.BASE_URL}/search?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${props.configs.DEFAULT_LANG}&page=${props.configs.DEFAULT_PAGE_NUMBER}`)
-            fetch(request, options)
-                .then(response => {
-                    if (response.ok) {
-                        return response.json()
-                    }
-                    else {
-                        if (response.status === 401)
-                            throw new Error("Unauthorized Access")
-                    }
-                })
-                .then((data) => {
-                    var movieList = []
-                    data.results.forEach(element => {
-                        var movieItem = {}
-                        movieItem.id = element.id
-                        movieItem.media_type = element.media_type
-                        if (element.media_type === "movie") {
-                            movieItem.title = element.title
-                            movieItem.release_date = element.release_date
-                        }
-                        else if (element.media_type === "tv") {
-                            movieItem.name = element.name
-                            movieItem.first_air_date = element.first_air_date
-                        }
-                        movieItem.poster_path = element.poster_path
-                        // console.log(movieItem)
-                        movieList.push(movieItem)
-                    });
-                    setMovieMap(movieList)
-                    setSearchBtnClicked(true)
-                    // if (data.Error === undefined) {
-                    //     var obj = { 'id': data.imdbID, 'title': data.Title, 'genre': data.Genre, 'rating': data.imdbRating, 'year': data.Year, 'runtime': data.Runtime.split(" ")[0], 'language': data.Language }
-                    //     props.handleSearchedMovie(obj)
-                    //     props.handleError("");
-                    // }
-                    // else
-                    //     props.handleError(data.Error)
-
-                })
-                .catch(error => {
-                    props.handleError(error.message)
-                })
+            populateSearchResults();
+            setSearchBtnClicked(true)
         }
     }
 
@@ -160,9 +191,9 @@ function SearchMovies(props) {
                                 searchBtnClicked ?
                                     movieMap.map(element => (
                                         element.media_type === "movie" ?
-                                            <MovieItem id={element.id} type={element.media_type} poster_path={element.poster_path} title={element.title} release_date={element.release_date} />
+                                            <MovieItem key={element.id} type={element.media_type} poster_path={element.poster_path} title={element.title} release_date={element.release_date} />
                                             :
-                                            <MovieItem id={element.id} type={element.media_type} poster_path={element.poster_path} name={element.name} first_air_date={element.first_air_date} />
+                                            <MovieItem key={element.id} type={element.media_type} poster_path={element.poster_path} name={element.name} first_air_date={element.first_air_date} />
                                     ))
                                     :
                                     <div>Perform Search</div>
@@ -170,7 +201,14 @@ function SearchMovies(props) {
                         </Row>
                         <Row>
                             <Container className="text-center">
-                                Pagination here
+                                {
+                                    searchBtnClicked ?  
+                                    <div>
+                                        <Button id="prevBtn" disabled = { currentPage === 1 ? prevBtnDisabled: !prevBtnDisabled} className="mt-2" variant="primary" onClick={() => decrementPage()} type="button">Prev</Button>
+                                        <Button id="nextBtn" disabled = { currentPage === totalPages.current ? !nextBtnDisabled : nextBtnDisabled } className="mt-2" variant="primary" onClick={() => incrementPage()} type="button">Next</Button>
+                                    </div>
+                                    : <div></div>
+                                }
                             </Container>
                         </Row>
                     </Container>
