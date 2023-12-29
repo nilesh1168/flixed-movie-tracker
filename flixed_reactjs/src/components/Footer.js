@@ -7,10 +7,11 @@ function Footer() {
             height: '80px',
             justifyContent: 'space-evenly',
             alignItems: 'center',
+            backgroundColor: '#EAE7DC',
         },
         verticalLine: {
-            borderLeft: '1px solid black',
-            height: '40px'
+            borderLeft: '1px solid #8e8d8a',
+            height: '40px',
         }
     }
 
@@ -20,7 +21,7 @@ function Footer() {
             <div style={styles.verticalLine}></div>
             <div style={{textAlign:'center'}}>
                 <p>&copy; Copyright 2023 </p>
-                <p>Designed & Developed by <a href="http://nilesh1168.github.io">Nilesh Suryawanshi</a></p>
+                <p>Designed & Developed by <a style={{color: '#E98074'}} href="http://nilesh1168.github.io">Nilesh Suryawanshi</a></p>
             </div>
 
         </footer>

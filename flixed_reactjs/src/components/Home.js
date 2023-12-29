@@ -1,9 +1,9 @@
 import { Component } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row} from "react-bootstrap";
 import { isEqual } from "lodash";
 import SearchMovies from "./SearchMovies"
-import WatchedMovies from "./WatchedMovies"
-import WatchList from "./WatchList"
+// import WatchedMovies from "./WatchedMovies"
+// import WatchList from "./WatchList"
 
 
 class Home extends Component {
@@ -119,6 +119,8 @@ class Home extends Component {
     render() {
         console.log("inside home " + this.props.logged_in)
         if (this.props.logged_in) {
+
+
             console.log("logged in Home!")
             return (
                 <Container>
@@ -133,8 +135,9 @@ class Home extends Component {
                         handleSearchedMovie={this.handleSearchedMovie}
                         handleWatchListAdd={this.handleWatchListAdd}
                         handleWatchedListAdd={this.handleWatchedListAdd}
+                        configs={this.props.configs}
                     />
-                    <Row className="mb-4">
+                    {/* <Row className="mb-4">
                         <Col>
                             <WatchedMovies watchedList={this.state.watchedList} />
                         </Col>
@@ -143,7 +146,7 @@ class Home extends Component {
                                 handleWatchListDelete={this.handleWatchListDelete}
                                 watchList={this.state.watchList} />
                         </Col>
-                    </Row>
+                    </Row> */}
                 </Container>
             )
         }

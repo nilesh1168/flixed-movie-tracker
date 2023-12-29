@@ -25,7 +25,12 @@ class App extends React.Component {
       logged_in: localStorage.getItem('token') ? true : false,
       user: '',
       error:'',
-      unauthorized_user: false
+      unauthorized_user: false,
+      configs:{
+        BASE_URL:"http://127.0.0.1:8000",
+        DEFAULT_LANG:"en-US",
+        DEFAULT_PAGE_NUMBER : 1
+      }
     }
     this.handle_login = this.handle_login.bind(this)
     this.handle_logout = this.handle_logout.bind(this)
@@ -126,17 +131,14 @@ class App extends React.Component {
 }
 
   render() {
-    var main_style = styles.main + " " +styles.main_background
-    if(this.state.logged_in)
-      main_style = styles.main
     return (
       <Router>
         <div className={styles.App}>
           <NavBar user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} handle_logout={this.handle_logout} />
-          <div  id="main" className={main_style}>
+          <div  id="main" className={styles.main}>
             <Switch>
               <Route path='/home'>
-                <Home logged_in={this.state.logged_in} />
+                <Home logged_in={this.state.logged_in} configs={this.state.configs} />
               </Route>
               <Route path="/login">
                 <LoginForm handle_login={this.handle_login} error={this.state.error}/>

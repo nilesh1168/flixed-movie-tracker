@@ -8,7 +8,7 @@
 
 .productName{
     font-family: 'Rye', cursive;
-    color: tomato;
+    color: #E85A4F;
 }
 
 .App{
@@ -16,7 +16,8 @@
     min-height: 100vh;
     flex-direction: column;
     font-family: 'Kanit', sans-serif;
-    
+    color: #8e8d8a;
+    background-color: #EAE7DC;
 }
 
 .main{
@@ -26,9 +27,9 @@
     background-repeat: no-repeat;
 }
 
-.main_background{
+/* .main_background{
     background-image: url(images/2.jpg);
-}
+} */
 
 .navLink:hover{
     color:black;

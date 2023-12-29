@@ -8,7 +8,7 @@ import styles from '../styles/App.module.css'
 
 function NavBar(props) {
     return (
-            <Navbar collapseOnSelect>
+            <Navbar collapseOnSelect className={styles.headerBg}>
                 <NavLink to="/home"><Navbar.Brand><h2 className={styles.productName}>Flixed</h2></Navbar.Brand></NavLink>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
@@ -16,7 +16,7 @@ function NavBar(props) {
                     {
                         props.logged_in === true ?
                             <Nav>
-                                <Nav.Link>{props.user}</Nav.Link>
+                                <Nav.Link disabled>{props.user}</Nav.Link>
                                 <Nav.Link><Link className={styles.navLink} to="/dashboard">Dashboard</Link></Nav.Link>
                                 <Nav.Link><Link className={styles.navLink} to="/statistics">Statistics</Link></Nav.Link>
                                 <Nav.Link onClick = { ()=> props.handle_logout() }>Logout</Nav.Link>
