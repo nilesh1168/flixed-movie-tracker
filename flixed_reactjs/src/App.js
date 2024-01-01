@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from './styles/App.module.css'
 import React from 'react'
 import LoginForm from './components/LoginForm'
@@ -23,6 +22,7 @@ class App extends React.Component {
     super();
     this.state = {
       logged_in: localStorage.getItem('token') ? true : false,
+      // logged_in: true,
       user: '',
       error:'',
       unauthorized_user: false,
@@ -132,10 +132,48 @@ class App extends React.Component {
 
   render() {
     return (
+    //   <Accordion>
+    //   <Accordion.Item eventKey="0">
+    //     <Accordion.Header>Accordion Item #1</Accordion.Header>
+    //     <Accordion.Body>
+    //       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    //       eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+    //       minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+    //       aliquip ex ea commodo consequat. Duis aute irure dolor in
+    //       reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+    //       pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+    //       culpa qui officia deserunt mollit anim id est laborum.
+    //     </Accordion.Body>
+    //   </Accordion.Item>
+    //   <Accordion.Item eventKey="1">
+    //     <Accordion.Header>Accordion Item #2</Accordion.Header>
+    //     <Accordion.Body>
+    //       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+    //       eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+    //       minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+    //       aliquip ex ea commodo consequat. Duis aute irure dolor in
+    //       reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+    //       pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+    //       culpa qui officia deserunt mollit anim id est laborum.
+    //     </Accordion.Body>
+    //   </Accordion.Item>
+    // </Accordion>
+    //   <div className='App'>
+    //   <header className='App-header'>
+    //     <div class='alert alert-primary' role='alert'>
+    //       <p style={{ display: "none" }} className='d-block'>
+    //         Bootstrap is now successfully installed 😃
+    //       </p>
+    //       <p className='d-none'>
+    //         Bootstrap is not installed if you can see this 😢
+    //       </p>
+    //     </div>
+    //   </header>
+    // </div>
       <Router>
-        <div className={styles.App}>
+        <div className={styles.flixed_app}>
           <NavBar user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} handle_logout={this.handle_logout} />
-          <div  id="main" className={styles.main}>
+          <div  id="main" className={styles.flixed_main}>
             <Switch>
               <Route path='/home'>
                 <Home logged_in={this.state.logged_in} configs={this.state.configs} />
@@ -158,7 +196,7 @@ class App extends React.Component {
                 <Redirect to="/login"/>
               }
           </div>
-          <Footer />
+          <Footer/>
         </div>
       </Router>
     )

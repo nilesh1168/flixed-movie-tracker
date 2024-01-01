@@ -1,4 +1,4 @@
-import { productName } from "../styles/App.module.css";
+import { flixed_name } from "../styles/App.module.css";
 function Footer() {
 
     const styles = {
@@ -17,7 +17,7 @@ function Footer() {
 
     return (
         <footer style={styles.footerStyle}>
-            <h3 className={productName}>Flixed</h3>
+            <h3 className={flixed_name}>Flixed</h3>
             <div style={styles.verticalLine}></div>
             <div style={{textAlign:'center'}}>
                 <p>&copy; Copyright 2023 </p>

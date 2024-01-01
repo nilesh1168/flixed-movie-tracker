@@ -1,11 +1,12 @@
-import Row from "react-bootstrap/Row";
-import FormGroup from 'react-bootstrap/FormGroup'
-import Form from 'react-bootstrap/Form'
-import Container from "react-bootstrap/Container";
-import Button from 'react-bootstrap/Button'
-import { Col } from "react-bootstrap";
+// import Row from "react-bootstrap/Row";
+// import FormGroup from 'react-bootstrap/FormGroup'
+// import Form from 'react-bootstrap/Form'
+// import Container from "react-bootstrap/Container";
+// import button from 'react-bootstrap/button'
+// import { Col } from "react-bootstrap";
 import MovieItem from "./MovieItem";
 import { useEffect, useRef, useState } from "react";
+// import Accordion from 'react-bootstrap/Accordion';
 // import { Card } from "react-bootstrap";
 // const API_KEY = process.env.REACT_APP_API_KEY
 
@@ -158,35 +159,33 @@ function SearchMovies(props) {
     }
 
     return (
-        <Row>
-            <Container>
-                <Row className='my-3'>
-                    <Col className="col-md-4 text-center">
-                        <FormGroup>
-                            <Form.Control id="movie_name" type="text" placeholder="Enter Movie Name" />
-                        </FormGroup>
-                        <Button className="mt-2" variant="primary" onClick={() => searchMovie()} type="button">Search</Button>
-                        <Button className="mt-2 ml-3" disabled>Advanced Search</Button>
-                    </Col>
-                    <Col className="col-md-8">
-                        <Container className="text-center">
-                            <Form.Group>
-                                <Form.Control id='movie' as="textarea" readOnly value={props.searchedMovie.title === undefined ? "" : `Title: ${props.searchedMovie.title}\nGenre: ${props.searchedMovie.genre}\nRating: ${props.searchedMovie.rating}\nYear: ${props.searchedMovie.year}\nRuntime: ${props.searchedMovie.runtime} min\nLanguage: ${props.searchedMovie.language}`} rows={6} />
-                            </Form.Group>
-                            <Button id="add2watched" className="mt-3" variant="primary" onClick={() => addToWatchedList()} type="button">Add to Watched</Button>
-                            <Button id="add2watchlist" className='ml-3 mt-3' onClick={() => addToWatchList()} variant="primary" type="button" >Add to Watch List</Button>
-                            <Button disabled className="ml-3 mt-3">Advanced Add</Button>
-                        </Container>
-                    </Col>
-                </Row>
-                <Row>
-                    <Container className="text-center">
+        <div className="row">
+            <div className="container">
+                <div className='row my-3'>
+                    <div className="col-md-4 text-center">
+                        <input className="form-control" id="movie_name" type="text" placeholder="Enter Movie Name" />
+                        <button className="btn btn-outline-dark mt-2" onClick={() => searchMovie()} type="button">Search</button>
+                        <button className="btn btn-outline-dark mt-2 mx-3" disabled>Advanced Search</button>
+                    </div>
+                    <div className="col-md-8">
+                        <div className="container text-center">
+                            <textarea id='movie' className="form-control" type="textarea" readOnly value={props.searchedMovie.title === undefined ? "" : `Title: ${props.searchedMovie.title}\nGenre: ${props.searchedMovie.genre}\nRating: ${props.searchedMovie.rating}\nYear: ${props.searchedMovie.year}\nRuntime: ${props.searchedMovie.runtime} min\nLanguage: ${props.searchedMovie.language}`} rows={6} />
+                            <button id="add2watched" className="btn btn-outline-dark mt-3" onClick={() => addToWatchedList()} type="button">Add to Watched</button>
+                            <button id="add2watchlist" className='btn btn-outline-dark mx-3 mt-3' onClick={() => addToWatchList()} type="button" >Add to Watch List</button>
+                            <button className="btn btn-outline-dark mt-3">Advanced Add</button>
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="container text-center">
                         <p style={{ color: "red" }}>{props.error}</p>
-                    </Container>
-                </Row>
-                <Row>
-                    <Container className="text-center">
-                        <Row>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="container">
+                        <div className="row">
+                            <div className="container">
+                            {/* <Accordion> */}
                             {
                                 searchBtnClicked ?
                                     movieMap.map(element => (
@@ -196,25 +195,27 @@ function SearchMovies(props) {
                                             <MovieItem key={element.id} type={element.media_type} poster_path={element.poster_path} name={element.name} first_air_date={element.first_air_date} />
                                     ))
                                     :
-                                    <div>Perform Search</div>
+                                    <div className="text-center"><p>Perform Search</p></div>
                             }
-                        </Row>
-                        <Row>
-                            <Container className="text-center">
+                            {/* </Accordion> */}
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="container text-center">
                                 {
                                     searchBtnClicked ?  
                                     <div>
-                                        <Button id="prevBtn" disabled = { currentPage === 1 ? prevBtnDisabled: !prevBtnDisabled} className="mt-2" variant="primary" onClick={() => decrementPage()} type="button">Prev</Button>
-                                        <Button id="nextBtn" disabled = { currentPage === totalPages.current ? !nextBtnDisabled : nextBtnDisabled } className="mt-2" variant="primary" onClick={() => incrementPage()} type="button">Next</Button>
+                                        <button id="prevBtn" disabled = { currentPage === 1 ? prevBtnDisabled: !prevBtnDisabled} className="btn btn-outline-dark mt-2" onClick={() => decrementPage()} type="button">Prev</button>
+                                        <button id="nextBtn" disabled = { currentPage === totalPages.current ? !nextBtnDisabled : nextBtnDisabled } className="btn btn-outline-dark mt-2" onClick={() => incrementPage()} type="button">Next</button>
                                     </div>
                                     : <div></div>
                                 }
-                            </Container>
-                        </Row>
-                    </Container>
-                </Row>
-            </Container>
-        </Row>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }
 

@@ -1,4 +1,4 @@
-import { Container, Row, Col, Card, Form, Button, FormGroup, FormLabel } from "react-bootstrap"
+// import { Container, Row, Col, Card, Form, Button, FormGroup, FormLabel } from "react-bootstrap"
 import React from 'react';
 
 class RegisterForm extends React.Component {
@@ -47,66 +47,67 @@ class RegisterForm extends React.Component {
 
     render() {
         return (
-            <Container>
-                <Row>
-                    <Col className="my-5 ml-auto col-md-8">
-                        <Card>
-                            <Card.Body>
-                                <Card.Title className='text-center my-3'>Sign Up</Card.Title>
-                                <Card.Text>
-                                    <Form>
-                                        <Row>
-                                            <Col className="col-md-6">
-                                                <Form.Group controlId="formBasicUsername">
-                                                    <Form.Label>Username</Form.Label>
-                                                    <Form.Control name="username" value={this.state.username}
+            <div className='container'>
+                <div className='d-flex align-items-center justify-content-end'>
+                    <div className="my-5 ml-auto col-md-8">
+                        <div className='card'>
+                            <div className='card-body'>
+                                <h4 className='card-title text-center my-3'>Sign Up</h4>
+                                <div className='card-text'>
+                                    <form>
+                                        <div className='row'>
+                                            <div className="col-md-6">
+                                                <div className='mb-3'>
+                                                    <label className='form-label'>Username</label>
+                                                    <input className='form-control' name="username" value={this.state.username}
                                                         onChange={this.handle_change} type="text" placeholder="Username" />
-                                                </Form.Group>
+                                                </div>
 
-                                                <Form.Group controlId="formBasicFName">
-                                                    <Form.Label>First Name</Form.Label>
-                                                    <Form.Control name="first_name" value={this.state.first_name}
+                                                <div className='mb-3'>
+                                                    <label className='form-label'>First Name</label>
+                                                    <input className='form-control' name="first_name" value={this.state.first_name}
                                                         onChange={this.handle_change} type="text" placeholder="First Name" />
-                                                </Form.Group>
-                                                <Form.Group controlId="formBasicPassword">
-                                                    <Form.Label>Password</Form.Label>
-                                                    <Form.Control name="password" value={this.state.password}
+                                                </div>
+
+                                                <div className='mb-3 '>
+                                                    <label className='form-label'>Password</label>
+                                                    <input className='form-control' name="password" value={this.state.password}
                                                         onChange={this.handle_change} type="password" placeholder="Password" />
-                                                </Form.Group>
-                                            </Col>
-                                            <Col className="col-md-6">
-                                                <Form.Group controlId="formBasicEmail">
-                                                    <Form.Label>Email</Form.Label>
-                                                    <Form.Control name="email" value={this.state.email}
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div className="mb-3">
+                                                    <label className='form-label'>Email</label>
+                                                    <input className='form-control' name="email" value={this.state.email}
                                                         onChange={this.handle_change} type="text" placeholder="Email" />
-                                                </Form.Group>
+                                                </div>
 
-                                                <Form.Group controlId="formBasicFName">
-                                                    <Form.Label>Last Name</Form.Label>
-                                                    <Form.Control name="last_name" value={this.state.last_name}
+                                                <div className="mb-3">
+                                                    <label className='form-label'>Last Name</label>
+                                                    <input className='form-control' name="last_name" value={this.state.last_name}
                                                         onChange={this.handle_change} type="text" placeholder="Last Name" />
-                                                </Form.Group>
+                                                </div>
 
-                                                <Form.Group controlId="formBasicPassword">
-                                                    <Form.Label>Confirm Password</Form.Label>
-                                                    <Form.Control name="confirm_password" value={this.state.confirm_password}
+                                                <div className="mb-3">
+                                                    <label className='form-label'>Confirm Password</label>
+                                                    <input className='form-control' name="confirm_password" value={this.state.confirm_password}
                                                         onChange={this.handle_change} type="password" placeholder="Confirm Password" />
-                                                </Form.Group>
-                                            </Col>
-                                        </Row>
-                                        
-                                        <FormGroup className="text-center">
-                                            <FormLabel><p style={{ color: "red" }}>{this.state.error}</p></FormLabel>
-                                        </FormGroup>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                        <Button className='my-4 mx-auto d-block' variant="primary" onClick={e => this.validate(e)}>Submit</Button>
-                                    </Form>
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-            </Container>
+                                        <div className="text-center">
+                                            <label><p style={{ color: "red" }}>{this.state.error}</p></label>
+                                        </div>
+
+                                        <button className='btn btn-outline-dark my-4 mx-auto d-block' variant="primary" onClick={e => this.validate(e)}>Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         )
     }
 

@@ -1,8 +1,6 @@
 import { Component } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Carousel from 'react-bootstrap/Carousel';
 import back_img1 from '../styles/images/image1.jpg'
-import { Col, Container, Row, Card, Stack } from "react-bootstrap";
+// import { Col, Container, Row, Card, Stack } from "react-bootstrap";
 
 class Dashboard extends Component {
     constructor() {
@@ -70,7 +68,7 @@ class Dashboard extends Component {
     render() {
         return (
             <div>
-                <Carousel indicators={false}>
+                {/* <Carousel indicators={false}>
                     {
                         this.state.topFiveMovies.length === 0 ? <div>Empty</div> : this.state.topFiveMovies.map(movie => (
 
@@ -88,42 +86,42 @@ class Dashboard extends Component {
 
                         ))
                     }
-                </Carousel>
-                <Container fluid>
-                    <Row className="my-3">
-                        <Col className="col-md-8 text-center">
+                </Carousel> */}
+                <div className="container fluid">
+                    <div className="row my-3">
+                        <div className="col-md-8 text-center">
                             Watched Movies
                             <div class="d-flex flex-row bd-highlight my-3 px-5 flex-wrap">
                             {
                                 this.state.allWatchedMovies.length === 0 ? <div>Empty</div> : this.state.allWatchedMovies.map(movie => (
-                                    <Card style={{ width: '18rem' , margin: 3}} className="card shadow p-3 mb-5 bg-white rounded" hover>
-                                        <Card.Img variant="top" src={back_img1} />
-                                        <Card.Body>
-                                            <Card.Title>{movie.title}</Card.Title>
-                                            <Card.Text>
+                                    <div style={{ width: '18rem' , margin: 3}} className="card shadow p-3 mb-5 bg-white rounded" hover>
+                                        <img className="card-img-top" src={back_img1} alt={movie.title}/>
+                                        <div className="card-body">
+                                            <h4 className="card-title">{movie.title}</h4>
+                                             <p className="card-text">
                                                 {movie.genre}
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
+                                            </p>
+                                        </div>
+                                    </div>
                                 ))
                             }
                             </div>
-                        </Col>
-                        <Col className="col-md-4 text-center">
+                        </div>
+                        <div className="col-md-4 text-center">
                             Suggesttions
                             <div class="d-flex flex-row bd-highlight mb-3">
                                 <div class="p-2 bd-highlight">Flex item 1</div>
                                 <div class="p-2 bd-highlight">Flex item 2</div>
                                 <div class="p-2 bd-highlight">Flex item 3</div>
                             </div>
-                            <Stack direction="horizontal" gap={3}>
+                            {/* <Stack direction="horizontal" gap={3}>
                                 <div className="p-2">First item</div>
                                 <div className="p-2">Second item</div>
                                 <div className="p-2">Third item</div>
-                            </Stack>
-                        </Col>
-                    </Row>
-                </Container>
+                            </Stack> */}
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }

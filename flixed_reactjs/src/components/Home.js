@@ -1,5 +1,4 @@
 import { Component } from "react";
-import { Container, Row} from "react-bootstrap";
 import { isEqual } from "lodash";
 import SearchMovies from "./SearchMovies"
 // import WatchedMovies from "./WatchedMovies"
@@ -22,58 +21,58 @@ class Home extends Component {
         this.handleError = this.handleError.bind(this);
     }
 
-    componentDidMount() {
-        const watchedRequest = new Request('http://127.0.0.1:8000/movies/watched/thisweek', { 
-            method: 'GET',
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}
-         })
-        const watchListRequest = new Request('http://127.0.0.1:8000/movies/watch_list/top_five', { 
-            method: 'GET',
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}
-        })
-        fetch(watchedRequest)
-            .then(response => {
-                if (response.ok)
-                    return response.json()
-                else
-                    throw new Error("Something went wrong!!!")
-            })
-            .then(data => {
-                var movies = []
-                data.map(movie => (
-                    movies.push({ "title": movie.title, "id": movie.id })
-                ))
-                this.setState({
-                    watchedList: movies
-                })
-            })
-            .catch(error => {
-                this.setState({
-                    error: error.message
-                })
-            })
-        fetch(watchListRequest)
-            .then(response => {
-                if (response.ok)
-                    return response.json()
-                else
-                    throw new Error("Something went wrong!!!")
-            })
-            .then(data => {
-                var movies = []
-                data.map(movie => (
-                    movies.push({ "title": movie.title, "id": movie.id })
-                ))
-                this.setState({
-                    watchList: movies
-                })
-            })
-            .catch(error => {
-                this.setState({
-                    error: error.message
-                })
-            })
-    }
+    // componentDidMount() {
+    //     const watchedRequest = new Request('http://127.0.0.1:8000/movies/watched/thisweek', { 
+    //         method: 'GET',
+    //         headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}
+    //      })
+    //     const watchListRequest = new Request('http://127.0.0.1:8000/movies/watch_list/top_five', { 
+    //         method: 'GET',
+    //         headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}
+    //     })
+    //     fetch(watchedRequest)
+    //         .then(response => {
+    //             if (response.ok)
+    //                 return response.json()
+    //             else
+    //                 throw new Error("Something went wrong!!!")
+    //         })
+    //         .then(data => {
+    //             var movies = []
+    //             data.map(movie => (
+    //                 movies.push({ "title": movie.title, "id": movie.id })
+    //             ))
+    //             this.setState({
+    //                 watchedList: movies
+    //             })
+    //         })
+    //         .catch(error => {
+    //             this.setState({
+    //                 error: error.message
+    //             })
+    //         })
+    //     fetch(watchListRequest)
+    //         .then(response => {
+    //             if (response.ok)
+    //                 return response.json()
+    //             else
+    //                 throw new Error("Something went wrong!!!")
+    //         })
+    //         .then(data => {
+    //             var movies = []
+    //             data.map(movie => (
+    //                 movies.push({ "title": movie.title, "id": movie.id })
+    //             ))
+    //             this.setState({
+    //                 watchList: movies
+    //             })
+    //         })
+    //         .catch(error => {
+    //             this.setState({
+    //                 error: error.message
+    //             })
+    //         })
+    // }
 
 
     handleError(message) {
@@ -123,12 +122,12 @@ class Home extends Component {
 
             console.log("logged in Home!")
             return (
-                <Container>
-                    <Row>
-                        <Container>
-                            <Row></Row>
-                        </Container>
-                    </Row>
+                <div className="container">
+                    {/* <div className="row">
+                        <div className="container">
+                            <div className="row"></div>
+                        </div>
+                    </div> */}
                     <SearchMovies error={this.state.error}
                         handleError={this.handleError}
                         searchedMovie={this.state.searchedMovie}
@@ -147,7 +146,7 @@ class Home extends Component {
                                 watchList={this.state.watchList} />
                         </Col>
                     </Row> */}
-                </Container>
+                </div>
             )
         }
         else {
