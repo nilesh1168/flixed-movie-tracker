@@ -33,6 +33,7 @@
 .flixed_navLink:hover{
     color:black;
     text-decoration:none;
+    cursor: pointer;
 }
 
 .flixed_navLink{

@@ -7,10 +7,15 @@ import {
 import styles from '../styles/App.module.css'
 
 function NavBar(props) {
+    const flixed_styles = {
+        fontFamily: 'Rye',
+        color: '#EAE7DC'
+    }
+
     return (
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+        <nav className="navbar navbar-expand-lg" style={{backgroundColor: '#E85A4F'}}>
             <div className="container-fluid">
-                <NavLink to="/home"><a className="navbar-brand">Flixed</a></NavLink>
+            <h3><NavLink className="navbar-brand" style={flixed_styles} to="/home">Flixed</NavLink></h3>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -21,15 +26,15 @@ function NavBar(props) {
                     {
                         props.logged_in === true ?
                                 <ul className="navbar-nav">
-                                    <li className="nav-item"><a className="nav-link active" aria-current="page" aria-disabled>{props.user}</a></li>
-                                    <li className="nav-item"><a className="nav-link" ><Link className={styles.flixed_navLink} to="/dashboard">Dashboard</Link></a></li>
-                                    <li className="nav-item"><a className="nav-link" ><Link className={styles.flixed_navLink} to="/statistics">Statistics</Link></a></li>
-                                    <li className="nav-item"><a className="nav-link" onClick={() => props.handle_logout()}>Logout</a></li>
+                                    <li className="nav-item"><label className="nav-link active" aria-current="page" aria-disabled>{props.user}</label></li>
+                                    <li className="nav-item"><label className="nav-link" ><Link className={styles.flixed_navLink} to="/dashboard">Dashboard</Link></label></li>
+                                    <li className="nav-item"><label className="nav-link" ><Link className={styles.flixed_navLink} to="/statistics">Statistics</Link></label></li>
+                                    <li className="nav-item"><label className="nav-link" onClick={() => props.handle_logout()}> <label className={styles.flixed_navLink}>Logout</label></label></li>
                                 </ul>
                             :
                                 <ul className="navbar-nav">
-                                    <li className="nav-item"><a className="nav-link" ><Link className={styles.flixed_navLink} to="/login">Sign In</Link></a></li>
-                                    <li className="nav-item"><a className="nav-link" ><Link className={styles.flixed_navLink} to="/register">Register</Link></a></li>
+                                    <li className="nav-item"><label className="nav-link" ><Link className={styles.flixed_navLink} to="/login">Sign In</Link></label></li>
+                                    <li className="nav-item"><label className="nav-link" ><Link className={styles.flixed_navLink} to="/register">Register</Link></label></li>
                                 </ul>
                     }
                     {/* <li className="nav-item">
