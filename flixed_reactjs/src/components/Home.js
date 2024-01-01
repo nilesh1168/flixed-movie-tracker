@@ -130,7 +130,7 @@ class Home extends Component {
                     </div> */}
                     <SearchMovies error={this.state.error}
                         handleError={this.handleError}
-                        searchedMovie={this.state.searchedMovie}
+                        // searchedMovie={this.state.searchedMovie}
                         handleSearchedMovie={this.handleSearchedMovie}
                         handleWatchListAdd={this.handleWatchListAdd}
                         handleWatchedListAdd={this.handleWatchedListAdd}
