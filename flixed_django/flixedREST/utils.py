@@ -12,7 +12,7 @@ class Util:
     @classmethod
     def getMovieDetailsById(cls, movie_id):
 
-        url = Util.TMDB_URL + "movie/" + movie_id['id']
+        url = Util.TMDB_URL + "movie/" + str(movie_id['id'])
         headers = {
              "accept": "application/json",
             "Authorization": "Bearer " + Util.TMDB_API_AUTH_ACCESS
