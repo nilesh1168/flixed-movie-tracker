@@ -49,16 +49,16 @@ class LoginForm extends React.Component {
                         <div className='card shadow'>
                             <div className='card-body'>
                                 <h4 className='card-title text-center my-3'>Log In</h4>
-                                <p className='card-text'>
+                                <div className='card-text'>
                                     <form onSubmit={e => this.props.handle_login(e, this.state)} method="post">
-                                        <div class="mb-3">
-                                            <label class="form-label">Username</label>
-                                            <input type="text" class="form-control" id="username" value={this.state.username} onChange={this.handle_change} />
+                                        <div className="mb-3">
+                                            <label className="form-label">Username</label>
+                                            <input type="text" className="form-control" id="username" value={this.state.username} onChange={this.handle_change} />
                                         </div>
 
-                                        <div class="mb-3">
-                                            <label class="form-label">Password</label>
-                                            <input type="password" class="form-control" id="password" value={this.state.password} onChange={this.handle_change} />
+                                        <div className="mb-3">
+                                            <label className="form-label">Password</label>
+                                            <input type="password" className="form-control" id="password" value={this.state.password} onChange={this.handle_change} />
                                         </div>
                                         <button className='btn btn-outline-dark my-4 mx-auto d-block' type="submit">Submit</button>
                                         <div className='row'>
@@ -67,7 +67,7 @@ class LoginForm extends React.Component {
                                             </div>
                                         </div>
                                     </form>
-                                </p>
+                                </div>
                             </div>
                         </div>
                     </div>
