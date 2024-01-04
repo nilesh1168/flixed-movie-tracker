@@ -3,7 +3,7 @@
 // import Accordion from 'react-bootstrap/Accordion';
 
 function MovieItem(props) {
-    var img_src = "https://image.tmdb.org/t/p/"+ "w92/" +props.poster_path // need to get these values from API
+    var img_src = props.secure_base_url + props.image_size + "/" +props.poster_path
     var id = ""
     var data_target = ""
     if (props.type === 'movie') {

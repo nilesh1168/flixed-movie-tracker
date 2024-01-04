@@ -6,7 +6,7 @@ import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import Home from './components/Home'
 import Dashboard from './components/Dashboard'
-
+import TMDB_Configuration from './components/config'
 import {
   BrowserRouter as Router,
   Switch,
@@ -24,13 +24,8 @@ class App extends React.Component {
       logged_in: localStorage.getItem('token') ? true : false,
       // logged_in: true,
       user: '',
-      error:'',
+      error: '',
       unauthorized_user: false,
-      configs:{
-        BASE_URL:"http://127.0.0.1:8000",
-        DEFAULT_LANG:"en-US",
-        DEFAULT_PAGE_NUMBER : 1
-      }
     }
     this.handle_login = this.handle_login.bind(this)
     this.handle_logout = this.handle_logout.bind(this)
@@ -38,6 +33,7 @@ class App extends React.Component {
     this.handleError = this.handleError.bind(this);
   }
 
+  static tmdb_config = TMDB_Configuration.getConfigs()
 
   componentDidMount() {
     if (this.state.logged_in) {
@@ -48,11 +44,11 @@ class App extends React.Component {
       })
         .then(res => res.json())
         .then(json => {
-          if(json.detail != null){
-            this.setState({ logged_in : false })
+          if (json.detail != null) {
+            this.setState({ logged_in: false })
           }
-          else{
-            console.log("already logged in "+JSON.stringify(json))
+          else {
+            console.log("already logged in " + JSON.stringify(json))
             this.setState({ user: json.username });
           }
         });
@@ -72,24 +68,24 @@ class App extends React.Component {
       body: JSON.stringify(data)
     })
       .then(res => {
-        if(res.status === 401){
+        if (res.status === 401) {
           this.setState({
             unauthorized_user: true
           })
         }
-        else{
+        else {
           this.setState({
             unauthorized_user: false,
-            error:""
+            error: ""
           })
         }
         return res.json()
       })
       .then(result => {
-        if(this.state.unauthorized_user){
+        if (this.state.unauthorized_user) {
           console.log(result.detail)
           this.handleError(result.detail)
-        }else{
+        } else {
           localStorage.setItem('token', result.access);
           this.setState({
             logged_in: true,
@@ -98,6 +94,7 @@ class App extends React.Component {
           console.log("login success!!")
         }
       })
+      
   };
 
   handle_signup = (e, data) => {
@@ -126,77 +123,89 @@ class App extends React.Component {
 
   handleError(message) {
     this.setState({
-        error: message
+      error: message
     })
-}
+  }
+
+  // async function getTMDBConfigs(){
+  //   return await fetch('http://127.0.0.1:8000/tmdb_configurations', {
+  //           method: 'GET',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //             Authorization: `Bearer ${localStorage.getItem('token')}`
+  //           },
+  //         }).then(res => {
+  //           return res.json()
+  //         })
+  // }
 
   render() {
     return (
-    //   <Accordion>
-    //   <Accordion.Item eventKey="0">
-    //     <Accordion.Header>Accordion Item #1</Accordion.Header>
-    //     <Accordion.Body>
-    //       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-    //       eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-    //       minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-    //       aliquip ex ea commodo consequat. Duis aute irure dolor in
-    //       reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-    //       pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-    //       culpa qui officia deserunt mollit anim id est laborum.
-    //     </Accordion.Body>
-    //   </Accordion.Item>
-    //   <Accordion.Item eventKey="1">
-    //     <Accordion.Header>Accordion Item #2</Accordion.Header>
-    //     <Accordion.Body>
-    //       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-    //       eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-    //       minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-    //       aliquip ex ea commodo consequat. Duis aute irure dolor in
-    //       reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-    //       pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-    //       culpa qui officia deserunt mollit anim id est laborum.
-    //     </Accordion.Body>
-    //   </Accordion.Item>
-    // </Accordion>
-    //   <div className='App'>
-    //   <header className='App-header'>
-    //     <div class='alert alert-primary' role='alert'>
-    //       <p style={{ display: "none" }} className='d-block'>
-    //         Bootstrap is now successfully installed 😃
-    //       </p>
-    //       <p className='d-none'>
-    //         Bootstrap is not installed if you can see this 😢
-    //       </p>
-    //     </div>
-    //   </header>
-    // </div>
+      //   <Accordion>
+      //   <Accordion.Item eventKey="0">
+      //     <Accordion.Header>Accordion Item #1</Accordion.Header>
+      //     <Accordion.Body>
+      //       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      //       eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+      //       minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+      //       aliquip ex ea commodo consequat. Duis aute irure dolor in
+      //       reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+      //       pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+      //       culpa qui officia deserunt mollit anim id est laborum.
+      //     </Accordion.Body>
+      //   </Accordion.Item>
+      //   <Accordion.Item eventKey="1">
+      //     <Accordion.Header>Accordion Item #2</Accordion.Header>
+      //     <Accordion.Body>
+      //       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+      //       eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+      //       minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+      //       aliquip ex ea commodo consequat. Duis aute irure dolor in
+      //       reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+      //       pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+      //       culpa qui officia deserunt mollit anim id est laborum.
+      //     </Accordion.Body>
+      //   </Accordion.Item>
+      // </Accordion>
+      //   <div className='App'>
+      //   <header className='App-header'>
+      //     <div class='alert alert-primary' role='alert'>
+      //       <p style={{ display: "none" }} className='d-block'>
+      //         Bootstrap is now successfully installed 😃
+      //       </p>
+      //       <p className='d-none'>
+      //         Bootstrap is not installed if you can see this 😢
+      //       </p>
+      //     </div>
+      //   </header>
+      // </div>
       <Router>
         <div className={styles.flixed_app}>
           <NavBar user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} handle_logout={this.handle_logout} />
-          <div  id="main" className={styles.flixed_main}>
+          <div id="main" className={styles.flixed_main}>
             <Switch>
               <Route path='/home'>
-                <Home logged_in={this.state.logged_in} configs={this.state.configs} />
+                <Home logged_in={this.state.logged_in} configs={App.tmdb_config}/>
               </Route>
               <Route path="/login">
-                <LoginForm handle_login={this.handle_login} error={this.state.error}/>
+                <LoginForm handle_login={this.handle_login} error={this.state.error} />
               </Route>
               <Route path="/register">
-                <RegisterForm handle_signup={ this.handle_signup }/>
+                <RegisterForm handle_signup={this.handle_signup} />
               </Route>
               <Route path="/dashboard">
-                <Dashboard/>
+                <Dashboard configs={App.tmdb_config}/>
               </Route>
               <Route path="/statistics">
-                <Statistics/>
+                <Statistics />
               </Route>
             </Switch>
-              {
-                this.state.logged_in ? <Redirect to="/home"/>  : 
-                <Redirect to="/login"/>
-              }
+            {
+              this.state.logged_in ? <Redirect to="/home" /> :
+                <Redirect to="/login" />
+            }
           </div>
-          <Footer/>
+          <Footer />
         </div>
       </Router>
     )
@@ -204,3 +213,6 @@ class App extends React.Component {
 }
 
 export default App;
+
+// image_size={this.state.tmdb_config.images.poster_sizes[0]}
+// secure_base_url={this.state.tmdb_config.images.secure_base_url} image_sizes={this.state.tmdb_config.images.poster_sizes}

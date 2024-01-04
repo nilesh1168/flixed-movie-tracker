@@ -14,10 +14,11 @@ import { useEffect, useRef, useState } from "react";
 function SearchMovies(props) {
     const [movieMap, setMovieMap] = useState([])
     const [searchBtnClicked, setSearchBtnClicked] = useState(false);
-    const [currentPage, setCurrentPage] = useState(props.configs.DEFAULT_PAGE_NUMBER);
+    const [currentPage, setCurrentPage] = useState(props.configs.default_page_number);
     const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
     const [nextBtnDisabled, setNextBtnDisabled] = useState(false);
-
+    const image_size = props.configs.images.poster_sizes[0];
+    const secure_base_url = props.configs.images.secure_base_url
     const totalPages = useRef(0)
     const numberOfResults = useRef(0)
 
@@ -102,7 +103,7 @@ function SearchMovies(props) {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             },
         }
-        let request = new Request(`${props.configs.BASE_URL}/search?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${props.configs.DEFAULT_LANG}&page=${currentPage}`, options)
+        let request = new Request(`${props.configs.base_url}/search?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${props.configs.default_lang}&page=${currentPage}`, options)
         // console.log(`${props.configs.BASE_URL}/search?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${props.configs.DEFAULT_LANG}&page=${props.configs.DEFAULT_PAGE_NUMBER}`)
         console.log(request.url)
         fetch(request, options)
@@ -184,14 +185,14 @@ function SearchMovies(props) {
                     <div className="container">
                         <div className="row">
                             <div className="container">
-                                <div class="accordion" id="movieAccordion">
+                                <div className="accordion" id="movieAccordion">
                                     {
                                         searchBtnClicked ?
                                             movieMap.map(element => (
                                                 element.media_type === "movie" ?
-                                                    <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} title={element.title} release_date={element.release_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList}/>
+                                                    <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} title={element.title} release_date={element.release_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size}/>
                                                     :
-                                                    <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} name={element.name} first_air_date={element.first_air_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList}/>
+                                                    <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} name={element.name} first_air_date={element.first_air_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size}/>
                                             ))
                                             :
                                             <div className="text-center"><p>Perform Search</p></div>
