@@ -15,6 +15,7 @@ class WatchedMovie(models.Model):
     times_watched = models.IntegerField(default=1)
     language = models.CharField(max_length=100)
     imageUrl = models.CharField(max_length=100)
+    backDropUrl = models.CharField(max_length=100, null=True, blank=True)
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="watched_movies")
     
     class Meta:
@@ -41,6 +42,7 @@ class WatchList(models.Model):
     runtime = models.IntegerField(null=False)
     language = models.CharField(max_length=100)
     imageUrl = models.CharField(max_length=100)
+    backDropUrl = models.CharField(max_length=100)
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="watch_list",null=False)
 
 
