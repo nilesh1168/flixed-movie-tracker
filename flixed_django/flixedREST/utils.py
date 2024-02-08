@@ -7,6 +7,7 @@ class Util:
     TMDB_API_AUTH_ACCESS = os.getenv("TMDB_API_AUTH_ACCESS")
     OMDB_URL = "http://www.omdbapi.com/"
     TMDB_URL = "https://api.themoviedb.org/3/"
+    TMDB_CONFIG_URL = "https://api.themoviedb.org/3/configuration"
     LANGUAGE = 'en-US'
 
     @classmethod
@@ -29,6 +30,7 @@ class Util:
         movieDetails['runtime'] = response['runtime']
         movieDetails['language'] = response['original_language']
         movieDetails['imageUrl'] = response['poster_path']
+        movieDetails['backDropUrl'] = response['backdrop_path']
         movieDetails['release_date'] = response['release_date']
         genres=""
         for genre in response['genres']:

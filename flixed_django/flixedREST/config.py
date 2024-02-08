@@ -2,14 +2,16 @@
 import requests
 import json
 import os
-from utils import Util
+from .utils import Util
 
 class Configuration:
     configurations={}
-    def __init__(self):
-        url = Util.TMDB_URL + "/configuration"
+    @classmethod
+    def getTMDBConfigurations(cls):
+        url = Util.TMDB_CONFIG_URL
         headers = {
                 "accept": "application/json",
                 "Authorization": "Bearer "+Util.TMDB_API_AUTH_ACCESS
         }
         configurations = requests.get(url, headers=headers).json()
+        return configurations

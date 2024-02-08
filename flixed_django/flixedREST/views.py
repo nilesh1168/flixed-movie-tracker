@@ -10,9 +10,17 @@ from .serializers import WatchListSerializer, WatchedMovieSerializer, IdSerializ
 from datetime import datetime, timedelta
 from django.db.models import Q, Sum
 from .utils import Util
+from .config import Configuration
 from django.shortcuts import get_object_or_404
 import requests
 import os
+
+@api_view(['GET'])
+def TMDBConfigs(request):
+    """
+    Returns the configurations of TMDB API
+    """
+    return Response(data = Configuration.getTMDBConfigurations(), status = status.HTTP_200_OK)
 
 @api_view(['GET'])
 def searchMovieOrTV(request):
