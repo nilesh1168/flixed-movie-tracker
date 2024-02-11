@@ -1,4 +1,5 @@
 import styles from './styles/App.module.css'
+import '../src/styles/App.module.css'
 import React from 'react'
 import LoginForm from './components/LoginForm'
 import RegisterForm from './components/RegisterForm'
@@ -7,6 +8,7 @@ import Footer from './components/Footer'
 import Home from './components/Home'
 import Dashboard from './components/Dashboard'
 import TMDB_Configuration from './components/config'
+import Test from './components/test'
 import {
   BrowserRouter as Router,
   Switch,
@@ -179,6 +181,7 @@ class App extends React.Component {
       //     </div>
       //   </header>
       // </div>
+
       <Router>
         <div className={styles.flixed_app}>
           <NavBar user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} handle_logout={this.handle_logout} />
@@ -208,6 +211,8 @@ class App extends React.Component {
           <Footer />
         </div>
       </Router>
+      
+      // <Test/>
     )
   }
 }

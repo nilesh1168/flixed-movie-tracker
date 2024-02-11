@@ -3,7 +3,7 @@
 // import Accordion from 'react-bootstrap/Accordion';
 
 function MovieItem(props) {
-    var img_src = props.secure_base_url + props.image_size + "/" +props.poster_path
+    var img_src = props.secure_base_url + props.image_size + "/" + props.poster_path
     var id = ""
     var data_target = ""
     if (props.type === 'movie') {
@@ -27,14 +27,14 @@ function MovieItem(props) {
                 <div class="accordion-body">
                     <div className="row">
                         <div className="col-md-3">
-                        <img src={img_src} class="img-fluid" alt={props.type === 'movie' ? props.title : props.name }/>
+                            <img src={img_src} class="img-fluid" alt={props.type === 'movie' ? props.title : props.name} />
                         </div>
                         <div className="col-md-6">
-                        {
-                            props.type === 'movie' ? <><p>Title : {props.title}</p><p>Release Date : {props.release_date}</p></> : <> <p>Name : {props.name}</p><p>First Air Date: {props.first_air_date}</p></>
-                        }
-                        <p>Type : {props.type.toUpperCase()}</p>
-                        
+                            {
+                                props.type === 'movie' ? <><p>Title : {props.title}</p><p>Release Date : {props.release_date}</p></> : <> <p>Name : {props.name}</p><p>First Air Date: {props.first_air_date}</p></>
+                            }
+                            <p>Type : {props.type.toUpperCase()}</p>
+
                         </div>
                         <div className="col-md-3">
                             <p><button id="add2watched" className="btn btn-outline-dark mt-3" onClick={() => props.addToWatchedList(props.id)} type="button">Add to Watched</button></p>
