@@ -14,6 +14,7 @@ from .config import Configuration
 from django.shortcuts import get_object_or_404
 import requests
 import os
+from rest_framework.pagination import PageNumberPagination
 
 @api_view(['GET'])
 def TMDBConfigs(request):
@@ -45,6 +46,7 @@ def current_user(request):
     Determine the current user by their token, and return their data
     """
     serializer = UserSerializer(request.user)
+    # print(request.user + " in current user")
     return Response(data = serializer.data, status = status.HTTP_200_OK)
 
 @api_view(['GET'])
@@ -74,7 +76,7 @@ class UserList(APIView):
             return Response(data = serializer.data, status=status.HTTP_201_CREATED)
         return Response(data = serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class WatchedMovieList(APIView):
+class WatchedMovieList(APIView, PageNumberPagination):
     """
         This view class is to perform operations on
         WHOLE list of WatchedMovies i.e Aggregate operation 
@@ -85,8 +87,10 @@ class WatchedMovieList(APIView):
             List all watched movies
         """
         watchedMovies = WatchedMovie.objects.filter(user=request.user)
-        serializer = WatchedMovieSerializer(watchedMovies,many=True)
-        return Response(data = serializer.data, status = status.HTTP_200_OK)
+        results = self.paginate_queryset(watchedMovies, request, view = self)
+        serializer = WatchedMovieSerializer(results,many=True)
+        # return Response(data = serializer.data, status = status.HTTP_200_OK)
+        return self.get_paginated_response(serializer.data)
 
     def post(self, request):
         """
