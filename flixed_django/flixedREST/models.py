@@ -21,6 +21,7 @@ class WatchedMovie(models.Model):
     class Meta:
         verbose_name = "Watched Movie"
         verbose_name_plural = "Watched Movies"
+        ordering = ["watched_date"]
 
     def __str__(self):
         return self.title
@@ -49,6 +50,7 @@ class WatchList(models.Model):
     class Meta:
         verbose_name = "WatchList"
         verbose_name_plural = "WatchList"
+        ordering = ["rating"]
 
     def __str__(self):
         return self.title
