@@ -1,5 +1,4 @@
 import { Component } from "react";
-import { isEqual } from "lodash";
 import SearchMovies from "./SearchMovies"
 // import WatchedMovies from "./WatchedMovies"
 // import WatchList from "./WatchList"
@@ -9,14 +8,10 @@ class Home extends Component {
     constructor() {
         super();
         this.state = {
-            watchedList: [],
-            watchList: [],
             searchedMovie: {},
             error: "",
         }
-        this.handleWatchListAdd = this.handleWatchListAdd.bind(this);
-        this.handleWatchedListAdd = this.handleWatchedListAdd.bind(this);
-        this.handleWatchListDelete = this.handleWatchListDelete.bind(this);
+        
         this.handleSearchedMovie = this.handleSearchedMovie.bind(this);
         this.handleError = this.handleError.bind(this);
     }
@@ -87,33 +82,7 @@ class Home extends Component {
         })
     }
 
-    handleWatchListAdd(watchMovie) {
-        this.setState(
-            {
-                watchList: [...this.state.watchList, watchMovie]
-            }
-        )
-    }
-
-    handleWatchListDelete(watchMovieIds) {
-        watchMovieIds.forEach(delmovie => {
-            this.state.watchList.map((movie, index) => (
-                isEqual(JSON.stringify(delmovie), JSON.stringify(movie)) ? this.state.watchList.splice(index, 1) : console.log("false")
-            ))
-        });
-        this.setState({
-            watchList: this.state.watchList
-        })
-    }
-
-    handleWatchedListAdd(watchedMovie) {
-        this.setState(
-            {
-                watchedList: this.state.watchedList.concat(watchedMovie)
-            }
-        )
-
-    }
+    
 
     render() {
         console.log("inside home " + this.props.logged_in)
@@ -131,9 +100,9 @@ class Home extends Component {
                     <SearchMovies error={this.state.error}
                         handleError={this.handleError}
                         // searchedMovie={this.state.searchedMovie}
-                        handleSearchedMovie={this.handleSearchedMovie}
-                        handleWatchListAdd={this.handleWatchListAdd}
-                        handleWatchedListAdd={this.handleWatchedListAdd}
+                        // handleSearchedMovie={this.handleSearchedMovie}
+                        // handleWatchListAdd={this.handleWatchListAdd}
+                        // handleWatchedListAdd={this.handleWatchedListAdd}
                         configs={this.props.configs}
                     />
                     {/* <Row className="mb-4">
