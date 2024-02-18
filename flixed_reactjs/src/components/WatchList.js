@@ -1,6 +1,3 @@
-import Form from 'react-bootstrap/Form'
-import Container from 'react-bootstrap/Container'
-import Button from 'react-bootstrap/Button'
 import Movie from './Movie'
 
 function WatchList(props) {
@@ -66,21 +63,20 @@ function WatchList(props) {
 
 
     return (
-        <Container>
-            <h4>Top 5 Movies to Watch </h4>
-            <Form.Group>
-                <Form.Control id="selected_movies" as="select" multiple>
+        <div className='container'>
+            <div>
+                <select className="form-select" id="selected_movies" as="select" multiple>
                     {
                         props.watchList.length === 0 ? <Movie movieName="Empty"></Movie> : props.watchList.map(movie => (
                             <Movie key={movie.id} id={movie.id} movieName={movie.title}></Movie>
                         ))
                     }
-                </Form.Control>
-            </Form.Group>
-            <Button className='mt-2' onClick={() => moveToWatched()}>Move to Watched</Button>
-            <Button className='mt-2 ml-3' onClick={() => removeFromWatch()}>Remove</Button>
-            <Button className='mt-2 ml-3 m-1' disabled>See complete WatchList</Button>
-        </Container>
+                </select>
+            </div>
+            <button type="button" className='btn btn-outline-dark mt-2' onClick={() => moveToWatched()}>Move to Watched</button>
+            <button type="button" className='btn btn-outline-dark mt-2 ml-3' onClick={() => removeFromWatch()}>Remove</button>
+            <button type="button" className='btn btn-outline-dark mt-2 ml-3 m-1' disabled>See complete WatchList</button>
+        </div>
     )
 }
 

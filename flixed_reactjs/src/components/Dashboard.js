@@ -4,6 +4,7 @@ import MovieItem from "./MovieItem";
 import { isEqual } from "lodash";
 import * as bootstrap from 'bootstrap/dist/js/bootstrap'
 // import { Col, Container, Row, Card, Stack } from "react-bootstrap";
+import WatchList from "./WatchList"
 
 class Dashboard extends Component {
     constructor(props) {
@@ -17,13 +18,11 @@ class Dashboard extends Component {
             prev: null,
             curr: 'http://127.0.0.1:8000/movies/watched?page=1',
             btnClicked: false,
-            watchedList: [],
-            watchList: [],
             toastTrigger: false,
         }
         this.incrementPage = this.incrementPage.bind(this);
         this.decrementPage = this.decrementPage.bind(this);
-        this.handleWatchListAdd = this.handleWatchListAdd.bind(this);
+        // this.handleWatchListAdd = this.handleWatchListAdd.bind(this);
         this.handleWatchedListAdd = this.handleWatchedListAdd.bind(this);
         this.handleWatchListDelete = this.handleWatchListDelete.bind(this);
         this.incrementWatchCount = this.incrementWatchCount.bind(this);
@@ -49,7 +48,7 @@ class Dashboard extends Component {
         var options = this.getRequestOptions('PUT')
         var incrementWatchedCountRequest = new Request(url, options)
         fetch(incrementWatchedCountRequest).then(response => {
-            if (response.status === 200){
+            if (response.status === 200) {
                 console.log("Success")
                 this.setState({
                     toastTrigger: true
@@ -62,29 +61,29 @@ class Dashboard extends Component {
     }
 
 
-    handleWatchListAdd(watchMovie) {
-        this.setState(
-            {
-                watchList: [...this.state.watchList, watchMovie]
-            }
-        )
-    }
+    // handleWatchListAdd(watchMovie) {
+    //     this.setState(
+    //         {
+    //             watchList: [...this.state.watchList, watchMovie]
+    //         }
+    //     )
+    // }
 
     handleWatchListDelete(watchMovieIds) {
         watchMovieIds.forEach(delmovie => {
-            this.state.watchList.map((movie, index) => (
-                isEqual(JSON.stringify(delmovie), JSON.stringify(movie)) ? this.state.watchList.splice(index, 1) : console.log("false")
+            this.state.topFiveMovies.map((movie, index) => (
+                isEqual(JSON.stringify(delmovie.id), JSON.stringify(movie.id)) ? this.state.topFiveMovies.splice(index, 1) : console.log("false")
             ))
         });
         this.setState({
-            watchList: this.state.watchList
+            topFiveMovies: this.state.topFiveMovies
         })
     }
 
     handleWatchedListAdd(watchedMovie) {
         this.setState(
             {
-                watchedList: this.state.watchedList.concat(watchedMovie)
+                allWatchedMovies: this.state.allWatchedMovies.concat(watchedMovie)
             }
         )
 
@@ -278,7 +277,7 @@ class Dashboard extends Component {
                         <h3> You do not have a watchlist yet!</h3>
                     </div>
                         : <></>
-                        
+
                 }
                 <h2 className="text-center">Watched Movies</h2>
                 <div className="container">
@@ -306,27 +305,28 @@ class Dashboard extends Component {
                     </div>
                 </div>
                 <div className="toast-container position-fixed bottom-0 end-0 p-3">
-                <div id="successToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            Success, You have watched this movie one more time!
+                    <div id="successToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                Success, You have watched this movie one more time!
+                            </div>
+                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                         </div>
-                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
-                </div>
                 </div>
             </div>
         )
     }
 
     render() {
-        var toastLiveExample = document.getElementById('successToast')
-        if(this.state.toastTrigger) {
+        
+        var successToastElement = document.getElementById('successToast')
+        if (this.state.toastTrigger) {
             console.log("in toast")
-            console.log(toastLiveExample)
-            var toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-            console.log(toastBootstrap)
-            toastBootstrap.show()
+            console.log(successToastElement)
+            var successToast = bootstrap.Toast.getOrCreateInstance(successToastElement)
+            console.log(successToast)
+            successToast.show()
         }
         // if both are empty return a banner giving message.
         if (this.state.allWatchedMovies.length === 0 && this.state.topFiveMovies.length === 0) {
@@ -349,9 +349,21 @@ class Dashboard extends Component {
                             this.topFiveCarousal()
                         }
                         <div className="mt-3"></div>
-                        {
-                            this.watchedMovieCards()
-                        }
+                        <div className="container-fluid">
+                            <div className="row">
+                                <div className="col-md-8">
+                                    {
+                                        this.watchedMovieCards()
+                                    }
+                                </div>
+                                <div className="col-md-4">
+                                    <h2 className="text-center">WatchList</h2>
+                                    <WatchList handleWatchedListAdd={this.handleWatchedListAdd}
+                                handleWatchListDelete={this.handleWatchListDelete}
+                                watchList={this.state.topFiveMovies} />
+                                </div>
+                            </div>
+                        </div>
                     </>
                 )
             }
