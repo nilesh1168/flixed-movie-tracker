@@ -23,12 +23,12 @@ class WatchedMoviesViewTests(TestCase):
         response = self.client.post(reverse('token_obtain_pair'), data = self.data, content_type="application/json;charset=utf-8")
         self.token = response.data['access']
 
-        WatchedMovie.objects.create(id=1,title="Test Watched Movie1",
-            rating=8.0,genre="Development, Application",year=2021,runtime=100,
+        WatchedMovie.objects.create(id=1,imdb_id="tt4738", title="Test Watched Movie1",
+            rating=8.0,genre="Development, Application",release_date="2021-10-21",runtime=100,
             watched_date=datetime.today(),language="Python, Java",user=self.user)
 
         WatchedMovie.objects.create(id=2,title="Test Watched Movie2",
-            rating=7.6,genre="Development, Application",year=2021,runtime=100,
+            rating=7.6,genre="Development, Application",release_date="2015-10-21",runtime=100,
             watched_date=datetime.today(),language="Python, Java",user=self.user)
 
 
@@ -37,14 +37,15 @@ class WatchedMoviesViewTests(TestCase):
             HTTP_AUTHORIZATION="Bearer "+self.token)
         watchedMovies = WatchedMovie.objects.filter(user = self.user)
         serializer = WatchedMovieSerializer(watchedMovies,many = True)
-        self.assertEqual(response.data, serializer.data)
+        # response contains pagination attributes
+        self.assertEqual(response.data['results'], serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_create_watched_movie(self):
         movie = {
             'id':3,'title':"Watched Movie in POST",
-            'rating':8.0,'genre':"Development, Application",'year':2021,
-            'runtime':100,'watched_date':"2021-05-22",
+            'rating':8.0,'genre':"Development, Application",'release_date':"2020-07-18",
+            'runtime':100,'watched_date':"2024-03-11",
             'language':"Python, Java"
             }
         response = self.client.post(reverse('watched-movie-view'),

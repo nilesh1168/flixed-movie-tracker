@@ -21,16 +21,16 @@ class WatchListTests(TestCase):
         response = self.client.post(reverse('token_obtain_pair'), data = self.data, content_type="application/json;charset=utf-8")
         self.token = response.data['access']
 
-        WatchList.objects.create(id=1,title="Test WatchList Movie1",
-            rating=8.7,genre="Development, Application, Web",year=2021,runtime=101,
-            language="Python, Java",user=self.user)
+        WatchList.objects.create(id=1,imdb_id="tt4738", title="Test WatchList Movie1",
+            rating=8.7,genre="Development, Application, Web",release_date="2021-10-19",runtime=101,
+            language="Python, Java",imageUrl="/someurl.jpg", user=self.user)
 
         WatchList.objects.create(id=2,title="Test WatchList Movie2",
-            rating=7.7,genre="Development, Application",year=2021,runtime=110,
+            rating=7.7,genre="Development, Application",release_date="2014-01-20",runtime=110,
             language="Python, Java",user=self.user)
 
         WatchList.objects.create(id=4,title="Test WatchList Movie4",
-            rating=6.7,genre="Development, Application, Mobile",year=2021,runtime=103,
+            rating=6.7,genre="Development, Application, Mobile",release_date="2020-12-22",runtime=103,
             language="Python, Java",user=self.user)    
 
     def test_get_all_watchlist_movies(self):
@@ -53,12 +53,13 @@ class WatchListTests(TestCase):
         self.assertEquals(response.status_code, status.HTTP_201_CREATED)
 
     def test_move_from_watchlist_to_watched_movie(self):
-        ids ={
+        ids={
             "ids" : [{'title':"Test WatchList Movie1",'id':1}]
         }
         response = self.client.patch(reverse('watchlist-movie-view'),
             data=json.dumps(ids), content_type="application/json;charset=utf-8",
             HTTP_AUTHORIZATION="Bearer "+self.token)
+        print(response.data)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
 
     def test_delete_from_watchlist(self):
