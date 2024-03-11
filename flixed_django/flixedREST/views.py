@@ -204,7 +204,7 @@ class WatchListList(APIView):
                     watchedMovieSerializer.save()
                     movie.delete()
                 else:
-                    return Response(data = serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
+                    return Response(data = watchedMovieSerializer.errors,status=status.HTTP_400_BAD_REQUEST)    
         else:
             return Response(data = serializer.errors,status=status.HTTP_400_BAD_REQUEST)    
         return Response(status=status.HTTP_200_OK)
