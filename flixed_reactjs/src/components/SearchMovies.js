@@ -153,6 +153,7 @@ function SearchMovies(props) {
 
 
     const searchMovie = () => {
+        props.handleError("")
         if (document.getElementById('movie_name').value === "") {
             props.handleError("Movie Name cannot be empty!!")
         }
