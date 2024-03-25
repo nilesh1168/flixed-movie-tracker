@@ -37,8 +37,22 @@ def searchMovieOrTV(request):
     response = requests.get(url = url, headers = headers,params = request.query_params)
     if response.ok != True:
         return Response(data = response.json(), status = response.status_code)
-
-    return Response(data = response.json(), status = response.status_code)
+    filtered_response = response.json()
+    results = []
+    new_result_count = 0
+    new_page_count = 1
+    # pre process only for Movies
+    for result in filtered_response['results']:
+        if result['media_type'] == 'movie':
+            results.append(result)
+            new_result_count+=1
+        if new_result_count > 20:
+            new_page_count+=1    
+    filtered_response['results'] = results
+    filtered_response['total_results'] = new_result_count
+    filtered_response['total_pages'] = new_page_count
+    print(filtered_response)
+    return Response(data = filtered_response, status = response.status_code)
 
 @api_view(['GET'])
 def current_user(request):
