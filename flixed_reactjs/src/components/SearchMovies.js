@@ -186,6 +186,7 @@ function SearchMovies(props) {
                     <div className="container">
                         <div className="row">
                             <div className="container">
+                            <div style={{ color: "red" }} className="text-center"><p>* Current media type support for movies only.</p></div>
                                 <div className="accordion" id="movieAccordion">
                                     {
                                         searchBtnClicked ?
