@@ -203,11 +203,12 @@ function SearchMovies(props) {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="container text-center">
+                            <div className="d-flex flex-row mb-3 justify-content-center">
                                 {
                                     searchBtnClicked ?
                                         <div>
                                             <button id="prevBtn" disabled={currentPage === 1 ? prevBtnDisabled : !prevBtnDisabled} className="btn btn-outline-dark mt-2" onClick={() => decrementPage()} type="button">Prev</button>
+                                            <button className="btn mt-2" style={{cursor: "default"}}>{currentPage} of {totalPages.current}</button>
                                             <button id="nextBtn" disabled={currentPage === totalPages.current ? !nextBtnDisabled : nextBtnDisabled} className="btn btn-outline-dark mt-2" onClick={() => incrementPage()} type="button">Next</button>
                                         </div>
                                         : <div></div>
