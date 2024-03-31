@@ -26,7 +26,7 @@ class App extends React.Component {
       logged_in: localStorage.getItem('token') ? true : false,
       // logged_in: true,
       user: '',
-      error: '',
+      error: [],
       unauthorized_user: false,
     }
     this.handle_login = this.handle_login.bind(this)
@@ -100,22 +100,40 @@ class App extends React.Component {
   };
 
   handle_signup = (e, data) => {
+    console.log("inside handle signup")
     e.preventDefault();
-    fetch('http://127.0.0.1:8000/users/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+    this.setState({
+      error:''
     })
-      .then(res => res.json())
-      .then(json => {
-        localStorage.setItem('token', json.token);
-        this.setState({
-          logged_in: true,
-          user: json.username
-        });
-      });
+    if(data.password === data.confirm_password){
+      fetch('http://127.0.0.1:8000/users/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(res =>res.json())
+        .then(json => {
+          if(json.token){
+            localStorage.setItem('token', json.token);
+            this.setState({
+              logged_in: true,
+              user: json.username
+            });
+          }
+          else{
+            console.log("in 200 else")
+            this.setState({
+              error: json
+            })
+          }
+        })
+    }else{
+      this.setState({
+        error:"Passwords do not match!"
+      })
+    }
   };
 
   handle_logout = () => {
@@ -194,7 +212,7 @@ class App extends React.Component {
                 <LoginForm handle_login={this.handle_login} error={this.state.error} />
               </Route>
               <Route path="/register">
-                <RegisterForm handle_signup={this.handle_signup} />
+                <RegisterForm handle_signup={this.handle_signup} error={this.state.error}/>
               </Route>
               <Route path="/dashboard">
                 <Dashboard configs={App.tmdb_config}/>
