@@ -186,20 +186,20 @@ function SearchMovies(props) {
                     <div className="container">
                         <div className="row">
                             <div className="container">
-                            <div style={{ color: "red" }} className="text-center"><p>* Current media type support for movies only.</p></div>
                                 <div className="accordion" id="movieAccordion">
                                     {
                                         searchBtnClicked ?
-                                            movieMap.map(element => (
-                                                element.media_type === "movie" ?
-                                                    <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} title={element.title} release_date={element.release_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size}/>
-                                                    :
-                                                    <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} name={element.name} first_air_date={element.first_air_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size}/>
+                                        movieMap.map(element => (
+                                            element.media_type === "movie" ?
+                                            <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} title={element.title} release_date={element.release_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size}/>
+                                            :
+                                            <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} name={element.name} first_air_date={element.first_air_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size}/>
                                             ))
                                             :
                                             <div className="text-center"><p>Perform Search</p></div>
-                                    }
+                                        }
                                 </div>
+                                <div className="text-center"><p>* Current media type support for movies only.</p></div>
                             </div>
                         </div>
                         <div className="row">

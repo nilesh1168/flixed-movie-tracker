@@ -87,8 +87,6 @@ class Home extends Component {
     render() {
         console.log("inside home " + this.props.logged_in)
         if (this.props.logged_in) {
-
-
             console.log("logged in Home!")
             return (
                 <div className="container">
