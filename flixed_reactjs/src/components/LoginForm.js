@@ -10,7 +10,7 @@ import React from 'react';
 class LoginForm extends React.Component {
     state = {
         username: '',
-        password: ''
+        password: '',
     };
 
     handle_change = e => {
@@ -22,6 +22,14 @@ class LoginForm extends React.Component {
             return newState;
         });
     };
+
+    validate(e) {
+        var data = {
+            "username": this.state.username,
+            "password": this.state.password
+        }
+        this.props.handle_login(e, data)
+    }
 
     render() {
         return (
@@ -50,7 +58,7 @@ class LoginForm extends React.Component {
                             <div className='card-body'>
                                 <h4 className='card-title text-center my-3'>Log In</h4>
                                 <div className='card-text'>
-                                    <form onSubmit={e => this.props.handle_login(e, this.state)} method="post">
+                                    <form>
                                         <div className="mb-3">
                                             <label className="form-label">Username</label>
                                             <input type="text" className="form-control" id="username" value={this.state.username} onChange={this.handle_change} />
@@ -60,7 +68,7 @@ class LoginForm extends React.Component {
                                             <label className="form-label">Password</label>
                                             <input type="password" className="form-control" id="password" value={this.state.password} onChange={this.handle_change} />
                                         </div>
-                                        <button className='btn btn-outline-dark my-4 mx-auto d-block' type="submit">Submit</button>
+                                        <button type='button' className='btn btn-outline-dark my-4 mx-auto d-block' onClick={e => this.validate(e)}>Submit</button>
                                         <div className='row'>
                                             <div className='container text-center'>
                                                 <p style={{ color: "red" }}>{this.props.error}</p>

@@ -62,6 +62,12 @@ class App extends React.Component {
 
   handle_login = (e, data) => {
     e.preventDefault();
+    if(data.username === ''|| data.password === ''){
+      this.setState({
+        error: "All fields are mandatory!"
+      })
+    }
+    else {
     fetch('http://127.0.0.1:8000/token-auth/', {
       method: 'POST',
       headers: {
@@ -85,7 +91,6 @@ class App extends React.Component {
       })
       .then(result => {
         if (this.state.unauthorized_user) {
-          console.log(result.detail)
           this.handleError(result.detail)
         } else {
           localStorage.setItem('token', result.access);
@@ -96,11 +101,10 @@ class App extends React.Component {
           console.log("login success!!")
         }
       })
-      
+    }
   };
 
   handle_signup = (e, data) => {
-    console.log("inside handle signup")
     e.preventDefault();
     this.setState({
       error:''
@@ -123,7 +127,6 @@ class App extends React.Component {
             });
           }
           else{
-            console.log("in 200 else")
             this.setState({
               error: json
             })
@@ -161,45 +164,6 @@ class App extends React.Component {
 
   render() {
     return (
-      //   <Accordion>
-      //   <Accordion.Item eventKey="0">
-      //     <Accordion.Header>Accordion Item #1</Accordion.Header>
-      //     <Accordion.Body>
-      //       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-      //       eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-      //       minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-      //       aliquip ex ea commodo consequat. Duis aute irure dolor in
-      //       reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-      //       pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-      //       culpa qui officia deserunt mollit anim id est laborum.
-      //     </Accordion.Body>
-      //   </Accordion.Item>
-      //   <Accordion.Item eventKey="1">
-      //     <Accordion.Header>Accordion Item #2</Accordion.Header>
-      //     <Accordion.Body>
-      //       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-      //       eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-      //       minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-      //       aliquip ex ea commodo consequat. Duis aute irure dolor in
-      //       reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-      //       pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-      //       culpa qui officia deserunt mollit anim id est laborum.
-      //     </Accordion.Body>
-      //   </Accordion.Item>
-      // </Accordion>
-      //   <div className='App'>
-      //   <header className='App-header'>
-      //     <div class='alert alert-primary' role='alert'>
-      //       <p style={{ display: "none" }} className='d-block'>
-      //         Bootstrap is now successfully installed 😃
-      //       </p>
-      //       <p className='d-none'>
-      //         Bootstrap is not installed if you can see this 😢
-      //       </p>
-      //     </div>
-      //   </header>
-      // </div>
-
       <Router>
         <div className={styles.flixed_app}>
           <NavBar user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} handle_logout={this.handle_logout} />
