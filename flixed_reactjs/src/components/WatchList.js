@@ -22,7 +22,7 @@ function WatchList(props) {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }
-        var moveRequest = new Request('http://127.0.0.1:8000/movies/watch_list', options)
+        var moveRequest = new Request(`${props.configs.base_url}/movies/watch_list`, options)
         fetch(moveRequest).then(response => {
             if (response){
                 console.log(response)
@@ -47,7 +47,7 @@ function WatchList(props) {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }
-        var moveRequest = new Request('http://127.0.0.1:8000/movies/watch_list', options)
+        var moveRequest = new Request(`${props.configs.base_url}/movies/watch_list`, options)
         fetch(moveRequest).then(response => {
             if (response) {
                 console.log(response.status)

@@ -16,7 +16,7 @@ class Dashboard extends Component {
             totalPages: createRef(0),
             next: null,
             prev: null,
-            curr: 'http://127.0.0.1:8000/movies/watched?page=1',
+            curr: `${props.configs.base_url}/movies/watched?page=${props.configs.default_page_number}`,
             btnClicked: false,
             toastTrigger: false,
         }
@@ -44,7 +44,7 @@ class Dashboard extends Component {
     }
 
     incrementWatchCount(movieId) {
-        var url = 'http://127.0.0.1:8000/movies/watched/' + movieId + '/'
+        var url = `${this.props.configs.base_url}/movies/watched/` + movieId + '/'
         var options = this.getRequestOptions('PUT')
         var incrementWatchedCountRequest = new Request(url, options)
         fetch(incrementWatchedCountRequest).then(response => {
@@ -106,7 +106,7 @@ class Dashboard extends Component {
                     allWatchedMovies: data.results,
                     results: true,
                     next: data.next,
-                    prev: data.previous != undefined ? data.previous : null
+                    prev: data.previous !== undefined ? data.previous : null
                 })
                 // console.log(this.state.allWatchedMovies);
             })
@@ -148,7 +148,7 @@ class Dashboard extends Component {
         if (token.length !== 0 || token !== "") {
             var options = this.getRequestOptions('GET')
 
-            var getTopFiveMoviesRequest = new Request('http://127.0.0.1:8000/movies/watch_list/top_five', options)
+            var getTopFiveMoviesRequest = new Request(`${this.props.configs.base_url}/movies/watch_list/top_five`, options)
             fetch(getTopFiveMoviesRequest).then(response => {
                 if (response) {
                     return response.json()
@@ -199,11 +199,11 @@ class Dashboard extends Component {
                                         // <span>Hello from if</span>
                                         // console.log("inside if index == 0");
                                         <div className="carousel-item active">
-                                            <img src={this.imageUrl(movie.backDropUrl)} className="d-block w-100" />
+                                            <img alt={movie.title} src={this.imageUrl(movie.backDropUrl)} className="d-block w-100" />
                                             <div className="carousel-caption d-none d-md-block" >
                                                 <div className="card w-25">
                                                     <div className="card-body">
-                                                        <img src={this.imageUrl(movie.imageUrl)} className="img-fluid" />
+                                                        <img alt={movie.title} src={this.imageUrl(movie.imageUrl)} className="img-fluid" />
 
                                                     </div>
                                                     <div className="card-footer text-body-secondary">
@@ -220,11 +220,11 @@ class Dashboard extends Component {
                                     return (
                                         // <span>Hello from if</span>
                                         <div className="carousel-item">
-                                            <img src={this.imageUrl(movie.backDropUrl)} className="d-block w-100" />
+                                            <img alt={movie.title} src={this.imageUrl(movie.backDropUrl)} className="d-block w-100" />
                                             <div className="carousel-caption d-none d-md-block" >
                                                 <div className="card w-25">
                                                     <div className="card-body">
-                                                        <img src={this.imageUrl(movie.imageUrl)} className="img-fluid" />
+                                                        <img alt={movie.title} src={this.imageUrl(movie.imageUrl)} className="img-fluid" />
                                                     </div>
                                                     <div className="card-footer text-body-secondary">
                                                         <p>{movie.title}</p>
@@ -263,7 +263,7 @@ class Dashboard extends Component {
     emptyBanner = () => {
         return (
             <div className="container">
-                <img src={image} className="d-block w-100 img-fluid" alt="Image" />
+                <img alt="No movies available" src={image} className="d-block w-100 img-fluid" />
             </div>
         )
     }
@@ -360,7 +360,7 @@ class Dashboard extends Component {
                                     <h2 className="text-center">WatchList</h2>
                                     <WatchList handleWatchedListAdd={this.handleWatchedListAdd}
                                 handleWatchListDelete={this.handleWatchListDelete}
-                                watchList={this.state.topFiveMovies} />
+                                watchList={this.state.topFiveMovies} configs={this.props.configs}/>
                                 </div>
                             </div>
                         </div>
