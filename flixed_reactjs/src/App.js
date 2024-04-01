@@ -39,7 +39,7 @@ class App extends React.Component {
 
   componentDidMount() {
     if (this.state.logged_in) {
-      fetch('http://127.0.0.1:8000/current_user/', {
+      fetch(`${App.tmdb_config.base_url}/current_user/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -68,7 +68,7 @@ class App extends React.Component {
       })
     }
     else {
-    fetch('http://127.0.0.1:8000/token-auth/', {
+    fetch(`${App.tmdb_config.base_url}/token-auth/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -110,7 +110,7 @@ class App extends React.Component {
       error:''
     })
     if(data.password === data.confirm_password){
-      fetch('http://127.0.0.1:8000/users/', {
+      fetch(`${App.tmdb_config.base_url}/users/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
