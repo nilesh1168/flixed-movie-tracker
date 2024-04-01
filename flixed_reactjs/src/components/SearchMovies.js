@@ -5,7 +5,7 @@
 // import button from 'react-bootstrap/button'
 // import { Col } from "react-bootstrap";
 import MovieItem from "./MovieItem";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 // import Accordion from 'react-bootstrap/Accordion';
 // import { Card } from "react-bootstrap";
 // const API_KEY = process.env.REACT_APP_API_KEY
@@ -15,87 +15,15 @@ function SearchMovies(props) {
     const [movieMap, setMovieMap] = useState([])
     const [searchBtnClicked, setSearchBtnClicked] = useState(false);
     const [currentPage, setCurrentPage] = useState(props.configs.default_page_number);
-    const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
-    const [nextBtnDisabled, setNextBtnDisabled] = useState(false);
+    const base_url = props.configs.base_url
+    const default_lang = props.configs.default_lang
     const image_size = props.configs.images.poster_sizes[0];
     const secure_base_url = props.configs.images.secure_base_url
     const totalPages = useRef(0)
     const numberOfResults = useRef(0)
+    const handleError = props.handleError
 
-    useEffect(() => {
-        if (searchBtnClicked)
-            populateSearchResults()
-    }, [currentPage])
-
-
-    const incrementPage = () => {
-        // setPrevBtnDisabled(false)
-        setCurrentPage(currentPage => currentPage + 1);
-    }
-
-    const decrementPage = () => {
-        if (currentPage <= 1) {
-            return
-        }
-        setCurrentPage(currentPage => currentPage - 1);
-    }
-
-    const addToWatchList = (movieId) => {
-        var data = {
-            "id": movieId
-        }
-            let options = {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                },
-            }
-            let request = new Request('http://127.0.0.1:8000/movies/watch_list', options)
-            fetch(request)
-                .then(response => {
-                    if (response.status === 201) {
-                        console.log("added movie")
-                        props.handleError("added movie to watchlist")
-                        // console.log(props.searchedMovie.id)
-                        // props.handleWatchListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
-                    }
-                })
-                .catch(error => {
-                    console.log(error.message)
-                    props.handleError(error.message)
-                })
-    }
-
-    const addToWatchedList = (movieId) => {
-            var data = {
-                "id": movieId
-            }
-            let options = {
-                method: 'POST',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                },
-            }
-            let request = new Request('http://127.0.0.1:8000/movies/watched', options)
-            fetch(request)
-                .then(response => {
-                    if (response.status === 201) {
-                        console.log("added movie")
-                        props.handleError("Movie added successfully to watched")
-                        // show a alert that movie has been added successfully
-                        // props.handleWatchedListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
-                    }
-                })
-                .catch(error => {
-                    props.handleError(error.message)
-                })
-    }
-
-    const populateSearchResults = () => {
+    const populateSearchResults = useCallback(() => {
         let options = {
             method: 'GET',
             headers: {
@@ -103,7 +31,7 @@ function SearchMovies(props) {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             },
         }
-        let request = new Request(`${props.configs.base_url}/search?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${props.configs.default_lang}&page=${currentPage}`, options)
+        let request = new Request(`${base_url}/search?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${default_lang}&page=${currentPage}`, options)
         // console.log(`${props.configs.BASE_URL}/search?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${props.configs.DEFAULT_LANG}&page=${props.configs.DEFAULT_PAGE_NUMBER}`)
         console.log(request.url)
         fetch(request, options)
@@ -147,9 +75,83 @@ function SearchMovies(props) {
 
             })
             .catch(error => {
-                props.handleError(error.message)
+                handleError(error.message)
             })
+    },[base_url, currentPage, default_lang, handleError])
+    
+    useEffect(() => {
+        if (searchBtnClicked)
+            populateSearchResults()
+    }, [currentPage, searchBtnClicked, populateSearchResults])
+
+
+    const incrementPage = () => {
+        // setPrevBtnDisabled(false)
+        setCurrentPage(currentPage => currentPage + 1);
     }
+
+    const decrementPage = () => {
+        if (currentPage <= 1) {
+            return
+        }
+        setCurrentPage(currentPage => currentPage - 1);
+    }
+
+    const addToWatchList = (movieId) => {
+        var data = {
+            "id": movieId
+        }
+            let options = {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
+            }
+            let request = new Request(`${base_url}/movies/watch_list`, options)
+            fetch(request)
+                .then(response => {
+                    if (response.status === 201) {
+                        console.log("added movie")
+                        props.handleError("added movie to watchlist")
+                        // console.log(props.searchedMovie.id)
+                        // props.handleWatchListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
+                    }
+                })
+                .catch(error => {
+                    console.log(error.message)
+                    props.handleError(error.message)
+                })
+    }
+
+    const addToWatchedList = (movieId) => {
+            var data = {
+                "id": movieId
+            }
+            let options = {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                },
+            }
+            let request = new Request(`${base_url}/movies/watched`, options)
+            fetch(request)
+                .then(response => {
+                    if (response.status === 201) {
+                        console.log("added movie")
+                        props.handleError("Movie added successfully to watched")
+                        // show a alert that movie has been added successfully
+                        // props.handleWatchedListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
+                    }
+                })
+                .catch(error => {
+                    props.handleError(error.message)
+                })
+    }
+
 
 
     const searchMovie = () => {
@@ -207,9 +209,9 @@ function SearchMovies(props) {
                                 {
                                     searchBtnClicked ?
                                         <div>
-                                            <button id="prevBtn" disabled={currentPage === 1 ? prevBtnDisabled : !prevBtnDisabled} className="btn btn-outline-dark mt-2" onClick={() => decrementPage()} type="button">Prev</button>
+                                            <button id="prevBtn" disabled={currentPage === 1 ? true : false} className="btn btn-outline-dark mt-2" onClick={() => decrementPage()} type="button">Prev</button>
                                             <button className="btn mt-2" style={{cursor: "default"}}>{currentPage} of {totalPages.current}</button>
-                                            <button id="nextBtn" disabled={currentPage === totalPages.current ? !nextBtnDisabled : nextBtnDisabled} className="btn btn-outline-dark mt-2" onClick={() => incrementPage()} type="button">Next</button>
+                                            <button id="nextBtn" disabled={currentPage === totalPages.current ? true : false} className="btn btn-outline-dark mt-2" onClick={() => incrementPage()} type="button">Next</button>
                                         </div>
                                         : <div></div>
                                 }
