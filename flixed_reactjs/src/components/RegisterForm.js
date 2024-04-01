@@ -45,10 +45,10 @@ class RegisterForm extends React.Component {
     }
 
     render_errors(list_of_errors){
-        if(list_of_errors !== undefined && list_of_errors.length!=0)
+        if(list_of_errors !== undefined && list_of_errors.length !== 0)
             return(
                 <ul>{
-                    list_of_errors.length!=0 ? 
+                    list_of_errors.length !== 0 ? 
                         list_of_errors.map((error, idx) => {
                             return <li key={idx}><p style={{ color: "red" }}>{error}</p></li>
                         }) : <p style={{ color: "green" }}>hello</p>
