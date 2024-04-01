@@ -8,7 +8,7 @@ import Footer from './components/Footer'
 import Home from './components/Home'
 import Dashboard from './components/Dashboard'
 import TMDB_Configuration from './components/config'
-import Test from './components/test'
+
 import {
   BrowserRouter as Router,
   Switch,
