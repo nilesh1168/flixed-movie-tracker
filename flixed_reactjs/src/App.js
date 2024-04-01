@@ -190,7 +190,7 @@ class App extends React.Component {
                 <Redirect to="/login" />
             }
           </div>
-          <Footer />
+        <Footer />
         </div>
       </Router>
       

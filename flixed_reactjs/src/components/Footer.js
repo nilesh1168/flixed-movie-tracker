@@ -3,6 +3,7 @@ function Footer() {
 
     const styles = {
         footerStyle: {
+            marginTop: 'auto',
             display: 'flex',
             height: '80px',
             justifyContent: 'space-evenly',
