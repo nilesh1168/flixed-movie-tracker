@@ -73,9 +73,13 @@ function WatchList(props) {
                     }
                 </select>
             </div>
-            <button type="button" className='btn btn-outline-dark mt-2' onClick={() => moveToWatched()}>Move to Watched</button>
-            <button type="button" className='btn btn-outline-dark mt-2 ml-3' onClick={() => removeFromWatch()}>Remove</button>
-            <button type="button" className='btn btn-outline-dark mt-2 ml-3 m-1' disabled>See complete WatchList</button>
+            <div className='container text-center'>
+                <button type="button" className='btn btn-outline-dark mt-2 mx-2' onClick={() => moveToWatched()}>Move to Watched</button>
+                <button type="button" className='btn btn-outline-dark mt-2' onClick={() => removeFromWatch()}>Remove</button>
+            </div>
+            <div className='container text-center'>
+                <button type="button" className='btn btn-outline-dark mt-2' disabled>See complete WatchList</button>
+            </div>
         </div>
     )
 }

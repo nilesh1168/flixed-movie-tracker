@@ -296,7 +296,7 @@ class Dashboard extends Component {
                             {
                                 this.state.results ?
                                     <div>
-                                        <button id="prevBtn" disabled={this.state.prev !== null ? false : true} className="btn btn-outline-dark mt-2" onClick={() => this.decrementPage()} type="button">Prev</button>
+                                        <button id="prevBtn" disabled={this.state.prev !== null ? false : true} className="btn btn-outline-dark mt-2 mx-2" onClick={() => this.decrementPage()} type="button">Prev</button>
                                         <button id="nextBtn" disabled={this.state.next !== null ? false : true} className="btn btn-outline-dark mt-2" onClick={() => this.incrementPage()} type="button">Next</button>
                                     </div>
                                     : <div></div>
