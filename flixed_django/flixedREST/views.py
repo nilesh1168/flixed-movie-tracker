@@ -51,8 +51,41 @@ def searchMovieOrTV(request):
     filtered_response['results'] = results
     filtered_response['total_results'] = new_result_count
     filtered_response['total_pages'] = new_page_count
-    print(filtered_response)
     return Response(data = filtered_response, status = response.status_code)
+
+
+@api_view(['GET'])
+def searchMovie(request):
+    """
+        Only get movies from the TMDB API. by calling search/movie
+    """
+    headers = {
+        "accept": "application/json",
+        "Authorization": "Bearer " + Util.TMDB_API_AUTH_ACCESS
+    }
+    url = Util.TMDB_URL + "search/movie"
+    response = requests.get(url = url, headers = headers,params = request.query_params)
+    if response.ok != True:
+        return Response(data = response.json(), status = response.status_code)
+    print(response.json())
+    return Response(data = response.json(), status = response.status_code)
+
+
+@api_view(['GET'])
+def searchTVShow(request):
+    """
+        Only get TV shows from the TMDB API. by calling search/tv
+    """
+    headers = {
+        "accept": "application/json",
+        "Authorization": "Bearer " + Util.TMDB_API_AUTH_ACCESS
+    }
+    url = Util.TMDB_URL + "search/tv"
+    response = requests.get(url = url, headers = headers,params = request.query_params)
+    if response.ok != True:
+        return Response(data = response.json(), status = response.status_code)
+    return Response(data = response.json(), status = response.status_code)
+
 
 @api_view(['GET'])
 def current_user(request):
