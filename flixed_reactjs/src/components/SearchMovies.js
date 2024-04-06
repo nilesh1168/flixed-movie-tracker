@@ -25,6 +25,10 @@ function SearchMovies(props) {
     const handleError = props.handleError
     const [toastTrigger, setToastTrigger] = useState(false)
     const [toastMessage, setToastMessage] = useState("")
+    const [loading, setLoading] = useState({
+        loading: false,
+        searchBtnText: "Search"
+    })
 
     const populateSearchResults = useCallback(() => {
         let options = {
@@ -68,6 +72,12 @@ function SearchMovies(props) {
                     movieList.push(movieItem)
                 });
                 setMovieMap(movieList)
+                setLoading({
+                    loading: false,
+                    searchBtnText: "Search"
+                })
+                document.getElementById("searchBtn").disabled = false
+                // searchBtnText = "Search"
                 // if (data.Error === undefined) {
                 //     var obj = { 'id': data.imdbID, 'title': data.Title, 'genre': data.Genre, 'rating': data.imdbRating, 'year': data.Year, 'runtime': data.Runtime.split(" ")[0], 'language': data.Language }
                 //     props.handleSearchedMovie(obj)
@@ -173,7 +183,12 @@ function SearchMovies(props) {
             props.handleError("Movie Name cannot be empty!!")
         }
         else {
-            populateSearchResults();
+            setLoading({
+                loading: true,
+                searchBtnText: "Loading..."
+            })
+            document.getElementById("searchBtn").disabled = true
+            populateSearchResults()
             setSearchBtnClicked(true)
         }
     }
@@ -200,7 +215,9 @@ function SearchMovies(props) {
                     <div className="col-md-4 text-center">
                         <div className="container">
                             <input className="form-control" id="movie_name" type="text" placeholder="Enter Name" />
-                            <button className="btn btn-outline-dark mt-2" onClick={() => searchMovie()} type="button">Search </button>
+                            <button id="searchBtn" className="btn btn-outline-dark mt-2" onClick={() => searchMovie()} type="button"> {loading.searchBtnText}
+                                { loading.loading ? <span class="spinner-border spinner-border-sm" aria-hidden="true"></span> : <></> }
+                            </button>
                             <button className="btn btn-outline-dark mt-2 mx-3" disabled>Advanced Search</button>
                             {/* </div>
                         <div className="flex-row"> */}
