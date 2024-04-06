@@ -6,6 +6,7 @@
 // import { Col } from "react-bootstrap";
 import MovieItem from "./MovieItem";
 import { useEffect, useRef, useState, useCallback } from "react";
+import * as bootstrap from 'bootstrap/dist/js/bootstrap'
 // import Accordion from 'react-bootstrap/Accordion';
 // import { Card } from "react-bootstrap";
 // const API_KEY = process.env.REACT_APP_API_KEY
@@ -22,6 +23,8 @@ function SearchMovies(props) {
     const totalPages = useRef(0)
     const numberOfResults = useRef(0)
     const handleError = props.handleError
+    const [toastTrigger, setToastTrigger] = useState(false)
+    const [toastMessage, setToastMessage] = useState("")
 
     const populateSearchResults = useCallback(() => {
         let options = {
@@ -77,13 +80,12 @@ function SearchMovies(props) {
             .catch(error => {
                 handleError(error.message)
             })
-    },[base_url, currentPage, default_lang, handleError])
-    
+    }, [base_url, currentPage, default_lang, handleError])
+
     useEffect(() => {
         if (searchBtnClicked)
             populateSearchResults()
     }, [currentPage, searchBtnClicked, populateSearchResults])
-
 
     const incrementPage = () => {
         // setPrevBtnDisabled(false)
@@ -113,8 +115,10 @@ function SearchMovies(props) {
         fetch(request)
             .then(response => {
                 if (response.status === 201) {
-                    console.log("added movie")
-                    props.handleError("added movie to watchlist")
+                    // console.log("added movie")
+                    // props.handleError("added movie to watchlist")
+                    setToastMessage("Movie added successfully to Watch List")
+                    setToastTrigger(true)
                     // console.log(props.searchedMovie.id)
                     // props.handleWatchListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
                 }
@@ -142,9 +146,18 @@ function SearchMovies(props) {
             .then(response => {
                 if (response.status === 201) {
                     console.log("added movie")
-                    props.handleError("Movie added successfully to watched")
+                    // props.handleError("Movie added successfully to watched")
                     // show a alert that movie has been added successfully
+                    setToastMessage("Movie added successfully to watched")
                     // props.handleWatchedListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
+                    setToastTrigger(true)
+                }
+                else if (response.status === 204){
+                    // console.log("added movie")
+                    // props.handleError("Movie already watched")
+                    // show a alert that movie has been added successfully
+                    setToastMessage("Movie already watched")
+                    setToastTrigger(true)
                 }
             })
             .catch(error => {
@@ -165,7 +178,20 @@ function SearchMovies(props) {
         }
     }
 
+    const toast = () =>{
+        var successToastElement = document.getElementById('successToast')
+        if (toastTrigger) {
+            var successToast = bootstrap.Toast.getOrCreateInstance(successToastElement)
+            successToast.show()
+            setToastTrigger(false)
+        }
+    }
+
     return (
+        <>
+        {
+            toast()
+        }
         <div className="row">
             <div className="container">
                 <div className='row my-3'>
@@ -176,18 +202,18 @@ function SearchMovies(props) {
                             <input className="form-control" id="movie_name" type="text" placeholder="Enter Name" />
                             <button className="btn btn-outline-dark mt-2" onClick={() => searchMovie()} type="button">Search </button>
                             <button className="btn btn-outline-dark mt-2 mx-3" disabled>Advanced Search</button>
-                        {/* </div>
+                            {/* </div>
                         <div className="flex-row"> */}
                         </div>
                     </div>
                     <div className="col-md-4">
-                    <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="movieCheckChecked" checked/>
-                                <label class="form-check-label" for="movieCheckChecked">
-                                    Movie
-                                </label>
-                            </div>
-                            {/* <div class="form-check">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="movieCheckChecked" checked />
+                            <label class="form-check-label" for="movieCheckChecked">
+                                Movie
+                            </label>
+                        </div>
+                        {/* <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="tvCheckChecked" />
                                 <label class="form-check-label" for="tvCheckChecked">
                                     TV
@@ -195,7 +221,7 @@ function SearchMovies(props) {
                             </div> */}
                     </div>
                 </div>
-                <div className="text-center"><p> <span style={{color:'red'}}>*</span> Current media type support for movies only.</p></div>
+                <div className="text-center"><p> <span style={{ color: 'red' }}>*</span> Current media type support for movies only.</p></div>
                 <hr className="my-2"></hr>
                 <div className="row">
                     <div className="container text-center">
@@ -238,6 +264,17 @@ function SearchMovies(props) {
                 </div>
             </div>
         </div>
+        <div className="toast-container position-fixed bottom-0 end-0 p-3">
+                    <div id="successToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="d-flex">
+                            <div class="toast-body">
+                                {toastMessage}
+                            </div>
+                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
+        </>
     )
 }
 
