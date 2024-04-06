@@ -16,6 +16,16 @@ import requests
 import os
 from rest_framework.pagination import PageNumberPagination
 
+def get_Movie(id):
+    """
+        return movie with given 'id'
+    """
+    try:
+        return WatchedMovie.objects.get(id=id)
+    except WatchedMovie.DoesNotExist:
+        raise Http404
+
+
 @api_view(['GET'])
 def TMDBConfigs(request):
     """
@@ -152,7 +162,17 @@ class WatchedMovieList(APIView, PageNumberPagination):
         if serializer.is_valid():
             serializer.save()
             return Response(data = serializer.data,status=status.HTTP_201_CREATED)
-        return Response(data = serializer.errors,status=status.HTTP_200_OK)        
+        else:
+            # increase the watch count and return the message
+            for error in serializer.errors['id']:
+                if(error.code == "unique"):
+                    watchedMovie = get_Movie(request.data['id'])
+                    serializer = WatchedMovieSerializer(watchedMovie, data = {'times_watched': watchedMovie.times_watched + 1}, partial = True)
+                    if serializer.is_valid():
+                        serializer.save()
+                        return Response(data = serializer.data,status=status.HTTP_204_NO_CONTENT)
+                    
+        return Response(data = serializer.errors,status=status.HTTP_500_INTERNAL_SERVER_ERROR)        
 
     def delete(self, request):
         """
@@ -172,20 +192,12 @@ class WatchedMovieDetail(APIView):
         serializer = WatchedMovieSerializer(movie)
         return Response(data = serializer.data, status = status.HTTP_200_OK)
 
-    def get_Movie(self, id):
-        """
-            return movie with given 'id'
-        """
-        try:
-            return WatchedMovie.objects.get(id=id)
-        except WatchedMovie.DoesNotExist:
-            raise Http404
             
     def put(self, request ,id):
         """
             Update the number of times movie is watched
         """
-        watchedMovie = self.get_Movie(id)
+        watchedMovie = get_Movie(id)
         serializer = WatchedMovieSerializer(watchedMovie, data = {'times_watched': watchedMovie.times_watched + 1}, partial = True)
         if serializer.is_valid():
             serializer.save()
@@ -196,7 +208,7 @@ class WatchedMovieDetail(APIView):
         """
             Delete single watched movie
         """
-        movie = self.get_Movie(id)
+        movie = get_Movie(id)
         movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -244,7 +256,7 @@ class WatchListList(APIView):
         serializer = IdSerializer(data=request.data)
         if serializer.is_valid():
             for delMovie in serializer.data['ids']:
-                movie = self.get_Movie(delMovie['id'])
+                movie = get_Movie(delMovie['id'])
                 watchListSerializer = WatchListSerializer(movie)
                 watchedMovieSerializer = WatchedMovieSerializer(data=watchListSerializer.data) 
                 if watchedMovieSerializer.is_valid():
@@ -263,7 +275,7 @@ class WatchListList(APIView):
         serializer = IdSerializer(data=request.data)
         if serializer.is_valid():
             for delMovie in serializer.data['ids']:
-                movie = self.get_Movie(delMovie['id'])
+                movie = get_Movie(delMovie['id'])
                 movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
                 
