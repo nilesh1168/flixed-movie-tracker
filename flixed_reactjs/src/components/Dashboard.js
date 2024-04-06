@@ -1,19 +1,21 @@
-import { Component, createRef } from "react";
+import { Component } from "react";
 import image from '../styles/images/No Movies Available.png'
 import MovieItem from "./MovieItem";
 import { isEqual } from "lodash";
 import * as bootstrap from 'bootstrap/dist/js/bootstrap'
 // import { Col, Container, Row, Card, Stack } from "react-bootstrap";
 import WatchList from "./WatchList"
+import TMDB_Configuration from "./config";
 
 class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentPage: 1,
+            totalPages: 1,
             topFiveMovies: [],
             allWatchedMovies: [],
             results: false,
-            totalPages: createRef(0),
             next: null,
             prev: null,
             curr: `${props.configs.base_url}/movies/watched?page=${props.configs.default_page_number}`,
@@ -101,9 +103,10 @@ class Dashboard extends Component {
                 throw new Error("Something went wrong!!")
         })
             .then((data) => {
-                // console.log(data.previous) // top 5 movies here store them and use for carausal: Array of Objects
+                console.log(data.count) // top 5 movies here store them and use for carausal: Array of Objects
                 this.setState({
                     allWatchedMovies: data.results,
+                    totalPages: Math.floor(data.count / TMDB_Configuration.CONFIGS.number_of_records_per_page) + 1,
                     results: true,
                     next: data.next,
                     prev: data.previous !== undefined ? data.previous : null
@@ -128,7 +131,8 @@ class Dashboard extends Component {
         this.setState({
             btnClicked: true,
             curr: this.state.next,
-            prev: this.state.curr
+            prev: this.state.curr,
+            currentPage: this.state.currentPage + 1
         })
         // console.log(this.state.curr)
         // console.log(this.state.prev)
@@ -138,7 +142,8 @@ class Dashboard extends Component {
         this.setState({
             btnClicked: true,
             curr: this.state.prev,
-            next: this.state.curr
+            next: this.state.curr,
+            currentPage: this.state.currentPage - 1
         })
     }
     componentDidMount() {
@@ -296,7 +301,8 @@ class Dashboard extends Component {
                             {
                                 this.state.results ?
                                     <div>
-                                        <button id="prevBtn" disabled={this.state.prev !== null ? false : true} className="btn btn-outline-dark mt-2 mx-2" onClick={() => this.decrementPage()} type="button">Prev</button>
+                                        <button id="prevBtn" disabled={this.state.prev !== null ? false : true} className="btn btn-outline-dark mt-2" onClick={() => this.decrementPage()} type="button">Prev</button>
+                                        <button className="btn mt-2" style={{ cursor: "default" }}>{this.state.currentPage} of {this.state.totalPages}</button>
                                         <button id="nextBtn" disabled={this.state.next !== null ? false : true} className="btn btn-outline-dark mt-2" onClick={() => this.incrementPage()} type="button">Next</button>
                                     </div>
                                     : <div></div>

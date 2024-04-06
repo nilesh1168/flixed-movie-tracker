@@ -3,6 +3,7 @@ class TMDB_Configuration{
         base_url: "http://127.0.0.1:8000",
         default_lang: "en-US",
         default_page_number: 1,
+        number_of_records_per_page: 15,
         images: {
             base_url: "http://image.tmdb.org/t/p/",
             secure_base_url: "https://image.tmdb.org/t/p/",
