@@ -77,7 +77,6 @@ def searchMovie(request):
     response = requests.get(url = url, headers = headers,params = request.query_params)
     if response.ok != True:
         return Response(data = response.json(), status = response.status_code)
-    print(response.json())
     return Response(data = response.json(), status = response.status_code)
 
 
@@ -103,7 +102,6 @@ def current_user(request):
     Determine the current user by their token, and return their data
     """
     serializer = UserSerializer(request.user)
-    # print(request.user + " in current user")
     return Response(data = serializer.data, status = status.HTTP_200_OK)
 
 @api_view(['GET'])
@@ -256,7 +254,7 @@ class WatchListList(APIView):
         serializer = IdSerializer(data=request.data)
         if serializer.is_valid():
             for delMovie in serializer.data['ids']:
-                movie = get_Movie(delMovie['id'])
+                movie = self.get_Movie(delMovie['id'])
                 watchListSerializer = WatchListSerializer(movie)
                 watchedMovieSerializer = WatchedMovieSerializer(data=watchListSerializer.data) 
                 if watchedMovieSerializer.is_valid():
@@ -275,7 +273,7 @@ class WatchListList(APIView):
         serializer = IdSerializer(data=request.data)
         if serializer.is_valid():
             for delMovie in serializer.data['ids']:
-                movie = get_Movie(delMovie['id'])
+                movie = self.get_Movie(delMovie['id'])
                 movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
                 
