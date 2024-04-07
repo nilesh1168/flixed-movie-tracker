@@ -23,7 +23,6 @@ function SearchMovies(props) {
     const totalPages = useRef(0)
     const numberOfResults = useRef(0)
     const handleError = props.handleError
-    const [toastTrigger, setToastTrigger] = useState(false)
     const [toastMessage, setToastMessage] = useState("")
     const [loading, setLoading] = useState({
         loading: false,
@@ -127,8 +126,7 @@ function SearchMovies(props) {
                 if (response.status === 201) {
                     // console.log("added movie")
                     // props.handleError("added movie to watchlist")
-                    setToastMessage("Movie added successfully to Watch List")
-                    setToastTrigger(true)
+                    toast("Movie added successfully to Watch List")
                     // console.log(props.searchedMovie.id)
                     // props.handleWatchListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
                 }
@@ -158,16 +156,14 @@ function SearchMovies(props) {
                     console.log("added movie")
                     // props.handleError("Movie added successfully to watched")
                     // show a alert that movie has been added successfully
-                    setToastMessage("Movie added successfully to watched")
+                    toast("Movie added successfully to watched")
                     // props.handleWatchedListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
-                    setToastTrigger(true)
                 }
                 else if (response.status === 204){
                     // console.log("added movie")
                     // props.handleError("Movie already watched")
                     // show a alert that movie has been added successfully
-                    setToastMessage("Movie already watched")
-                    setToastTrigger(true)
+                    toast("Movie already watched")
                 }
             })
             .catch(error => {
@@ -193,20 +189,16 @@ function SearchMovies(props) {
         }
     }
 
-    const toast = () =>{
+    const toast = (message) =>{
+        setToastMessage(message)
         var successToastElement = document.getElementById('successToast')
-        if (toastTrigger) {
-            var successToast = bootstrap.Toast.getOrCreateInstance(successToastElement)
-            successToast.show()
-            setToastTrigger(false)
-        }
+        var successToast = bootstrap.Toast.getOrCreateInstance(successToastElement)
+        successToast.show()
+
     }
 
     return (
         <>
-        {
-            toast()
-        }
         <div className="row">
             <div className="container">
                 <div className='row my-3'>
@@ -216,7 +208,7 @@ function SearchMovies(props) {
                         <div className="container">
                             <input className="form-control" id="movie_name" type="text" placeholder="Enter Name" />
                             <button id="searchBtn" className="btn btn-outline-dark mt-2" onClick={() => searchMovie()} type="button"> {loading.searchBtnText}
-                                { loading.loading ? <span class="spinner-border spinner-border-sm" aria-hidden="true"></span> : <></> }
+                                { loading.loading ? <span className="spinner-border spinner-border-sm" aria-hidden="true"></span> : <></> }
                             </button>
                             <button className="btn btn-outline-dark mt-2 mx-3" disabled>Advanced Search</button>
                             {/* </div>
@@ -224,15 +216,15 @@ function SearchMovies(props) {
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="movieCheckChecked" checked />
-                            <label class="form-check-label" for="movieCheckChecked">
+                        <div className="form-check">
+                            <input className="form-check-input" type="checkbox" id="movieCheckChecked" checked readOnly/>
+                            <label className="form-check-label" htmlFor="movieCheckChecked">
                                 Movie
                             </label>
                         </div>
-                        {/* <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="tvCheckChecked" />
-                                <label class="form-check-label" for="tvCheckChecked">
+                        {/* <div className="form-check">
+                                <input className="form-check-input" type="checkbox" id="tvCheckChecked" />
+                                <label className="form-check-label" htmlFor="tvCheckChecked">
                                     TV
                                 </label>
                             </div> */}
@@ -282,12 +274,12 @@ function SearchMovies(props) {
             </div>
         </div>
         <div className="toast-container position-fixed bottom-0 end-0 p-3">
-                    <div id="successToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
-                        <div class="d-flex">
-                            <div class="toast-body">
+                    <div id="successToast" className="toast align-items-center text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div className="d-flex">
+                            <div className="toast-body">
                                 {toastMessage}
                             </div>
-                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            <button type="button" className="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                         </div>
                     </div>
                 </div>

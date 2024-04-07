@@ -20,7 +20,11 @@ class Dashboard extends Component {
             prev: null,
             curr: `${props.configs.base_url}/movies/watched?page=${props.configs.default_page_number}`,
             btnClicked: false,
-            toastTrigger: false,
+            toastMsg: "",
+            // toast: {
+            //     trigger: false,
+            //     message: ""
+            // },
         }
         this.incrementPage = this.incrementPage.bind(this);
         this.decrementPage = this.decrementPage.bind(this);
@@ -28,6 +32,7 @@ class Dashboard extends Component {
         this.handleWatchedListAdd = this.handleWatchedListAdd.bind(this);
         this.handleWatchListDelete = this.handleWatchListDelete.bind(this);
         this.incrementWatchCount = this.incrementWatchCount.bind(this);
+        // this.toast = this.toast.bind(this)
     }
 
     getRequestOptions(method) {
@@ -52,9 +57,13 @@ class Dashboard extends Component {
         fetch(incrementWatchedCountRequest).then(response => {
             if (response.status === 200) {
                 console.log("Success")
-                this.setState({
-                    toastTrigger: true
-                })
+                // this.setState({
+                //     toast: {
+                //         trigger: true,
+                //         message: "Success, You have watched this movie one more time!"
+                //     }
+                // })
+                this.toast("Success, You have watched this movie one more time!")
             }
         })
             .catch(error => {
@@ -78,17 +87,26 @@ class Dashboard extends Component {
             ))
         });
         this.setState({
-            topFiveMovies: this.state.topFiveMovies
+            topFiveMovies: this.state.topFiveMovies,
+            // toast: {
+            //     trigger: true,
+            //     message: "Success, You have removed this movie from the WatchList!"
+            // }
         })
+        this.toast("Success, You have removed this movie from the WatchList!")
     }
 
     handleWatchedListAdd(watchedMovie) {
         this.setState(
             {
-                allWatchedMovies: this.state.allWatchedMovies.concat(watchedMovie)
+                allWatchedMovies: this.state.allWatchedMovies.concat(watchedMovie),
+                // toast: {
+                //     trigger: true,
+                //     message: "Success, You have added this movie to the Watched list!"
+                // }
             }
         )
-
+        this.toast("Success, You have added this movie to the Watched list!")
     }
 
     getWatchedMovies() {
@@ -146,6 +164,7 @@ class Dashboard extends Component {
             currentPage: this.state.currentPage - 1
         })
     }
+
     componentDidMount() {
         var token = this.getToken()
         // var user = jwt_decode(token).username
@@ -187,10 +206,10 @@ class Dashboard extends Component {
                         {
                             this.state.topFiveMovies.map((movie, index) => {
                                 if (index === 0) {
-                                    return <button type="button" data-bs-target="#topFiveWatchListcarousel" data-bs-slide-to={index} className="active" aria-current="true" aria-label={index}></button>
+                                    return <button key={index} type="button" data-bs-target="#topFiveWatchListcarousel" data-bs-slide-to={index} className="active" aria-current="true" aria-label={index}></button>
                                 }
                                 else {
-                                    return <button type="button" data-bs-target="#topFiveWatchListcarousel" data-bs-slide-to={index} aria-label={index}></button>
+                                    return <button key={index} type="button" data-bs-target="#topFiveWatchListcarousel" data-bs-slide-to={index} aria-label={index}></button>
                                 }
                             }
                             )
@@ -203,7 +222,7 @@ class Dashboard extends Component {
                                     return (
                                         // <span>Hello from if</span>
                                         // console.log("inside if index == 0");
-                                        <div className="carousel-item active">
+                                        <div key={index} className="carousel-item active">
                                             <img alt={movie.title} src={this.imageUrl(movie.backDropUrl)} className="d-block w-100" />
                                             <div className="carousel-caption d-none d-md-block" >
                                                 <div className="card w-25">
@@ -224,7 +243,7 @@ class Dashboard extends Component {
                                 else {
                                     return (
                                         // <span>Hello from if</span>
-                                        <div className="carousel-item">
+                                        <div key={index} className="carousel-item">
                                             <img alt={movie.title} src={this.imageUrl(movie.backDropUrl)} className="d-block w-100" />
                                             <div className="carousel-caption d-none d-md-block" >
                                                 <div className="card w-25">
@@ -310,30 +329,20 @@ class Dashboard extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="toast-container position-fixed bottom-0 end-0 p-3">
-                    <div id="successToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
-                        <div class="d-flex">
-                            <div class="toast-body">
-                                Success, You have watched this movie one more time!
-                            </div>
-                            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                    </div>
-                </div>
             </div>
         )
     }
 
+    toast = (message) => {
+        this.setState({
+            toastMsg: message
+        })
+        var successToastElement = document.getElementById('toastComponent')
+        var successToast = bootstrap.Toast.getOrCreateInstance(successToastElement)
+        successToast.show()
+    }
+
     render() {
-        
-        var successToastElement = document.getElementById('successToast')
-        if (this.state.toastTrigger) {
-            console.log("in toast")
-            console.log(successToastElement)
-            var successToast = bootstrap.Toast.getOrCreateInstance(successToastElement)
-            console.log(successToast)
-            successToast.show()
-        }
         // if both are empty return a banner giving message.
         if (this.state.allWatchedMovies.length === 0 && this.state.topFiveMovies.length === 0) {
             return this.emptyBanner()
@@ -365,8 +374,18 @@ class Dashboard extends Component {
                                 <div className="col-md-4">
                                     <h2 className="text-center">WatchList</h2>
                                     <WatchList handleWatchedListAdd={this.handleWatchedListAdd}
-                                handleWatchListDelete={this.handleWatchListDelete}
-                                watchList={this.state.topFiveMovies} configs={this.props.configs}/>
+                                        handleWatchListDelete={this.handleWatchListDelete}
+                                        watchList={this.state.topFiveMovies} configs={this.props.configs} />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="toast-container position-fixed bottom-0 end-0 p-3">
+                            <div id="toastComponent" className="toast align-items-center text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div className="d-flex">
+                                    <div className="toast-body">
+                                        {this.state.toastMsg}
+                                    </div>
+                                    <button type="button" className="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                                 </div>
                             </div>
                         </div>
