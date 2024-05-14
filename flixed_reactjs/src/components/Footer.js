@@ -1,15 +1,8 @@
 import { flixed_name } from "../styles/App.module.css";
+import { flixed_footer } from "../styles/App.module.css";
 function Footer() {
 
     const styles = {
-        footerStyle: {
-            marginTop: 'auto',
-            display: 'flex',
-            height: '80px',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
-            backgroundColor: '#EAE7DC',
-        },
         verticalLine: {
             borderLeft: '1px solid #8e8d8a',
             height: '40px',
@@ -17,7 +10,7 @@ function Footer() {
     }
 
     return (
-        <footer style={styles.footerStyle}>
+        <footer id="footer" className={flixed_footer}>
             <h3 className={flixed_name}>Flixed</h3>
             <div style={styles.verticalLine}></div>
             <div style={{textAlign:'center'}}>
