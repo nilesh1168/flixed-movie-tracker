@@ -8,7 +8,7 @@ import Footer from './components/Footer'
 import Home from './components/Home'
 import Dashboard from './components/Dashboard'
 import TMDB_Configuration from './components/config'
-
+import UnderConstruction from './components/UnderConstruction'
 import {
   BrowserRouter as Router,
   Switch,
@@ -62,54 +62,54 @@ class App extends React.Component {
 
   handle_login = (e, data) => {
     e.preventDefault();
-    if(data.username === ''|| data.password === ''){
+    if (data.username === '' || data.password === '') {
       this.setState({
         error: "All fields are mandatory!"
       })
     }
     else {
-    fetch(`${App.tmdb_config.base_url}/token-auth/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-      .then(res => {
-        if (res.status === 401) {
-          this.setState({
-            unauthorized_user: true
-          })
-        }
-        else {
-          this.setState({
-            unauthorized_user: false,
-            error: ""
-          })
-        }
-        return res.json()
+      fetch(`${App.tmdb_config.base_url}/token-auth/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
       })
-      .then(result => {
-        if (this.state.unauthorized_user) {
-          this.handleError(result.detail)
-        } else {
-          localStorage.setItem('token', result.access);
-          this.setState({
-            logged_in: true,
-            user: jwt_decode(result.access).username
-          });
-          console.log("login success!!")
-        }
-      })
+        .then(res => {
+          if (res.status === 401) {
+            this.setState({
+              unauthorized_user: true
+            })
+          }
+          else {
+            this.setState({
+              unauthorized_user: false,
+              error: ""
+            })
+          }
+          return res.json()
+        })
+        .then(result => {
+          if (this.state.unauthorized_user) {
+            this.handleError(result.detail)
+          } else {
+            localStorage.setItem('token', result.access);
+            this.setState({
+              logged_in: true,
+              user: jwt_decode(result.access).username
+            });
+            console.log("login success!!")
+          }
+        })
     }
   };
 
   handle_signup = (e, data) => {
     e.preventDefault();
     this.setState({
-      error:''
+      error: ''
     })
-    if(data.password === data.confirm_password){
+    if (data.password === data.confirm_password) {
       fetch(`${App.tmdb_config.base_url}/users/`, {
         method: 'POST',
         headers: {
@@ -117,24 +117,24 @@ class App extends React.Component {
         },
         body: JSON.stringify(data)
       })
-        .then(res =>res.json())
+        .then(res => res.json())
         .then(json => {
-          if(json.token){
+          if (json.token) {
             localStorage.setItem('token', json.token);
             this.setState({
               logged_in: true,
               user: json.username
             });
           }
-          else{
+          else {
             this.setState({
               error: json
             })
           }
         })
-    }else{
+    } else {
       this.setState({
-        error:"Passwords do not match!"
+        error: "Passwords do not match!"
       })
     }
   };
@@ -166,23 +166,23 @@ class App extends React.Component {
     return (
       <Router>
         <div className={styles.flixed_app}>
-          <NavBar user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} handle_logout={this.handle_logout} />
+          <NavBar id="navbar" user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} handle_logout={this.handle_logout} />
           <div id="main" className={styles.flixed_main}>
             <Switch>
               <Route path='/home'>
-                <Home logged_in={this.state.logged_in} configs={App.tmdb_config}/>
+                <Home logged_in={this.state.logged_in} configs={App.tmdb_config} />
               </Route>
               <Route path="/login">
                 <LoginForm handle_login={this.handle_login} error={this.state.error} />
               </Route>
               <Route path="/register">
-                <RegisterForm handle_signup={this.handle_signup} error={this.state.error}/>
+                <RegisterForm handle_signup={this.handle_signup} error={this.state.error} />
               </Route>
               <Route path="/dashboard">
-                <Dashboard configs={App.tmdb_config}/>
+                <Dashboard configs={App.tmdb_config} />
               </Route>
               <Route path="/statistics">
-                <Statistics />
+                <UnderConstruction />
               </Route>
             </Switch>
             {
@@ -190,10 +190,10 @@ class App extends React.Component {
                 <Redirect to="/login" />
             }
           </div>
-        <Footer />
+          <Footer/>
         </div>
       </Router>
-      
+
       // <Test/>
     )
   }

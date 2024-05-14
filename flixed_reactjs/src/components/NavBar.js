@@ -37,42 +37,9 @@ function NavBar(props) {
                                     <li className="nav-item"><label className="nav-link" ><Link className={styles.flixed_navLink} to="/register">Register</Link></label></li>
                                 </ul>
                     }
-                    {/* <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" >Home</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" >Features</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link">Pricing</a>
-                        </li> */}
-                    {/* </ul> */}
                 </div>
             </div>
-        </nav>
-
-
-        // <Navbar collapseOnSelect>
-        //     <NavLink to="/home"><Navbar.Brand><h2 className={styles.flixed_name}>Flixed</h2></Navbar.Brand></NavLink>
-        //     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        //     <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
-        //         <span className='mr-auto'></span>
-        //         {
-        //             props.logged_in === true ?
-        //                 <Nav>
-        //                     <Nav.Link disabled>{props.user}</Nav.Link>
-        //                     <Nav.Link><Link className={styles.flixed_navLink} to="/dashboard">Dashboard</Link></Nav.Link>
-        //                     <Nav.Link><Link className={styles.flixed_navLink} to="/statistics">Statistics</Link></Nav.Link>
-        //                     <Nav.Link onClick = { ()=> props.handle_logout() }>Logout</Nav.Link>
-        //                 </Nav>
-        //                 :
-        //                 <Nav>
-        //                 <Nav.Link as="span"><Link className={styles.flixed_navLink} to="/login">Sign In</Link></Nav.Link>
-        //                 <Nav.Link as="span"><Link className={styles.flixed_navLink} to="/register">Register</Link></Nav.Link>
-        //                 </Nav>
-        //         }
-        //     </Navbar.Collapse>
-        // </Navbar>      
+        </nav> 
     )
 }
 
