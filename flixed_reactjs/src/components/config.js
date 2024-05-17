@@ -1,6 +1,6 @@
 class TMDB_Configuration{
     static CONFIGS = {
-        base_url: "http://127.0.0.1:8000",
+        base_url: "http://127.0.0.1:80",
         default_lang: "en-US",
         default_page_number: 1,
         number_of_records_per_page: 15,
