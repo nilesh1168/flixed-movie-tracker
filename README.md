@@ -19,6 +19,12 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
+        <li>
+      <a href="#deployment">Deployment</a>
+      <ul>
+        <li><a href="#deploying-on-macos">MacOS</a></li>
+      </ul>
+    </li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#releases">Releases</a></li>
@@ -121,7 +127,79 @@ Here is a sample screen of the application
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Deployment
 
+This section tells you about how to deploy this application on a system.
+
+### Deploying on MacOS
+1. Run the following command to install the required packages. This will also install gunicorn.
+    ```sh
+      $ pip install -r /path/to/requirements.txt
+    ```
+
+2. Create a Config File for Gunicorn. 
+  
+    1. You can use the existing ```gunicorn_config.py``` with desired changes according to your directory structure.
+    
+    2. Set the ```bind``` variable as desired in the ```gunicorn_config.py``` file. 
+
+3. Create a bash file to set up all the required environment variables for the application and to start Gunicorn.
+    1. You can use the existing ```gunicorn-env.sh``` file.
+    Make sure to make changes in the file according to your directory structure. 
+    2. Set the ```OMDB_API_KEY, TMDB_API_AUTH_ACCESS```, and ```TMDB_API_KEY``` to successfully run the application.
+
+4. Create a property list file for launching Gunicorn at system startup.
+    1. You can use the existing ```flixed_launctl.plist``` file. 
+    2. Make sure to change the ```PATH``` variable in the file according to your directory structure. 3. Update the ```UserName``` and ```GroupName``` accordingly.
+    
+    Note: This property list file will run the bash script to create the environment variables and start the Gunicorn server on system startup.
+    
+    3. For user-specific setup, copy the property list file to your system's LaunchAgents folder. For all users, copy it to LaunchDaemons at the root location.
+        ```sh
+        $ cp /your/path/flixed_launctl.plist /your/path/LaunchAgents
+        ```
+5. After copying the file, use the launchctl utility to load this file.
+    ```sh
+    $ launchctl load flixed_launctl.plist
+    ```
+    To check if the load was successful, run:
+    ```sh
+    $ launchctl list com.nilesh.flixed.gunicorn
+    ```
+    This should return a JSON response similar to:
+    ```sh
+    {
+	    "LimitLoadToSessionType" = "Aqua";
+	    "Label" = "com.nilesh.flixed.gunicorn";
+	    "OnDemand" = true;
+	    "LastExitStatus" = 0;
+	    "PID" = 6869;
+	    "Program" = "/bin/bash";
+	    "ProgramArguments" = (
+	    	"/bin/bash";
+	    	"/your/path/gunicorn-env.sh";
+	        );
+      };
+    ```
+
+6. Your Gunicorn should now be up and running at the specified bind IP and port.
+
+7. To stop the gunicorn service run
+    ```sh
+    $ launchctl unload flixed_launctl.plist
+    ```
+8. To verify if the unload was success, run
+    ```sh
+    $ launchctl list com.nilesh.flixed.gunicorn
+    ```
+
+    This should give the following output
+    ```sh
+    Could not find service "com.nilesh.flixed.gunicorn" in domain for port
+    ```
+    This means that the service has been stopped successfully.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -129,7 +207,7 @@ Here is a sample screen of the application
 - [x] Add back to top links
 - [ ] Dashboard with graphs and information
 - [ ] Add charts and comparisons in a page called statistics
-- [ ] Display movies with poster; Use TMDB API
+- [x] Display movies with poster; Use TMDB API
 - [ ] Optimise component loading for huge data
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -181,7 +259,8 @@ Project Link: [https://github.com/nilesh1168/flixed-movie-tracker](https://githu
 * [Img Shields](https://shields.io)
 * [Font Awesome](https://fontawesome.com)
 * [React Icons](https://react-icons.github.io/react-icons/search)
-
+* [gunicorn on macOS](https://chat.openai.com/share/e3ae209a-1ce0-48c9-85f2-c78dca9c6911)
+* [What is NGINX? and how to set it up on Mac.](https://medium.com/@VenuThomas/what-is-nginx-and-how-to-set-it-up-on-mac-107a2482a33a)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
