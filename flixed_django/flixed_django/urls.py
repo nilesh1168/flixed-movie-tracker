@@ -20,6 +20,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from rest_framework.documentation import include_docs_urls
+from rest_framework.decorators import permission_classes, authentication_classes
+from rest_framework.permissions import AllowAny
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,7 +29,7 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path(
         "api/docs/",
-        include_docs_urls(title="FLIXED API Docs"),
+        include_docs_urls(title="FLIXED API Docs",permission_classes=[AllowAny]),
         name='drf-doc'
     ),
     path('',include('flixedREST.urls'))
