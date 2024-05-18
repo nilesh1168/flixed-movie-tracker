@@ -199,6 +199,51 @@ This section tells you about how to deploy this application on a system.
     ```
     This means that the service has been stopped successfully.
 
+9. Install **nginx** as following
+    ```sh
+    brew install nginx
+    ```
+
+10. Goto ```/opt/homebrew/Cellar/nginx/1.25.5/``` and run the following command on the file ```homebrew.mxcl.nginx.plist```:
+      ```sh
+      launchctl load homebrew.mxcl.nginx.plist
+      ```
+      This will start the nginx service on you macOS.
+      
+      **Note**: To stop the service, use the following command:
+      ```sh
+       launchctl unload homebrew.mxcl.nginx.plist
+       ```
+
+
+11. Update the ```nginx.conf``` to include the settings to add nginx as reverse proxy server.
+    ```sh
+    upstream server_django {
+        server 127.0.0.1:8000; # whatever bind value that you gave in gunicorn_config.py
+    }
+    server {
+        server_name  localhost;
+
+        listen 80;
+        location / {
+            proxy_pass http://server_django;
+            proxy_set_header Host $host;
+        }
+
+        location /static/ {
+            alias /your/venv/lib/python3.9/site-packages/rest_framework/static/;
+        }
+    ```
+    Once you update the ```nginx.conf``` you can restart the nginx service. 
+    
+    **Note**: You can stop and start the nginx service for a restart.
+
+12. All the REST APIs will then be available at ```server_name:listen``` that you provided for ```server_name``` and ```listen``` in ```nginx.conf``` . 
+
+
+
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ROADMAP -->
