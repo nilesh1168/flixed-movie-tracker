@@ -122,9 +122,10 @@ class Dashboard extends Component {
         })
             .then((data) => {
                 console.log(data.count) // top 5 movies here store them and use for carausal: Array of Objects
+                console.log(data)
                 this.setState({
                     allWatchedMovies: data.results,
-                    totalPages: Math.floor(data.count / TMDB_Configuration.CONFIGS.number_of_records_per_page) + 1,
+                    totalPages: Math.ceil(data.count / TMDB_Configuration.CONFIGS.number_of_records_per_page),
                     results: true,
                     next: data.next,
                     prev: data.previous !== undefined ? data.previous : null
