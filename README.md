@@ -23,6 +23,7 @@
       <a href="#deployment">Deployment</a>
       <ul>
         <li><a href="#deploying-on-macos">MacOS</a></li>
+        <li><a href="#deploying-frontend">Deploying Frontend</a></li>
       </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
@@ -63,7 +64,7 @@
 To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
-You need to install Node, Python and Django.
+You need to install ```Node```, ```Python``` and ```Django```.
 
 * Node
 
@@ -102,12 +103,8 @@ You need to install Node, Python and Django.
    cd flixed_reactjs
    npm install
    ```
-5. Setup your API KEY in environment variable
-   ```sh
-   REACT_APP_API_KEY = 'yourapikey'
-   ```
 
-6. Create a superuser in Django which can be used to login to the app.
+5. Create a superuser in Django which can be used to login to the app.
     ```sh
     python manage.py createsuperuser
     ```
@@ -238,8 +235,23 @@ This section tells you about how to deploy this application on a system.
     
     **Note**: You can stop and start the nginx service for a restart.
 
-12. All the REST APIs will then be available at ```server_name:listen``` that you provided for ```server_name``` and ```listen``` in ```nginx.conf``` . 
+12. All the REST APIs will then be available at ```server_name:listen``` that you provided for ```server_name``` and ```listen``` in ```nginx.conf``` .
 
+## Deploying Frontend
+1. Install the required packages and libraries.
+    ```sh
+      npm install
+    ```
+
+    **Note**: Run this command at ```flixed_reactjs``` location.
+
+2. Update the ```base_url``` property under ```flixed_reactjs/src/components/config.js``` as per your nginx configuration.
+
+3. Head to the ```flixed_reactjs``` directory, and run the following command on the terminal
+    ```sh
+    npm start
+    ```
+4. This will start the frontend server at ```localhost:3000```.
 
 
 
