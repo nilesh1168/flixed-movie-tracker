@@ -213,7 +213,7 @@ This section tells you about how to deploy this application on a system.
        ```
 
 
-11. Update the ```nginx.conf``` to include the settings to add nginx as reverse proxy server.
+11. Update the ```nginx.conf``` at ```/opt/homebrew/etc/nginx/nginx.conf``` to include the settings to add nginx as reverse proxy server.
     ```sh
     upstream server_django {
         server 127.0.0.1:8000; # whatever bind value that you gave in gunicorn_config.py
