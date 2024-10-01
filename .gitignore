@@ -1,6 +1,9 @@
 
 # Created by https://www.toptal.com/developers/gitignore/api/node,react,vscode,python,django
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,react,vscode,python,django
+# env file
+env.sh
+flixed_launchd.plist
 
 ### Django ###
 *.log

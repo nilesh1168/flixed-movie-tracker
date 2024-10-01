@@ -1,30 +1,24 @@
-import { productName } from "../styles/App.module.css";
+import { flixed_name } from "../styles/App.module.css";
+import { flixed_footer } from "../styles/App.module.css";
 function Footer() {
 
     const styles = {
-        footerStyle: {
-            display: 'flex',
-            height: '80px',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
-        },
         verticalLine: {
-            borderLeft: '1px solid black',
+            borderLeft: '1px solid #8e8d8a',
             height: '40px',
         }
     }
 
     return (
-        <footer style={styles.footerStyle}>
-            <div><h3 className={productName}>Flixed</h3></div>
+        <footer id="footer" className={flixed_footer}>
+            <h3 className={flixed_name}>Flixed</h3>
             <div style={styles.verticalLine}></div>
             <div style={{textAlign:'center'}}>
-                <p>&copy; Copyright 2021 </p>
-                <p>Designed & Developed by <a href="http://nilesh1168.github.io">Nilesh Suryawanshi</a></p>
+                <p>&copy; Copyright 2023 </p>
+                <p>Designed & Developed by <a style={{color: '#E98074'}} href="http://nilesh1168.github.io">Nilesh Suryawanshi</a></p>
             </div>
 
         </footer>
     )
 }
-
 export default Footer

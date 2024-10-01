@@ -1,8 +1,8 @@
-from .models import Movie, Watched_Movie, To_Watch_Movie
+from .models import WatchedMovie, WatchList
 from rest_framework import serializers
-from rest_framework_jwt.settings import api_settings
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
-from django.db import IntegrityError
+
 
 class UserSerializer(serializers.ModelSerializer):
     """
@@ -19,13 +19,12 @@ class UserSerializerWithToken(serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
     password = serializers.CharField(write_only=True)
 
-    def get_token(self, obj):
-        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-
-        payload = jwt_payload_handler(obj)
-        token = jwt_encode_handler(payload)
-        return token
+    def get_token(self, user): 
+        refresh = RefreshToken.for_user(user)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)
@@ -39,23 +38,15 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         model = User
         fields = ('token', 'username', 'password', 'email', 'first_name','last_name')
 
-class Movie_Serializer(serializers.ModelSerializer):
+class WatchedMovieSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = Movie
+        model = WatchedMovie
         fields = '__all__'
 
-class Watched_Movie_Serializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    movie = Movie_Serializer() 
+class WatchListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Watched_Movie
-        fields = '__all__'
-
-class To_Watch_Movie_Serializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    movie = Movie_Serializer() 
-    class Meta:
-        model = To_Watch_Movie
+        model = WatchList
         fields = '__all__'
 
 class IdSerializer(serializers.Serializer):

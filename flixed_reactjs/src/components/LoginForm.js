@@ -3,11 +3,11 @@ import React from 'react';
 class LoginForm extends React.Component {
     state = {
         username: '',
-        password: ''
+        password: '',
     };
 
     handle_change = e => {
-        const name = e.target.name;
+        const name = e.target.id;
         const value = e.target.value;
         this.setState(prevstate => {
             const newState = { ...prevstate };
@@ -16,32 +16,62 @@ class LoginForm extends React.Component {
         });
     };
 
+    validate(e) {
+        var data = {
+            "username": this.state.username,
+            "password": this.state.password
+        }
+        this.props.handle_login(e, data)
+    }
+
     render() {
         return (
-            <div className="container mx-auto flex flex-wrap min-h-screen justify-center content-center md:justify-end">
-                <div className="bg-gray-100 flex flex-col rounded-lg p-8">
-                    <div className='text-center text-xl my-3'>Log In</div>
-                    <form onSubmit={e => this.props.handle_login(e, this.state)} method="post">
-                        <div className='mb-4' controlId="formBasicEmail">
-                            <label class="leading-7 text-base text-gray-600">Username</label>
-                            <input name="username" value={this.state.username}
-                                class="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                                onChange={this.handle_change} type="text" placeholder="Username" />
-                        </div>
+            // <form onSubmit={e => this.props.handle_login(e, this.state)} method="post">
+            //     <div class="mb-3">
+            //         <label for="username" class="form-label">Username</label>
+            //         <input type="text" class="form-control" id="username" onChange={this.handle_change}/>
+            //     </div>
+            //     <div class="mb-3">
+            //         <label for="password" class="form-label">Password</label>
+            //         <input type="password" class="form-control" id="password" onChange={this.handle_change}/>
+            //     </div>
+            //     <div class="mb-3">
+            //         <p style={{ color: "red" }}>{this.state.error}</p>
+            //     </div>
+            //     <button type="submit" class="btn btn-primary">Log In</button>
+            // </form>
 
-                        <div className="mb-4" controlId="formBasicPassword">
-                            <label class="leading-7 text-base text-gray-600">Password</label>
-                            <input name="password" value={this.state.password}
-                                class="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                                onChange={this.handle_change} type="password" placeholder="Password" />
+
+
+
+            <div className='container'>
+                <div className='row my-5 d-flex justify-content-end align-items-center'>
+                    <div className="col-md-4">
+                        <div className='card shadow'>
+                            <div className='card-body'>
+                                <h4 className='card-title text-center my-3'>Log In</h4>
+                                <div className='card-text'>
+                                    <form>
+                                        <div className="mb-3">
+                                            <label className="form-label">Username</label>
+                                            <input type="text" className="form-control" id="username" value={this.state.username} onChange={this.handle_change} />
+                                        </div>
+
+                                        <div className="mb-3">
+                                            <label className="form-label">Password</label>
+                                            <input type="password" className="form-control" id="password" value={this.state.password} onChange={this.handle_change} />
+                                        </div>
+                                        <button type='button' className='btn btn-outline-dark my-4 mx-auto d-block' onClick={e => this.validate(e)}>Submit</button>
+                                        <div className='row'>
+                                            <div className='container text-center'>
+                                                <p style={{ color: "red" }}>{this.props.error}</p>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                        <div className="flex justify-center">
-                            <button class="text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg" type="submit">Submit</button>
-                        </div>
-                        <div className="flex justify-center">
-                            <p class="text-red-500 text-lg text-center">{this.props.errors}</p>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         );

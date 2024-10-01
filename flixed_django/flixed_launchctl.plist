@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.nilesh.flixed.gunicorn</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/bash</string>
+      <string>/path/to/your/gunicorn-env.sh</string>
+    </array>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+      <key>PATH</key>
+      <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/path/to/your/virtualenv/bin</string>
+    </dict>
+
+    <key>WorkingDirectory</key>
+    <string>/path/to/your/working/directory</string>
+
+    <key>UserName</key>
+    <string>username</string>
+    <key>GroupName</key>
+    <string>groupname</string>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- <key>KeepAlive</key>
+    <true/> -->
+  </dict>
+</plist>

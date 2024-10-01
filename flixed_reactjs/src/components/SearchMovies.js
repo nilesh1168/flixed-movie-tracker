@@ -1,86 +1,46 @@
-import { useState } from 'react';
-import {base_url } from '../config/config'
-import Modal from './MessageModal'
-
-const API_KEY = process.env.REACT_APP_API_KEY
+// import Row from "react-bootstrap/Row";
+// import FormGroup from 'react-bootstrap/FormGroup'
+// import Form from 'react-bootstrap/Form'
+// import Container from "react-bootstrap/Container";
+// import button from 'react-bootstrap/button'
+// import { Col } from "react-bootstrap";
+import MovieItem from "./MovieItem";
+import { useEffect, useRef, useState, useCallback } from "react";
+import * as bootstrap from 'bootstrap/dist/js/bootstrap'
+// import Accordion from 'react-bootstrap/Accordion';
+// import { Card } from "react-bootstrap";
+// const API_KEY = process.env.REACT_APP_API_KEY
 
 
 function SearchMovies(props) {
-    const [year, setYear] = useState(false);
-    const [date, setDate] = useState(false);
-    const [showModal,setShowModal] = useState(false);
-    const [modalMessage, setModalMessage] = useState("Default Message");
-    const [status, setStatus] = useState("Success");
+    const [movieMap, setMovieMap] = useState([])
+    const [searchBtnClicked, setSearchBtnClicked] = useState(false);
+    const [currentPage, setCurrentPage] = useState(props.configs.default_page_number);
+    const base_url = props.configs.base_url
+    const default_lang = props.configs.default_lang
+    const image_size = props.configs.images.poster_sizes[0];
+    const secure_base_url = props.configs.images.secure_base_url
+    const totalPages = useRef(0)
+    const numberOfResults = useRef(0)
+    const handleError = props.handleError
+    const [toastMessage, setToastMessage] = useState("")
+    const [loading, setLoading] = useState({
+        loading: false,
+        searchBtnText: "Search"
+    })
 
-    const reset = () => {
-        document.getElementById('movie_name').value=""
-        props.handleSearchedMovie("")
-        if (year)
-            setYear(false)
-        if (date)
-            setDate(false)
-    }
-
-
-    const addToWatchList = () => {
+    const populateSearchResults = useCallback(() => {
         let options = {
-            method: 'POST',
-            body: JSON.stringify(props.searchedMovie),
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `JWT ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             },
         }
-        let request = new Request(base_url+'/movies/watch_list', options)
-        fetch(request)
-            .then(response => {
-                if (response.status === 201) {
-                    console.log(props.searchedMovie.id)
-                    props.handleWatchListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
-                    setShowModal(true)
-                    setModalMessage("Movie Added to Watch List!!")
-                    reset()
-                }
-            })
-            .catch(error => {
-                console.log(error.message)
-                props.handleError(error.message)
-            })
-    }
-
-    const addToWatchedList = () => {
-        var date = document.getElementById('watched_date')
-        if (date != null) {
-            props.searchedMovie['watched_date'] = date.value
-        }
-        let options = {
-            method: 'POST',
-            body: JSON.stringify(props.searchedMovie),
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `JWT ${localStorage.getItem('token')}`
-            },
-        }
-        let request = new Request(base_url+'/movies/watched', options)
-        fetch(request)
-            .then(response => {
-                if (response.status === 201) {
-                    props.handleWatchedListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
-                    setShowModal(true)
-                    setModalMessage("Movie Added to Watched List!!")   
-                    reset()
-                }
-            })
-            .catch(error => {
-                props.handleError(error.message)
-            })
-    }
-
-    const searchMovie = () => {
-        var year = document.getElementById('movie_year')
-        if (year === null)
-            year = ""
-        fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&t=${encodeURIComponent(document.getElementById('movie_name').value)}&y=${year.value}`)
+        let request = new Request(`${base_url}/search/movie?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${default_lang}&page=${currentPage}`, options)
+        // console.log(`${props.configs.BASE_URL}/search?query=${encodeURIComponent(document.getElementById('movie_name').value)}&language=${props.configs.DEFAULT_LANG}&page=${props.configs.DEFAULT_PAGE_NUMBER}`)
+        console.log(request.url)
+        fetch(request, options)
             .then(response => {
                 if (response.ok) {
                     return response.json()
@@ -91,66 +51,239 @@ function SearchMovies(props) {
                 }
             })
             .then((data) => {
-                if (data.Error === undefined) {
-                    var obj = { 'id': data.imdbID, 'title': data.Title, 'genre': data.Genre, 'rating': data.imdbRating, 'year': data.Year, 'runtime': data.Runtime.split(" ")[0], 'language': data.Language }
-                    props.handleSearchedMovie(obj)
-                    props.handleError("");
-                }
-                else
-                    props.handleError(data.Error)
+                totalPages.current = data.total_pages
+                numberOfResults.current = data.total_results
+                var movieList = []
+                data.results.forEach(element => {
+                    var movieItem = {}
+                    movieItem.id = element.id
+                    movieItem.media_type = element.media_type = 'movie'     // update this line when adding support for TV and Movie both
+                    if (element.media_type === "movie") {
+                        movieItem.title = element.title
+                        movieItem.release_date = element.release_date
+                    }
+                    else if (element.media_type === "tv") {
+                        movieItem.name = element.name
+                        movieItem.first_air_date = element.first_air_date
+                    }
+                    movieItem.poster_path = element.poster_path
+                    // console.log(movieItem)
+                    movieList.push(movieItem)
+                });
+                setMovieMap(movieList)
+                setLoading({
+                    loading: false,
+                    searchBtnText: "Search"
+                })
+                document.getElementById("searchBtn").disabled = false
+                // searchBtnText = "Search"
+                // if (data.Error === undefined) {
+                //     var obj = { 'id': data.imdbID, 'title': data.Title, 'genre': data.Genre, 'rating': data.imdbRating, 'year': data.Year, 'runtime': data.Runtime.split(" ")[0], 'language': data.Language }
+                //     props.handleSearchedMovie(obj)
+                //     props.handleError("");
+                // }
+                // else
+                //     props.handleError(data.Error)
 
+            })
+            .catch(error => {
+                handleError(error.message)
+            })
+    }, [base_url, currentPage, default_lang, handleError])
+
+    useEffect(() => {
+        if (searchBtnClicked)
+            populateSearchResults()
+    }, [currentPage, searchBtnClicked, populateSearchResults])
+
+    const incrementPage = () => {
+        // setPrevBtnDisabled(false)
+        setCurrentPage(currentPage => currentPage + 1);
+    }
+
+    const decrementPage = () => {
+        if (currentPage <= 1) {
+            return
+        }
+        setCurrentPage(currentPage => currentPage - 1);
+    }
+
+    const addToWatchList = (movieId) => {
+        var data = {
+            "id": movieId
+        }
+        let options = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+        }
+        let request = new Request(`${base_url}/movies/watch_list`, options)
+        fetch(request)
+            .then(response => {
+                if (response.status === 201) {
+                    // console.log("added movie")
+                    // props.handleError("added movie to watchlist")
+                    toast("Movie added successfully to Watch List")
+                    // console.log(props.searchedMovie.id)
+                    // props.handleWatchListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
+                }
+            })
+            .catch(error => {
+                console.log(error.message)
+                props.handleError(error.message)
+            })
+    }
+
+    const addToWatchedList = (movieId) => {
+        var data = {
+            "id": movieId
+        }
+        let options = {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
+        }
+        let request = new Request(`${base_url}/movies/watched`, options)
+        fetch(request)
+            .then(response => {
+                if (response.status === 201) {
+                    console.log("added movie")
+                    // props.handleError("Movie added successfully to watched")
+                    // show a alert that movie has been added successfully
+                    toast("Movie added successfully to watched")
+                    // props.handleWatchedListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
+                }
+                else if (response.status === 204){
+                    // console.log("added movie")
+                    // props.handleError("Movie already watched")
+                    // show a alert that movie has been added successfully
+                    toast("Movie already watched")
+                }
             })
             .catch(error => {
                 props.handleError(error.message)
             })
     }
 
+
+
+    const searchMovie = () => {
+        props.handleError("")
+        if (document.getElementById('movie_name').value === "") {
+            props.handleError("Movie Name cannot be empty!!")
+        }
+        else {
+            setLoading({
+                loading: true,
+                searchBtnText: "Loading..."
+            })
+            document.getElementById("searchBtn").disabled = true
+            populateSearchResults()
+            setSearchBtnClicked(true)
+        }
+    }
+
+    const toast = (message) =>{
+        setToastMessage(message)
+        var successToastElement = document.getElementById('successToast')
+        var successToast = bootstrap.Toast.getOrCreateInstance(successToastElement)
+        successToast.show()
+
+    }
+
     return (
         <>
-            <div className='grid-flow-col grid-rows-2 my-2 md:grid md:grid-rows-1 md:grid-cols-2'>
-                <div className="flex flex-col items-center justify-center mb-3">
-                    <input id="movie_name" type="text" placeholder="Enter Movie Name" className="mb-3 w-3/5 bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 
-                            text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
-                    {
-                        year ?
-                            <input id="movie_year" type="text" placeholder="Enter Movie Year" className="mb-3 w-3/5 bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200
-                                    text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" />
-                            : console.log("false")
-                    }
-
-                    <button className="mb-3 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
-                        onClick={() => { setYear(!(year)) }}>Advanced Search</button>
-                    <button className="text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
-                        onClick={() => searchMovie()} type="button">Search</button>
+        <div className="row">
+            <div className="container">
+                <div className='row my-3'>
+                    <div className="col-md-4">
+                    </div>
+                    <div className="col-md-4 text-center">
+                        <div className="container">
+                            <input className="form-control" id="movie_name" type="text" placeholder="Enter Name" />
+                            <button id="searchBtn" className="btn btn-outline-dark mt-2" onClick={() => searchMovie()} type="button"> {loading.searchBtnText}
+                                { loading.loading ? <span className="spinner-border spinner-border-sm" aria-hidden="true"></span> : <></> }
+                            </button>
+                            <button className="btn btn-outline-dark mt-2 mx-3" disabled>Advanced Search</button>
+                            {/* </div>
+                        <div className="flex-row"> */}
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <div className="form-check">
+                            <input className="form-check-input" type="checkbox" id="movieCheckChecked" checked readOnly/>
+                            <label className="form-check-label" htmlFor="movieCheckChecked">
+                                Movie
+                            </label>
+                        </div>
+                        {/* <div className="form-check">
+                                <input className="form-check-input" type="checkbox" id="tvCheckChecked" />
+                                <label className="form-check-label" htmlFor="tvCheckChecked">
+                                    TV
+                                </label>
+                            </div> */}
+                    </div>
                 </div>
-                <div className="flex flex-col items-center justify-center">
-                    <textarea className="w-5/6 bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-1 leading-8 transition-colors duration-200 ease-in-out"
-                        id='movie' type="textarea" readOnly
-                        value={props.searchedMovie.title === undefined ? "" : `Title: ${props.searchedMovie.title}\nGenre: ${props.searchedMovie.genre}\nRating: ${props.searchedMovie.rating}\nYear: ${props.searchedMovie.year}\nRuntime: ${props.searchedMovie.runtime} min\nLanguage: ${props.searchedMovie.language}`}
-                        rows={6} />
-                    {
-                        date ? <><input className="mt-3 bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200
-                                        text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" id="watched_date"
-                            type="date" placeholder="Enter Date when watched" />
-                            <p style={{ color: "orange" }}>NOTE: Leave blank if watched today</p></>
-                            : console.log("false")
-                    }
-                    <p style={{ color: "red" }}>{props.error}</p>
-                    <div className="flex flex-col md:flex-row md:mt-3">
-                        <button className="md:mt-0 my-3 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
-                            onClick={() => { setDate(!(date)) }} >Add Watched Date</button>
-                        <button className="md:ml-3 mb-3 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
-                            id="add2watched" onClick={() => addToWatchedList()} >Add to Watched</button>
-                        <button className="md:ml-3 mb-3 text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg"
-                            id="add2watchlist" onClick={() => addToWatchList()} >Add to Watch List</button>
+                <div className="text-center"><p> <span style={{ color: 'red' }}>*</span> Current media type support for movies only.</p></div>
+                <hr className="my-2"></hr>
+                <div className="row">
+                    <div className="container text-center">
+                        <p style={{ color: "red" }}>{props.error}</p>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="container">
+                        <div className="row">
+                            <div className="container">
+                                <div className="accordion" id="movieAccordion">
+                                    {
+                                        searchBtnClicked ?
+                                            movieMap.map(element => (
+                                                element.media_type === "movie" ?
+                                                    <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} title={element.title} release_date={element.release_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size} />
+                                                    :
+                                                    <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} name={element.name} first_air_date={element.first_air_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size} />
+                                            ))
+                                            :
+                                            <div className="text-center"><p>Perform Search</p></div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="d-flex flex-row mb-3 justify-content-center">
+                                {
+                                    searchBtnClicked ?
+                                        <div>
+                                            <button id="prevBtn" disabled={currentPage === 1 ? true : false} className="btn btn-outline-dark mt-2" onClick={() => decrementPage()} type="button">Prev</button>
+                                            <button className="btn mt-2" style={{ cursor: "default" }}>{currentPage} of {totalPages.current}</button>
+                                            <button id="nextBtn" disabled={currentPage === totalPages.current ? true : false} className="btn btn-outline-dark mt-2" onClick={() => incrementPage()} type="button">Next</button>
+                                        </div>
+                                        : <div></div>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <Modal showModal={showModal} message={modalMessage} status={status} setShowModal={setShowModal}/>
+        </div>
+        <div className="toast-container position-fixed bottom-0 end-0 p-3">
+                    <div id="successToast" className="toast align-items-center text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div className="d-flex">
+                            <div className="toast-body">
+                                {toastMessage}
+                            </div>
+                            <button type="button" className="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                    </div>
+                </div>
         </>
     )
 }
-
-
-
 export default SearchMovies

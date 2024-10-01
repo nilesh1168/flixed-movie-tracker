@@ -15,10 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+from rest_framework.documentation import include_docs_urls
+from rest_framework.decorators import permission_classes, authentication_classes
+from rest_framework.permissions import AllowAny
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('token-auth/', obtain_jwt_token),
+    path('token-auth/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path(
+        "api/docs/",
+        include_docs_urls(title="FLIXED API Docs",permission_classes=[AllowAny]),
+        name='drf-doc'
+    ),
     path('',include('flixedREST.urls'))
 ]
+

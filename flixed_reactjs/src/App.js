@@ -1,4 +1,5 @@
 import styles from './styles/App.module.css'
+import '../src/styles/App.module.css'
 import React from 'react'
 import LoginForm from './components/LoginForm'
 import RegisterForm from './components/RegisterForm'
@@ -6,107 +7,41 @@ import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import Home from './components/Home'
 import Dashboard from './components/Dashboard'
-import UnderProduction from './components/Underconstruction'
-import { isEqual } from "lodash";
+import TMDB_Configuration from './components/config'
+import UnderConstruction from './components/UnderConstruction'
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from "react-router-dom";
-import { base_url } from './config/config'
+
+import jwt_decode from "jwt-decode";
+import Statistics from './components/Statistics';
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      watchedList: [],
-      watchList: [],
       logged_in: localStorage.getItem('token') ? true : false,
-      user: ''
+      // logged_in: true,
+      user: '',
+      error: [],
+      unauthorized_user: false,
     }
     this.handle_login = this.handle_login.bind(this)
     this.handle_logout = this.handle_logout.bind(this)
     this.handle_signup = this.handle_signup.bind(this)
-    this.handleWatchListAdd = this.handleWatchListAdd.bind(this);
-    this.handleWatchedListAdd = this.handleWatchedListAdd.bind(this);
-    this.handleWatchListDelete = this.handleWatchListDelete.bind(this);
+    this.handleError = this.handleError.bind(this);
   }
 
-  emailValidation(enteredEmail) {
-    var mail_format = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    if (mail_format.test(enteredEmail)) {
-      console.log("Yeah! a valid email!");
-      return true;
-    } else {
-      console.log("Sorry! an invalid email!");
-      return false;
-    }
-  }
-
-  populateData = () => {
-    const watchedRequest = new Request(base_url + '/movies/watched', {
-      method: 'GET',
-      headers: { Authorization: `JWT ${localStorage.getItem('token')}` }
-    })
-    const watchListRequest = new Request(base_url + '/movies/watch_list', {
-      method: 'GET',
-      headers: { Authorization: `JWT ${localStorage.getItem('token')}` }
-    })
-    fetch(watchedRequest)
-      .then(response => {
-        if (response.ok)
-          return response.json()
-        else
-          throw new Error("Something went wrong!!!")
-      })
-      .then(data => {
-        if (data.length !== 0) {
-          var movies = []
-          data.map(object => (
-            movies.push({ "title": object.movie.title, "id": object.movie.id })
-          ))
-          this.setState({
-            watchedList: movies
-          })
-        }
-      })
-      .catch(error => {
-        this.setState({
-          error: error.message
-        })
-      })
-    fetch(watchListRequest)
-      .then(response => {
-        if (response.ok)
-          return response.json()
-        else
-          throw new Error("Something went wrong!!!")
-      })
-      .then(data => {
-        if (data.length !== 0) {
-          var movies = []
-          data.map(object => (
-            movies.push({ "title": object.movie.title, "id": object.movie.id })
-          ))
-          this.setState({
-            watchList: movies
-          })
-        }
-      })
-      .catch(error => {
-        this.setState({
-          error: error.message
-        })
-      })
-  }
+  static tmdb_config = TMDB_Configuration.getConfigs()
 
   componentDidMount() {
     if (this.state.logged_in) {
-      fetch(base_url + '/current_user/', {
+      fetch(`${App.tmdb_config.base_url}/current_user/`, {
         headers: {
-          Authorization: `JWT ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       })
         .then(res => res.json())
@@ -115,9 +50,8 @@ class App extends React.Component {
             this.setState({ logged_in: false })
           }
           else {
-            console.log("alreadyt logged in " + JSON.stringify(json))
+            console.log("already logged in " + JSON.stringify(json))
             this.setState({ user: json.username });
-            this.populateData()
           }
         });
     }
@@ -128,16 +62,55 @@ class App extends React.Component {
 
   handle_login = (e, data) => {
     e.preventDefault();
-    this.setState({
-      error: ""
-    })
-    if (data.username === "" || data.password === "") {
-      this.setState(
-        { error: "Username/Password Required!!" }
-      );
+    if (data.username === '' || data.password === '') {
+      this.setState({
+        error: "All fields are mandatory!"
+      })
     }
     else {
-      fetch(base_url + '/token-auth/', {
+      fetch(`${App.tmdb_config.base_url}/token-auth/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(res => {
+          if (res.status === 401) {
+            this.setState({
+              unauthorized_user: true
+            })
+          }
+          else {
+            this.setState({
+              unauthorized_user: false,
+              error: ""
+            })
+          }
+          return res.json()
+        })
+        .then(result => {
+          if (this.state.unauthorized_user) {
+            this.handleError(result.detail)
+          } else {
+            localStorage.setItem('token', result.access);
+            this.setState({
+              logged_in: true,
+              user: jwt_decode(result.access).username
+            });
+            console.log("login success!!")
+          }
+        })
+    }
+  };
+
+  handle_signup = (e, data) => {
+    e.preventDefault();
+    this.setState({
+      error: ''
+    })
+    if (data.password === data.confirm_password) {
+      fetch(`${App.tmdb_config.base_url}/users/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -146,126 +119,70 @@ class App extends React.Component {
       })
         .then(res => res.json())
         .then(json => {
-          if ("non_field_errors" in json) {
-            this.setState({
-              error: json.non_field_errors[0]
-            })
-          } else {
+          if (json.token) {
             localStorage.setItem('token', json.token);
             this.setState({
               logged_in: true,
-              user: json.user.username
+              user: json.username
             });
-            console.log("login success!!")
-            this.populateData()
+          }
+          else {
             this.setState({
-              error: ""
+              error: json
             })
           }
         })
-    }
-
-  };
-
-  handle_signup = (e, data) => {
-    e.preventDefault();
-    this.setState({
-      error: ""
-    })
-    if (data.username === "" || data.password === "" ||
-      data.email === "" || data.first_name === "" || data.last_name === "") {
-      this.setState({
-        error: "All fields are mandatory!!"
-      })
     } else {
-      if(!this.emailValidation(data.email)){
-        this.setState({
-          error: "Invalid Email!!"
-        })
-      }
-      else{
-        fetch(base_url + '/users/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        })
-          .then(res =>  res.json())
-          .then(json => {
-            localStorage.setItem('token', json.token);
-            this.setState({
-              logged_in: true,
-              user: json.username,
-              error:""
-            });
-          });
-      }
+      this.setState({
+        error: "Passwords do not match!"
+      })
     }
   };
 
   handle_logout = () => {
     localStorage.removeItem('token');
     this.setState({ logged_in: false, user: '' });
-    this.setState({
-      watchedList: [],
-      watchList: [],
-    })
   };
 
-  handleWatchListAdd = (watchMovie) => {
-    this.setState(
-      {
-        watchList: [...this.state.watchList, watchMovie]
-      }
-    )
-  }
-
-  handleWatchListDelete = (watchMovieIds) => {
-    watchMovieIds.forEach(delmovie => {
-      this.state.watchList.map((movie, index) => (
-        isEqual(JSON.stringify(delmovie), JSON.stringify(movie)) ? this.state.watchList.splice(index, 1) : console.log("false")
-      ))
-    });
+  handleError(message) {
     this.setState({
-      watchList: this.state.watchList
+      error: message
     })
   }
 
-  handleWatchedListAdd = (watchedMovie) => {
-    this.setState(
-      {
-        watchedList: this.state.watchedList.concat(watchedMovie)
-      }
-    )
-  }
+  // async function getTMDBConfigs(){
+  //   return await fetch('http://127.0.0.1:8000/tmdb_configurations', {
+  //           method: 'GET',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //             Authorization: `Bearer ${localStorage.getItem('token')}`
+  //           },
+  //         }).then(res => {
+  //           return res.json()
+  //         })
+  // }
 
   render() {
-    var main_style = styles.main + " " + styles.main_background
-    if (this.state.logged_in)
-      main_style = styles.main
     return (
       <Router>
-        <div className={styles.App}>
-          <NavBar user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} handle_logout={this.handle_logout} />
-          <div id="main" className={main_style}>
+        <div className={styles.flixed_app}>
+          <NavBar id="navbar" user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} handle_logout={this.handle_logout} />
+          <div id="main" className={styles.flixed_main}>
             <Switch>
               <Route path='/home'>
-                <Home handleWatchedListAdd={this.handleWatchedListAdd} handleWatchListAdd={this.handleWatchListAdd} logged_in={this.state.logged_in} />
-              </Route>
-              <Route path='/dashboard'>
-                <Dashboard handleWatchListDelete={this.handleWatchListDelete} handleWatchedListAdd={this.handleWatchedListAdd} watchedList={this.state.watchedList} watchList={this.state.watchList} />
+                <Home logged_in={this.state.logged_in} configs={App.tmdb_config} />
               </Route>
               <Route path="/login">
-                <LoginForm handle_login={this.handle_login} errors={this.state.error} />
+                <LoginForm handle_login={this.handle_login} error={this.state.error} />
               </Route>
               <Route path="/register">
-                <RegisterForm handle_signup={this.handle_signup} errors={this.state.error} />
+                <RegisterForm handle_signup={this.handle_signup} error={this.state.error} />
+              </Route>
+              <Route path="/dashboard">
+                <Dashboard configs={App.tmdb_config} />
               </Route>
               <Route path="/statistics">
-                <UnderProduction />
-              </Route>
-              <Route path="/">
+                <UnderConstruction />
               </Route>
             </Switch>
             {
@@ -273,11 +190,16 @@ class App extends React.Component {
                 <Redirect to="/login" />
             }
           </div>
-          <Footer />
+          <Footer/>
         </div>
       </Router>
+
+      // <Test/>
     )
   }
 }
 
 export default App;
+
+// image_size={this.state.tmdb_config.images.poster_sizes[0]}
+// secure_base_url={this.state.tmdb_config.images.secure_base_url} image_sizes={this.state.tmdb_config.images.poster_sizes}

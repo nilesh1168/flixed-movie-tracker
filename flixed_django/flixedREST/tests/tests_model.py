@@ -14,12 +14,12 @@ class ModelTest(TestCase):
         
         user = User.objects.get(username="testUser")
         
-        WatchedMovie.objects.create(id=1,title="Test Watched Movie",
-            rating=8.0,genre="Development, Application",year=2021,runtime=100,
+        WatchedMovie.objects.create(id=1, imdb_id="tt4737", title="Test Watched Movie",
+            rating=8.0,genre="Development, Application",release_date="2015-12-10",runtime=100,
             watched_date=datetime.date.today(),language="Python, Java",user=user)
         
-        WatchList.objects.create(id=2,title="Test WatchList Movie",
-            rating=7.7,genre="Development, Application",year=2021,runtime=101,
+        WatchList.objects.create(id=2,imdb_id="tt4738", title="Test WatchList Movie",
+            rating=7.7,genre="Development, Application",release_date="2021-10-21",runtime=101,
             language="Python, Java",user=user)
 
     def test_movies_has_user(self):

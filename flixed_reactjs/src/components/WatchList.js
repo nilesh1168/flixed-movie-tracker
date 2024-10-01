@@ -1,4 +1,4 @@
-import {base_url} from '../config/config'
+import Movie from './Movie'
 
 function WatchList(props) {
 
@@ -6,7 +6,7 @@ function WatchList(props) {
         var selected_options = [...document.getElementById('selected_movies').selectedOptions]
         var ids = []
         selected_options.forEach(option => {
-            ids.push({ "title": option.innerHTML, "id": option.id })
+            ids.push({"title":option.innerHTML,"id":option.id})
         })
         return ids
     }
@@ -17,19 +17,17 @@ function WatchList(props) {
         var options = {
             method: 'PATCH',
             body: JSON.stringify({ "ids": ids }),
-            headers: {
+            headers: { 
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `JWT ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }
-        var moveRequest = new Request(base_url+'/movies/watch_list', options)
+        var moveRequest = new Request(`${props.configs.base_url}/movies/watch_list`, options)
         fetch(moveRequest).then(response => {
-            if (response) {
+            if (response){
                 console.log(response)
                 props.handleWatchListDelete(ids)
                 props.handleWatchedListAdd(ids)
-                props.handleComponentWatchListDelete(ids)
-                props.handleComponentWatchedListAdd(ids)
             }
             else
                 throw new Error("Something went wrong!!")
@@ -44,17 +42,16 @@ function WatchList(props) {
         var options = {
             method: 'DELETE',
             body: JSON.stringify({ "ids": ids }),
-            headers: {
+            headers: { 
                 'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `JWT ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         }
-        var moveRequest = new Request(base_url+'/movies/watch_list', options)
+        var moveRequest = new Request(`${props.configs.base_url}/movies/watch_list`, options)
         fetch(moveRequest).then(response => {
             if (response) {
                 console.log(response.status)
                 props.handleWatchListDelete(ids)
-                props.handleComponentWatchListDelete(ids)
             }
             else
                 throw new Error("Something went wrong!!")
@@ -66,23 +63,24 @@ function WatchList(props) {
 
 
     return (
-        <div className="flex flex-col justify-center items-center">
+        <div className='container'>
             <div>
+                <select className="form-select" id="selected_movies" as="select" multiple>
                     {
-                        props.watchList.length === 0 ? <div>Empty</div> :
-                <select className="text-center p-3 border outline-none border-gray-300 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-600" id="selected_movies" multiple>
-                            {props.watchList.map(movie => (
-                                <option key={movie.id} id={movie.id} movieName={movie.title}>{movie.title}</option>
-                            ))}
-                </select>
+                        props.watchList.length === 0 ? <Movie movieName="Empty"></Movie> : props.watchList.map(movie => (
+                            <Movie key={movie.id} id={movie.id} movieName={movie.title}></Movie>
+                        ))
                     }
+                </select>
             </div>
-            <button className="mt-3 text-white bg-blue-500 border-0 py-2 px-5 focus:outline-none hover:bg-blue-600 rounded text-lg"
-                onClick={() => moveToWatched()}>Move to Watched</button>
-            <button className="my-3 text-white bg-blue-500 border-0 py-2 px-5 focus:outline-none hover:bg-blue-600 rounded text-lg"
-                onClick={() => removeFromWatch()} >Remove</button>
+            <div className='container text-center'>
+                <button type="button" className='btn btn-outline-dark mt-2 mx-2' onClick={() => moveToWatched()}>Move to Watched</button>
+                <button type="button" className='btn btn-outline-dark mt-2' onClick={() => removeFromWatch()}>Remove</button>
+            </div>
+            <div className='container text-center'>
+                <button type="button" className='btn btn-outline-dark mt-2' disabled>See complete WatchList</button>
+            </div>
         </div>
     )
 }
-
 export default WatchList
