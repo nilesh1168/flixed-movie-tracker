@@ -16,9 +16,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-
-import jwt_decode from "jwt-decode";
-import Statistics from './components/Statistics';
+import {base_url, port } from './config/config' 
 
 class App extends React.Component {
   constructor() {
