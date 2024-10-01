@@ -276,4 +276,3 @@ class WatchListList(APIView):
                 movie = self.get_Movie(delMovie['id'])
                 movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-                

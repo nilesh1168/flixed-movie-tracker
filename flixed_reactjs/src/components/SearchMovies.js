@@ -286,5 +286,4 @@ function SearchMovies(props) {
         </>
     )
 }
-
 export default SearchMovies

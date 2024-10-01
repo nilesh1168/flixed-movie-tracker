@@ -1,6 +1,6 @@
 function Movie(props) {
     return(
-        <option id={props.id} key={props.id} value={props.movieName}>{props.movieName}</option>
+        <li id={props.id} key={props.id} value={props.movieName}>{props.movieName}</li>
     )
 }
 
