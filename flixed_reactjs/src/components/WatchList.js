@@ -85,4 +85,5 @@ function WatchList(props) {
         </div>
     )
 }
+
 export default WatchList
