@@ -24,3 +24,6 @@ urlpatterns = [
     path('movie/watched/mostwatchedgenres', statsAPI.getMostWatchedGenresCount, name='most-watched-genres-count-view'),
     path('movie/watched/mostwatchedmovies',statsAPI.getMostRewatchedMovies, name='most-rewatched-movies-view')
 ]
+
+
+
