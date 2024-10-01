@@ -28,6 +28,8 @@ function WatchList(props) {
                 console.log(response)
                 props.handleWatchListDelete(ids)
                 props.handleWatchedListAdd(ids)
+                props.handleComponentWatchListDelete(ids)
+                props.handleComponentWatchedListAdd(ids)
             }
             else
                 throw new Error("Something went wrong!!")
@@ -83,4 +85,5 @@ function WatchList(props) {
         </div>
     )
 }
+
 export default WatchList

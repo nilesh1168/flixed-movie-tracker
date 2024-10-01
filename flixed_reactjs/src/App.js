@@ -9,15 +9,13 @@ import Home from './components/Home'
 import Dashboard from './components/Dashboard'
 import TMDB_Configuration from './components/config'
 import UnderConstruction from './components/UnderConstruction'
+import { isEqual } from "lodash";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from "react-router-dom";
-
-import jwt_decode from "jwt-decode";
-import Statistics from './components/Statistics';
 
 class App extends React.Component {
   constructor() {
