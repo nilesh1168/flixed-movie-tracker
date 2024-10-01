@@ -16,7 +16,6 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import {base_url, port } from './config/config' 
 
 class App extends React.Component {
   constructor() {
