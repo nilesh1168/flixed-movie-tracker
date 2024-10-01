@@ -127,6 +127,37 @@ class RegisterForm extends React.Component {
                     </div>
                 </div>
             </div>
+            // <div>
+            //     <div>
+            //         <div className="my-5 ml-auto col-md-8">
+            //             <div>
+            //                 <div>
+            //                     <div className='text-center my-3'>Sign Up</div>
+            //                     <div>
+            //                         <div>
+            //                             <div>
+            //                                 <div className="col-md-6">
+
+
+
+            //                                 </div>
+            //                                 <div className="col-md-6">
+
+            //                                 </div>
+            //                             </div>
+
+            //                             <div className="text-center">
+            //                                 <div><p style={{ color: "red" }}>{this.state.error}</p></div>
+            //                             </div>
+
+
+            //                         </div>
+            //                     </div>
+            //                 </div>
+            //             </div>
+            //         </div>
+            //     </div>
+            // </div>
         )
     }
 
