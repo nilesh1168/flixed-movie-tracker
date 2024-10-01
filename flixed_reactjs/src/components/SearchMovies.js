@@ -1,15 +1,7 @@
-// import Row from "react-bootstrap/Row";
-// import FormGroup from 'react-bootstrap/FormGroup'
-// import Form from 'react-bootstrap/Form'
-// import Container from "react-bootstrap/Container";
-// import button from 'react-bootstrap/button'
-// import { Col } from "react-bootstrap";
+import Modal from './MessageModal'
 import MovieItem from "./MovieItem";
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as bootstrap from 'bootstrap/dist/js/bootstrap'
-// import Accordion from 'react-bootstrap/Accordion';
-// import { Card } from "react-bootstrap";
-// const API_KEY = process.env.REACT_APP_API_KEY
 
 
 function SearchMovies(props) {
@@ -124,11 +116,10 @@ function SearchMovies(props) {
         fetch(request)
             .then(response => {
                 if (response.status === 201) {
-                    // console.log("added movie")
-                    // props.handleError("added movie to watchlist")
-                    toast("Movie added successfully to Watch List")
-                    // console.log(props.searchedMovie.id)
-                    // props.handleWatchListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
+                    console.log(props.searchedMovie.id)
+                    props.handleWatchListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
+                    setShowModal(true)
+                    setModalMessage("Movie Added to Watch List!!")
                 }
             })
             .catch(error => {
@@ -272,17 +263,8 @@ function SearchMovies(props) {
                     </div>
                 </div>
             </div>
-        </div>
-        <div className="toast-container position-fixed bottom-0 end-0 p-3">
-                    <div id="successToast" className="toast align-items-center text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
-                        <div className="d-flex">
-                            <div className="toast-body">
-                                {toastMessage}
-                            </div>
-                            <button type="button" className="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                        </div>
-                    </div>
-                </div>
+            <Modal showModal={showModal} message={modalMessage} status={status} setShowModal={setShowModal}/>
+
         </>
     )
 }
