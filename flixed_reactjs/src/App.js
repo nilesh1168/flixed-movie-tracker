@@ -9,7 +9,8 @@ import Home from './components/Home'
 import Dashboard from './components/Dashboard'
 import TMDB_Configuration from './components/config'
 import UnderConstruction from './components/UnderConstruction'
-import { isEqual } from "lodash";
+// import { isEqual } from "lodash";
+import jwt_decode from "jwt-decode";
 import {
   BrowserRouter as Router,
   Switch,
