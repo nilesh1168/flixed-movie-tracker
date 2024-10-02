@@ -116,10 +116,9 @@ function SearchMovies(props) {
         fetch(request)
             .then(response => {
                 if (response.status === 201) {
-                    console.log(props.searchedMovie.id)
-                    props.handleWatchListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
-                    // setShowModal(true)
-                    // setModalMessage("Movie Added to Watch List!!")
+                    // console.log(props.searchedMovie.id)
+                    // props.handleWatchListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
+                    toast("Movie added successfully to Watch List")
                 }
             })
             .catch(error => {
@@ -150,7 +149,7 @@ function SearchMovies(props) {
                     toast("Movie added successfully to watched")
                     // props.handleWatchedListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
                 }
-                else if (response.status === 204){
+                else if (response.status === 204) {
                     // console.log("added movie")
                     // props.handleError("Movie already watched")
                     // show a alert that movie has been added successfully
@@ -180,7 +179,7 @@ function SearchMovies(props) {
         }
     }
 
-    const toast = (message) =>{
+    const toast = (message) => {
         setToastMessage(message)
         var successToastElement = document.getElementById('successToast')
         var successToast = bootstrap.Toast.getOrCreateInstance(successToastElement)
@@ -189,81 +188,92 @@ function SearchMovies(props) {
     }
 
     return (
-        <div className="row">
-            <div className="container">
-                <div className='row my-3'>
-                    <div className="col-md-4">
-                    </div>
-                    <div className="col-md-4 text-center">
-                        <div className="container">
-                            <input className="form-control" id="movie_name" type="text" placeholder="Enter Name" />
-                            <button id="searchBtn" className="btn btn-outline-dark mt-2" onClick={() => searchMovie()} type="button"> {loading.searchBtnText}
-                                { loading.loading ? <span className="spinner-border spinner-border-sm" aria-hidden="true"></span> : <></> }
-                            </button>
-                            <button className="btn btn-outline-dark mt-2 mx-3" disabled>Advanced Search</button>
-                            {/* </div>
+        <>
+            <div className="row">
+                <div className="container">
+                    <div className='row my-3'>
+                        <div className="col-md-4">
+                        </div>
+                        <div className="col-md-4 text-center">
+                            <div className="container">
+                                <input className="form-control" id="movie_name" type="text" placeholder="Enter Name" />
+                                <button id="searchBtn" className="btn btn-outline-dark mt-2" onClick={() => searchMovie()} type="button"> {loading.searchBtnText}
+                                    {loading.loading ? <span className="spinner-border spinner-border-sm" aria-hidden="true"></span> : <></>}
+                                </button>
+                                <button className="btn btn-outline-dark mt-2 mx-3" disabled>Advanced Search</button>
+                                {/* </div>
                         <div className="flex-row"> */}
+                            </div>
                         </div>
-                    </div>
-                    <div className="col-md-4">
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" id="movieCheckChecked" checked readOnly/>
-                            <label className="form-check-label" htmlFor="movieCheckChecked">
-                                Movie
-                            </label>
-                        </div>
-                        {/* <div className="form-check">
+                        <div className="col-md-4">
+                            <div className="form-check">
+                                <input className="form-check-input" type="checkbox" id="movieCheckChecked" checked readOnly />
+                                <label className="form-check-label" htmlFor="movieCheckChecked">
+                                    Movie
+                                </label>
+                            </div>
+                            {/* <div className="form-check">
                                 <input className="form-check-input" type="checkbox" id="tvCheckChecked" />
                                 <label className="form-check-label" htmlFor="tvCheckChecked">
                                     TV
                                 </label>
                             </div> */}
+                        </div>
                     </div>
-                </div>
-                <div className="text-center"><p> <span style={{ color: 'red' }}>*</span> Current media type support for movies only.</p></div>
-                <hr className="my-2"></hr>
-                <div className="row">
-                    <div className="container text-center">
-                        <p style={{ color: "red" }}>{props.error}</p>
+                    <div className="text-center"><p> <span style={{ color: 'red' }}>*</span> Current media type support for movies only.</p></div>
+                    <hr className="my-2"></hr>
+                    <div className="row">
+                        <div className="container text-center">
+                            <p style={{ color: "red" }}>{props.error}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="container">
-                        <div className="row">
-                            <div className="container">
-                                <div className="accordion" id="movieAccordion">
-                                    {
-                                        searchBtnClicked ?
-                                            movieMap.map(element => (
-                                                element.media_type === "movie" ?
-                                                    <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} title={element.title} release_date={element.release_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size} />
-                                                    :
-                                                    <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} name={element.name} first_air_date={element.first_air_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size} />
-                                            ))
-                                            :
-                                            <div className="text-center"><p>Perform Search</p></div>
-                                    }
+                    <div className="row">
+                        <div className="container">
+                            <div className="row">
+                                <div className="container">
+                                    <div className="accordion" id="movieAccordion">
+                                        {
+                                            searchBtnClicked ?
+                                                movieMap.map(element => (
+                                                    element.media_type === "movie" ?
+                                                        <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} title={element.title} release_date={element.release_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size} />
+                                                        :
+                                                        <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} name={element.name} first_air_date={element.first_air_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size} />
+                                                ))
+                                                :
+                                                <div className="text-center"><p>Perform Search</p></div>
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="d-flex flex-row mb-3 justify-content-center">
-                                {
-                                    searchBtnClicked ?
-                                        <div>
-                                            <button id="prevBtn" disabled={currentPage === 1 ? true : false} className="btn btn-outline-dark mt-2" onClick={() => decrementPage()} type="button">Prev</button>
-                                            <button className="btn mt-2" style={{ cursor: "default" }}>{currentPage} of {totalPages.current}</button>
-                                            <button id="nextBtn" disabled={currentPage === totalPages.current ? true : false} className="btn btn-outline-dark mt-2" onClick={() => incrementPage()} type="button">Next</button>
-                                        </div>
-                                        : <div></div>
-                                }
+                            <div className="row">
+                                <div className="d-flex flex-row mb-3 justify-content-center">
+                                    {
+                                        searchBtnClicked ?
+                                            <div>
+                                                <button id="prevBtn" disabled={currentPage === 1 ? true : false} className="btn btn-outline-dark mt-2" onClick={() => decrementPage()} type="button">Prev</button>
+                                                <button className="btn mt-2" style={{ cursor: "default" }}>{currentPage} of {totalPages.current}</button>
+                                                <button id="nextBtn" disabled={currentPage === totalPages.current ? true : false} className="btn btn-outline-dark mt-2" onClick={() => incrementPage()} type="button">Next</button>
+                                            </div>
+                                            : <div></div>
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {/* <Modal showModal={showModal} message={modalMessage} status={status} setShowModal={setShowModal}/> */}
-        </div>
+            <div className="toast-container position-fixed bottom-0 end-0 p-3">
+                <div id="successToast" className="toast align-items-center text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            {toastMessage}
+                        </div>
+                        <button type="button" className="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </>
     )
 }
 
