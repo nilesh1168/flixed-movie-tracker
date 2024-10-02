@@ -1,4 +1,4 @@
-import Modal from './MessageModal'
+// import Modal from './MessageModal'
 import MovieItem from "./MovieItem";
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as bootstrap from 'bootstrap/dist/js/bootstrap'
@@ -118,8 +118,8 @@ function SearchMovies(props) {
                 if (response.status === 201) {
                     console.log(props.searchedMovie.id)
                     props.handleWatchListAdd({ "title": props.searchedMovie.title, "id": props.searchedMovie.id })
-                    setShowModal(true)
-                    setModalMessage("Movie Added to Watch List!!")
+                    // setShowModal(true)
+                    // setModalMessage("Movie Added to Watch List!!")
                 }
             })
             .catch(error => {
@@ -189,7 +189,6 @@ function SearchMovies(props) {
     }
 
     return (
-        <>
         <div className="row">
             <div className="container">
                 <div className='row my-3'>
@@ -263,9 +262,8 @@ function SearchMovies(props) {
                     </div>
                 </div>
             </div>
-            <Modal showModal={showModal} message={modalMessage} status={status} setShowModal={setShowModal}/>
-
-        </>
+            {/* <Modal showModal={showModal} message={modalMessage} status={status} setShowModal={setShowModal}/> */}
+        </div>
     )
 }
 
