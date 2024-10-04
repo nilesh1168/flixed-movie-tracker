@@ -64,6 +64,7 @@ class Dashboard extends Component {
                 //     }
                 // })
                 this.toast("Success, You have watched this movie one more time!")
+                this.getWatchedMovies()  // need to think how I can update only one movie with the incremented watch count
             }
         })
             .catch(error => {
@@ -311,7 +312,7 @@ class Dashboard extends Component {
                             this.state.allWatchedMovies.map((movie) => {
                                 // console.log(movie);
                                 return (
-                                    <MovieItem key={movie.id} id={movie.id} type="movie" poster_path={movie.imageUrl} title={movie.title} release_date={movie.release_date} secure_base_url={this.props.configs.images.secure_base_url} image_size="original" parent="watched" incrementWatchCount={this.incrementWatchCount} />
+                                    <MovieItem key={movie.id} id={movie.id} type="movie" poster_path={movie.imageUrl} title={movie.title} release_date={movie.release_date} secure_base_url={this.props.configs.images.secure_base_url} image_size="original" parent="watched" incrementWatchCount={this.incrementWatchCount} timesWatched = {movie.times_watched}/>
                                 );
                             })
                         }
