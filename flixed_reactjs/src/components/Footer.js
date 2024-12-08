@@ -1,5 +1,4 @@
-import { flixed_name } from "../styles/App.module.css";
-import { flixed_footer } from "../styles/App.module.css";
+import cssStyle from "../styles/App.module.css";
 function Footer() {
 
     const styles = {
@@ -10,8 +9,8 @@ function Footer() {
     }
 
     return (
-        <footer id="footer" className={flixed_footer}>
-            <h3 className={flixed_name}>Flixed</h3>
+        <footer id="footer" className={cssStyle.flixed_footer}>
+            <h3 className={cssStyle.flixed_name}>Flixed</h3>
             <div style={styles.verticalLine}></div>
             <div style={{textAlign:'center'}}>
                 <p>&copy; Copyright 2023 </p>
