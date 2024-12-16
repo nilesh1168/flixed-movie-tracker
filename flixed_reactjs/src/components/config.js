@@ -1,12 +1,15 @@
+import Constants from "./constants"
+
 class TMDB_Configuration{
     static CONFIGS = {
-        base_url: "http://127.0.0.1:80",
+        base_url: process.env.REACT_APP_FLIXED_REST_BASE_URL,
         default_lang: "en-US",
         default_page_number: 1,
-        number_of_records_per_page: 15,
+        number_of_records_per_page: Constants.NUMBER_OF_REC_PER_PAGE,
+        default_img_size: Constants.DEF_IMG_SIZE,
         images: {
-            base_url: "http://image.tmdb.org/t/p/",
-            secure_base_url: "https://image.tmdb.org/t/p/",
+            base_url: process.env.REACT_APP_TMDB_IMG_BASE_URL,
+            secure_base_url: process.env.REACT_APP_TMDB_SEC_IMG_BASE_URL,
             backdrop_sizes: [
                 "w300",
                 "w780",

@@ -2,6 +2,7 @@
 import MovieItem from "./MovieItem";
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as bootstrap from 'bootstrap/dist/js/bootstrap'
+import Constants from "./constants";
 
 
 function SearchMovies(props) {
@@ -50,11 +51,11 @@ function SearchMovies(props) {
                     var movieItem = {}
                     movieItem.id = element.id
                     movieItem.media_type = element.media_type = 'movie'     // update this line when adding support for TV and Movie both
-                    if (element.media_type === "movie") {
+                    if (Constants.MOVIE === element.media_type) {
                         movieItem.title = element.title
                         movieItem.release_date = element.release_date
                     }
-                    else if (element.media_type === "tv") {
+                    else if (Constants.TV === element.media_type) {
                         movieItem.name = element.name
                         movieItem.first_air_date = element.first_air_date
                     }
@@ -235,7 +236,7 @@ function SearchMovies(props) {
                                         {
                                             searchBtnClicked ?
                                                 movieMap.map(element => (
-                                                    element.media_type === "movie" ?
+                                                    Constants.MOVIE === element.media_type ?
                                                         <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} title={element.title} release_date={element.release_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size} />
                                                         :
                                                         <MovieItem key={element.id} id={element.id} type={element.media_type} poster_path={element.poster_path} name={element.name} first_air_date={element.first_air_date} addToWatchList={addToWatchList} addToWatchedList={addToWatchedList} secure_base_url={secure_base_url} image_size={image_size} />
@@ -265,8 +266,8 @@ function SearchMovies(props) {
             </div>
             <div className="toast-container position-fixed bottom-0 end-0 p-3">
                 <div id="successToast" className="toast align-items-center text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
+                    <div className="d-flex">
+                        <div className="toast-body">
                             {toastMessage}
                         </div>
                         <button type="button" className="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>

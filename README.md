@@ -16,6 +16,7 @@
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#installation">Installation</a></li>
+        <li><a href="#environment-variables-setup-guide-for-django-and-reactjs">Environment Variables Setup Guide for Django and ReactJS</a></li>
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
@@ -53,6 +54,7 @@
 
 * [![React][React.js]][React-url]
 * [![Django][Django]][Django-url]
+* <a href="https://developer.themoviedb.org/docs/getting-started"><img src="flixed_reactjs/src/styles/images/TMDB-sm.svg" alt="TMDB" width="100"></img></a>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -85,9 +87,71 @@ You need to install ```Node```, ```Python``` and ```Django```.
     python -m pip install Django
     ```
 
+### Environment Variables Setup Guide for Django and ReactJS
+#### Django Environment Variables
+#### **Where to Define:**
+Environment variables for Django need to be initialized in your shell profile file:  
+- `.bash_profile` (for Bash users)  
+- `.zsh_profile` (for Zsh users)  
+
+#### **Required Variables:**
+Below is the list of environment variables required for Django, along with their usage:
+
+| **Variable**           | **Purpose**                                  |
+|-------------------------|----------------------------------------------|
+| `CORS_ORIGIN_WHITELIST` | List of origins allowed for CORS requests.   |
+| `DJANGO_DEBUG`          | Enables or disables debug mode (`True/False`). |
+| `DJANGO_SECRET_KEY`     | Secret key for Django security.             |
+| `REACT_HOST`            | Used for the `ALLOWED_HOSTS` property in `settings.py`. |
+| `OMDB_API_KEY`          | API key for OMDB integration.               |
+| `TMDB_API_KEY`          | API key for TMDB integration.               |
+| `TMDB_API_AUTH_ACCESS`  | Authentication token for TMDB API.          |
+| `OMDB_URL`              | Base URL for OMDB API.                      |
+| `TMDB_URL`              | Base URL for TMDB API.                      |
+| `TMDB_CONFIG_URL`       | URL for TMDB configuration settings.        |
+
+#### **Example: Adding Variables to `.bash_profile` or `.zsh_profile`**
+```bash
+export CORS_ORIGIN_WHITELIST="http://localhost:3000"
+export DJANGO_DEBUG=True
+export DJANGO_SECRET_KEY="your-secret-key"
+export REACT_HOST="localhost"
+export OMDB_API_KEY="your-omdb-api-key"
+export TMDB_API_KEY="your-tmdb-api-key"
+export TMDB_API_AUTH_ACCESS="your-tmdb-auth-access"
+export OMDB_URL="https://www.omdbapi.com"
+export TMDB_URL="https://api.themoviedb.org/3"
+export TMDB_CONFIG_URL="https://api.themoviedb.org/3/configuration"
+```
+#### ReactJS Environment Variables Setup Guide
+
+#### Where to Define
+React environment variables must be defined in a `.env` file located at the root of your React project (where `package.json` is present).
+
+#### Naming Convention
+All React environment variables must start with the prefix `REACT_APP_`. This is a requirement for Create React App to recognize them.
+
+#### Required Variables
+Below is the list of environment variables required for your React project:
+
+| **Variable**                     | **Purpose**                                  |
+|-----------------------------------|----------------------------------------------|
+| `REACT_APP_FLIXED_REST_BASE_URL` | Base URL for the REST API used in the app.   |
+| `REACT_APP_TMDB_IMG_BASE_URL`    | Base URL for TMDB images.                    |
+| `REACT_APP_TMDB_SEC_IMG_BASE_URL`| Base URL for secondary TMDB images.          |
+
+#### **Steps to Define:**
+1. Create a `.env` file in the root directory of your React project.
+2. Add the environment variables in the following format:
+  ```bash
+  REACT_APP_FLIXED_REST_BASE_URL=https://api.flixed.com
+  REACT_APP_TMDB_IMG_BASE_URL=https://image.tmdb.org/t/p/original
+  REACT_APP_TMDB_SEC_IMG_BASE_URL=https://image.tmdb.org/t/p/w500
+  ```
 ### Installation
 
-1. Get a free API Key at [OMDB API](https://www.omdbapi.com/apikey.aspx)
+1. Get a free API Key for OMDB at [OMDB API](https://www.omdbapi.com/apikey.aspx) and TMDB at [TMDB API](https://www.themoviedb.org/signup)
+
 2. Clone the repo
    ```sh
    git clone https://github.com/nilesh1168/flixed-movie-tracker.git
@@ -96,7 +160,7 @@ You need to install ```Node```, ```Python``` and ```Django```.
     ```sh
     pip3 install -r requirements.txt
     ```
-    Note: Run this command from the directory where requirements.txt is available.
+    📝 **Note:** Run this command from the directory where requirements.txt is available.
 
 4. Install NPM packages
    ```js
@@ -109,7 +173,7 @@ You need to install ```Node```, ```Python``` and ```Django```.
     python manage.py createsuperuser
     ```
     Enter the email, username and password that is asked.
-    Note: Run this command from the directory where manage.py is available.
+    📝 **Note:** Run this command from the directory where manage.py is available.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -149,7 +213,7 @@ This section tells you about how to deploy this application on a system.
     1. You can use the existing ```flixed_launctl.plist``` file. 
     2. Make sure to change the ```PATH``` variable in the file according to your directory structure. 3. Update the ```UserName``` and ```GroupName``` accordingly.
     
-    Note: This property list file will run the bash script to create the environment variables and start the Gunicorn server on system startup.
+    📝 **Note:** This property list file will run the bash script to create the environment variables and start the Gunicorn server on system startup.
     
     3. For user-specific setup, copy the property list file to your system's LaunchAgents folder. For all users, copy it to LaunchDaemons at the root location.
         ```sh
@@ -207,7 +271,7 @@ This section tells you about how to deploy this application on a system.
       ```
       This will start the nginx service on you macOS.
       
-      **Note**: To stop the service, use the following command:
+      📝 **Note**: To stop the service, use the following command:
       ```sh
        launchctl unload homebrew.mxcl.nginx.plist
        ```
@@ -233,7 +297,7 @@ This section tells you about how to deploy this application on a system.
     ```
     Once you update the ```nginx.conf``` you can restart the nginx service. 
     
-    **Note**: You can stop and start the nginx service for a restart.
+    📝 **Note**: You can stop and start the nginx service for a restart.
 
 12. All the REST APIs will then be available at ```server_name:listen``` that you provided for ```server_name``` and ```listen``` in ```nginx.conf``` .
 
@@ -243,7 +307,7 @@ This section tells you about how to deploy this application on a system.
       npm install
     ```
 
-    **Note**: Run this command at ```flixed_reactjs``` location.
+    📝 **Note**: Run this command at ```flixed_reactjs``` location.
 
 2. Update the ```base_url``` property under ```flixed_reactjs/src/components/config.js``` as per your nginx configuration.
 
@@ -310,6 +374,7 @@ Project Link: [https://github.com/nilesh1168/flixed-movie-tracker](https://githu
 ## Acknowledgments
 
 * [OMDB API](https://www.omdbapi.com/)
+* [TMDB API](https://developer.themoviedb.org/docs/getting-started)
 * [Best Readme Template](https://github.com/othneildrew/Best-README-Template/blob/master/README.md?plain=1)
 * [Choose an Open Source License](https://choosealicense.com)
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)

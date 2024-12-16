@@ -13,7 +13,6 @@ from .utils import Util
 from .config import Configuration
 from django.shortcuts import get_object_or_404
 import requests
-import os
 from rest_framework.pagination import PageNumberPagination
 
 def get_Movie(id):

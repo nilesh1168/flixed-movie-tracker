@@ -6,6 +6,7 @@ import * as bootstrap from 'bootstrap/dist/js/bootstrap'
 // import { Col, Container, Row, Card, Stack } from "react-bootstrap";
 import WatchList from "./WatchList"
 import TMDB_Configuration from "./config";
+import Constants from "./constants";
 
 class Dashboard extends Component {
     constructor(props) {
@@ -312,7 +313,7 @@ class Dashboard extends Component {
                             this.state.allWatchedMovies.map((movie) => {
                                 // console.log(movie);
                                 return (
-                                    <MovieItem key={movie.id} id={movie.id} type="movie" poster_path={movie.imageUrl} title={movie.title} release_date={movie.release_date} secure_base_url={this.props.configs.images.secure_base_url} image_size="original" parent="watched" incrementWatchCount={this.incrementWatchCount} timesWatched = {movie.times_watched}/>
+                                    <MovieItem key={movie.id} id={movie.id} type={Constants.MOVIE} poster_path={movie.imageUrl} title={movie.title} release_date={movie.release_date} secure_base_url={this.props.configs.images.secure_base_url} image_size={this.props.configs.default_img_size} parent={Constants.WATCHED} incrementWatchCount={this.incrementWatchCount} timesWatched = {movie.times_watched}/>
                                 );
                             })
                         }
