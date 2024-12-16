@@ -5,9 +5,9 @@ class Util:
     OMDB_API_KEY = os.getenv("OMDB_API_KEY")
     TMDB_API_KEY = os.getenv("TMDB_API_KEY")
     TMDB_API_AUTH_ACCESS = os.getenv("TMDB_API_AUTH_ACCESS")
-    OMDB_URL = "http://www.omdbapi.com/"
-    TMDB_URL = "https://api.themoviedb.org/3/"
-    TMDB_CONFIG_URL = "https://api.themoviedb.org/3/configuration"
+    OMDB_URL = os.getenv("OMDB_URL")
+    TMDB_URL = os.getenv("TMDB_URL")
+    TMDB_CONFIG_URL = os.getenv("TMDB_CONFIG_URL")
     LANGUAGE = 'en-US'
 
     @classmethod
@@ -40,6 +40,6 @@ class Util:
     
     @classmethod
     def getIMDBRatingFromOMDB(cls, imdb_id):
-        url = "http://www.omdbapi.com/?apikey="+ Util.OMDB_API_KEY +"&i="+imdb_id
+        url = Util.OMDB_URL+"?apikey="+ Util.OMDB_API_KEY +"&i="+imdb_id
         response = requests.get(url).json()
         return response['imdbRating'] 

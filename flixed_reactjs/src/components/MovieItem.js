@@ -1,17 +1,17 @@
 // import { Card, Col } from "react-bootstrap";
 // import { Container } from 'react-bootstrap';
 // import Accordion from 'react-bootstrap/Accordion';
-
+import Constants from "./constants"
 function MovieItem(props) {
     var img_src = props.secure_base_url + props.image_size + "/" + props.poster_path
     var id = ""
     var data_target = ""
-    if (props.type === 'movie') {
+    if (Constants.MOVIE === props.type) {
         id = "m" + props.id
         data_target = "#" + id
     }
     else {
-        id = "tv" + props.id
+        id = Constants.TV + props.id
         data_target = "#" + id
     }
     return (
@@ -19,7 +19,7 @@ function MovieItem(props) {
             <h2 className="accordion-header">
                 <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={data_target} aria-expanded="false" aria-controls={id}>
                     {
-                        props.type === 'movie' ? props.title : props.name
+                       Constants.MOVIE === props.type ? props.title : props.name
                     }
                 </button>
             </h2>
@@ -27,11 +27,11 @@ function MovieItem(props) {
                 <div className="accordion-body">
                     <div className="row">
                         <div className="col-md-3">
-                            <img src={img_src} className="img-fluid" alt={props.type === 'movie' ? props.title : props.name} />
+                            <img src={img_src} className="img-fluid" alt={Constants.MOVIE === props.type ? props.title : props.name} />
                         </div>
                         <div className="col-md-6">
                             {
-                                props.type === 'movie' ? <><p>Title : {props.title}</p><p>Release Date : {props.release_date}</p></> : <> <p>Name : {props.name}</p><p>First Air Date: {props.first_air_date}</p></>
+                                Constants.MOVIE === props.type ? <><p>Title : {props.title}</p><p>Release Date : {props.release_date}</p></> : <> <p>Name : {props.name}</p><p>First Air Date: {props.first_air_date}</p></>
                             }
                             <p>Type : {props.type.toUpperCase()}</p>
                             <p>Times Watched : {props.timesWatched}</p>
@@ -39,7 +39,7 @@ function MovieItem(props) {
                         </div>
                         <div className="col-md-3">
                             {
-                                props.parent === "watched" ? <>
+                                Constants.WATCHED === props.parent ? <>
                                     {/* add count incremental logic */}
                                     <button id="incrementWatchCount" className='btn btn-outline-dark mt-3' onClick={()=> props.incrementWatchCount(props.id)} type="button">Increase watch count</button>
                                 </>
