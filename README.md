@@ -109,6 +109,11 @@ Below is the list of environment variables required for Django, along with their
 | `OMDB_URL`              | Base URL for OMDB API.                      |
 | `TMDB_URL`              | Base URL for TMDB API.                      |
 | `TMDB_CONFIG_URL`       | URL for TMDB configuration settings.        |
+| `DJANGO_DB_NAME`        | Database name for Django App.        |
+| `DJANGO_DB_USERNAME`    | Database username for Django App.        |
+| `DJANGO_DB_PWD`         | Database password for Django App.        |
+| `DJANGO_DB_HOST`        | Database host for Django App.        |
+| `DJANGO_DB_PORT`        | Database port number for Django App.        |
 
 #### **Example: Adding Variables to `.bash_profile` or `.zsh_profile`**
 ```bash
