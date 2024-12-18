@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
     "@testing-library/user-event": "^12.6.2",
+    "bootstrap-icons": "^1.11.3",
     "chart.js": "^3.9.1",
     "jwt-decode": "^3.1.2",
     "loadash": "^1.0.0",
