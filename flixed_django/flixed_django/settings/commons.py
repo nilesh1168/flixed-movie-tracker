@@ -16,7 +16,6 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-REACT_HOST = os.getenv("REACT_HOST")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -24,17 +23,7 @@ REACT_HOST = os.getenv("REACT_HOST")
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DJANGO_DEBUG")
-
-ALLOWED_HOSTS = [REACT_HOST] # REACT_HOST
-
 CORS_ORIGIN_ALLOW_ALL = False
-
-CORS_ORIGIN_WHITELIST = (
-       os.getenv("CORS_ORIGIN_WHITELIST"),
-)
-
 
 # Application definition
 
@@ -109,28 +98,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'flixed_django.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
-        'NAME': os.getenv('DJANGO_DB_NAME'),
-
-        'USER': os.getenv('DJANGO_DB_USERNAME'),
-
-        'PASSWORD': os.getenv('DJANGO_DB_PWD'),
-
-        'HOST': os.getenv('DJANGO_DB_HOST'),
-
-        'PORT': os.getenv('DJANGO_DB_PORT'),
-
-    }
-}
 
 
 # Password validation
