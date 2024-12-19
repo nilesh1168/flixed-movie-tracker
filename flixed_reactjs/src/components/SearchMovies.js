@@ -1,7 +1,7 @@
 // import Modal from './MessageModal'
 import MovieItem from "./MovieItem";
 import { useEffect, useRef, useState, useCallback } from "react";
-import Toast from 'bootstrap/dist/js/bootstrap'
+import { Toast } from 'bootstrap/dist/js/bootstrap'
 import Constants from "./constants";
 
 
