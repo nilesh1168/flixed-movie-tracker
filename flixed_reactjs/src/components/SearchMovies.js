@@ -1,7 +1,7 @@
 // import Modal from './MessageModal'
 import MovieItem from "./MovieItem";
 import { useEffect, useRef, useState, useCallback } from "react";
-import * as bootstrap from 'bootstrap/dist/js/bootstrap'
+import Toast from 'bootstrap/dist/js/bootstrap'
 import Constants from "./constants";
 
 
@@ -183,7 +183,7 @@ function SearchMovies(props) {
     const toast = (message) => {
         setToastMessage(message)
         var successToastElement = document.getElementById('successToast')
-        var successToast = bootstrap.Toast.getOrCreateInstance(successToastElement)
+        var successToast = Toast.getOrCreateInstance(successToastElement)
         successToast.show()
 
     }
@@ -198,27 +198,19 @@ function SearchMovies(props) {
                         <div className="col-md-4 text-center">
                             <div className="container">
                                 <input className="form-control" id="movie_name" type="text" placeholder="Enter Name" />
+                                <div className="container mt-2">
+                                    <input className="form-check-input" type="checkbox" id="movieCheckChecked" checked readOnly />
+                                    <label className="form-check-label" htmlFor="movieCheckChecked">
+                                        <span className="mx-2">Movie</span>
+                                    </label>
+                                </div>
                                 <button id="searchBtn" className="btn btn-outline-dark mt-2" onClick={() => searchMovie()} type="button"> {loading.searchBtnText}
                                     {loading.loading ? <span className="spinner-border spinner-border-sm" aria-hidden="true"></span> : <></>}
                                 </button>
                                 <button className="btn btn-outline-dark mt-2 mx-3" disabled>Advanced Search</button>
-                                {/* </div>
-                        <div className="flex-row"> */}
                             </div>
                         </div>
                         <div className="col-md-4">
-                            <div className="form-check">
-                                <input className="form-check-input" type="checkbox" id="movieCheckChecked" checked readOnly />
-                                <label className="form-check-label" htmlFor="movieCheckChecked">
-                                    Movie
-                                </label>
-                            </div>
-                            {/* <div className="form-check">
-                                <input className="form-check-input" type="checkbox" id="tvCheckChecked" />
-                                <label className="form-check-label" htmlFor="tvCheckChecked">
-                                    TV
-                                </label>
-                            </div> */}
                         </div>
                     </div>
                     <div className="text-center"><p> <span style={{ color: 'red' }}>*</span> Current media type support for movies only.</p></div>
@@ -248,7 +240,7 @@ function SearchMovies(props) {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="d-flex flex-row mb-3 justify-content-center">
+                                <div className="d-flex flex-row justify-content-center">
                                     {
                                         searchBtnClicked ?
                                             <div>

@@ -193,6 +193,9 @@ class App extends React.Component {
                 <Redirect to="/" />
             }
           </div>
+          <div className="container my-3">
+                <hr style={{ borderTop: "1px solid #8e8d8a", width: "40%", margin: "0 auto" }} />
+          </div>
           <Footer />
         </div>
       </Router>

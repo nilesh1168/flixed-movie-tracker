@@ -2,7 +2,7 @@ import { Component } from "react";
 import image from '../styles/images/No Movies Available.png'
 import MovieItem from "./MovieItem";
 import { isEqual } from "lodash";
-import * as bootstrap from 'bootstrap/dist/js/bootstrap'
+import Toast from 'bootstrap/dist/js/bootstrap'
 // import { Col, Container, Row, Card, Stack } from "react-bootstrap";
 import WatchList from "./WatchList"
 import TMDB_Configuration from "./config";
@@ -204,7 +204,7 @@ class Dashboard extends Component {
     topFiveCarousal = () => {
         return (
             <>
-                <div id="topFiveWatchListcarousel" className="carousel slide carousel-fade" data-bs-ride='carousel'>
+                <div id="topFiveWatchListcarousel" className="carousel slide" data-bs-ride="carousel">
                     <div className="carousel-indicators">
                         {
                             this.state.topFiveMovies.map((movie, index) => {
@@ -341,7 +341,7 @@ class Dashboard extends Component {
             toastMsg: message
         })
         var successToastElement = document.getElementById('toastComponent')
-        var successToast = bootstrap.Toast.getOrCreateInstance(successToastElement)
+        var successToast = Toast.getOrCreateInstance(successToastElement)
         successToast.show()
     }
 
