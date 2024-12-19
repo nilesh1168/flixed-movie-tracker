@@ -2,11 +2,12 @@ import { Component } from "react";
 import image from '../styles/images/No Movies Available.png'
 import MovieItem from "./MovieItem";
 import { isEqual } from "lodash";
-import * as bootstrap from 'bootstrap/dist/js/bootstrap'
+import { Toast } from 'bootstrap/dist/js/bootstrap'
 // import { Col, Container, Row, Card, Stack } from "react-bootstrap";
 import WatchList from "./WatchList"
 import TMDB_Configuration from "./config";
 import Constants from "./constants";
+import { Carousel } from 'react-bootstrap';
 
 class Dashboard extends Component {
     constructor(props) {
@@ -201,91 +202,136 @@ class Dashboard extends Component {
         return this.props.configs.images.secure_base_url + "original" + url
     }
 
+    // topFiveCarousal = () => {
+    //     return (
+    //         <>
+    //             <div id="topFiveWatchListcarousel" className="carousel slide" data-bs-ride="carousel">
+    //                 <div className="carousel-indicators">
+    //                     {
+    //                         this.state.topFiveMovies.map((movie, index) => {
+    //                             if (index === 0) {
+    //                                 return <button key={index} type="button" data-bs-target="#topFiveWatchListcarousel" data-bs-slide-to={index} className="active" aria-current="true" aria-label={index}></button>
+    //                             }
+    //                             else {
+    //                                 return <button key={index} type="button" data-bs-target="#topFiveWatchListcarousel" data-bs-slide-to={index} aria-label={index}></button>
+    //                             }
+    //                         }
+    //                         )
+    //                     }
+    //                 </div>
+    //                 <div className="carousel-inner">
+    //                     {
+    //                         this.state.topFiveMovies.map((movie, index) => {
+    //                             if (index === 0) {
+    //                                 return (
+    //                                     // <span>Hello from if</span>
+    //                                     // console.log("inside if index == 0");
+    //                                     <div key={index} className="carousel-item active">
+    //                                         <img alt={movie.title} src={this.imageUrl(movie.backDropUrl)} className="d-block w-100" />
+    //                                         <div className="carousel-caption d-none d-md-block" >
+    //                                             <div className="card w-25">
+    //                                                 <div className="card-body">
+    //                                                     <img alt={movie.title} src={this.imageUrl(movie.imageUrl)} className="img-fluid" />
+
+    //                                                 </div>
+    //                                                 <div className="card-footer text-body-secondary">
+    //                                                     <p>{movie.title}</p>
+    //                                                     <p>{movie.rating}</p>
+    //                                                     <p>{movie.release_date}</p>
+    //                                                 </div>
+    //                                             </div>
+    //                                         </div>
+    //                                     </div>
+    //                                 );
+    //                             }
+    //                             else {
+    //                                 return (
+    //                                     // <span>Hello from if</span>
+    //                                     <div key={index} className="carousel-item">
+    //                                         <img alt={movie.title} src={this.imageUrl(movie.backDropUrl)} className="d-block w-100" />
+    //                                         <div className="carousel-caption d-none d-md-block" >
+    //                                             <div className="card w-25">
+    //                                                 <div className="card-body">
+    //                                                     <img alt={movie.title} src={this.imageUrl(movie.imageUrl)} className="img-fluid" />
+    //                                                 </div>
+    //                                                 <div className="card-footer text-body-secondary">
+    //                                                     <p>{movie.title}</p>
+    //                                                     <p>{movie.rating}</p>
+    //                                                     <p>{movie.release_date}</p>
+    //                                                 </div>
+    //                                             </div>
+    //                                         </div>
+    //                                     </div>
+    //                                 );
+    //                             }
+    //                         })
+    //                     }
+    //                 </div>
+    //                 <button className="carousel-control-prev" type="button" data-bs-target="#topFiveWatchListcarousel" data-bs-slide="prev">
+    //                     <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+    //                     <span className="visually-hidden">Previous</span>
+    //                 </button>
+    //                 <button className="carousel-control-next" type="button" data-bs-target="#topFiveWatchListcarousel" data-bs-slide="next">
+    //                     <span className="carousel-control-next-icon" aria-hidden="true"></span>
+    //                     <span className="visually-hidden">Next</span>
+    //                 </button>
+    //             </div>
+    //             {
+    //                 this.state.allWatchedMovies.length === 0 ? <div className="container mt-3 text-center">
+    //                     <h3>You have not watched any movies yet!</h3>
+    //                 </div>
+    //                     :
+    //                     <span></span>
+    //             }
+
+    //         </>
+    //     )
+    // }
+
     topFiveCarousal = () => {
         return (
             <>
-                <div id="topFiveWatchListcarousel" className="carousel slide carousel-fade" data-bs-ride='carousel'>
-                    <div className="carousel-indicators">
-                        {
-                            this.state.topFiveMovies.map((movie, index) => {
-                                if (index === 0) {
-                                    return <button key={index} type="button" data-bs-target="#topFiveWatchListcarousel" data-bs-slide-to={index} className="active" aria-current="true" aria-label={index}></button>
-                                }
-                                else {
-                                    return <button key={index} type="button" data-bs-target="#topFiveWatchListcarousel" data-bs-slide-to={index} aria-label={index}></button>
-                                }
-                            }
-                            )
-                        }
-                    </div>
-                    <div className="carousel-inner">
-                        {
-                            this.state.topFiveMovies.map((movie, index) => {
-                                if (index === 0) {
-                                    return (
-                                        // <span>Hello from if</span>
-                                        // console.log("inside if index == 0");
-                                        <div key={index} className="carousel-item active">
-                                            <img alt={movie.title} src={this.imageUrl(movie.backDropUrl)} className="d-block w-100" />
-                                            <div className="carousel-caption d-none d-md-block" >
-                                                <div className="card w-25">
-                                                    <div className="card-body">
-                                                        <img alt={movie.title} src={this.imageUrl(movie.imageUrl)} className="img-fluid" />
-
-                                                    </div>
-                                                    <div className="card-footer text-body-secondary">
-                                                        <p>{movie.title}</p>
-                                                        <p>{movie.rating}</p>
-                                                        <p>{movie.release_date}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                }
-                                else {
-                                    return (
-                                        // <span>Hello from if</span>
-                                        <div key={index} className="carousel-item">
-                                            <img alt={movie.title} src={this.imageUrl(movie.backDropUrl)} className="d-block w-100" />
-                                            <div className="carousel-caption d-none d-md-block" >
-                                                <div className="card w-25">
-                                                    <div className="card-body">
-                                                        <img alt={movie.title} src={this.imageUrl(movie.imageUrl)} className="img-fluid" />
-                                                    </div>
-                                                    <div className="card-footer text-body-secondary">
-                                                        <p>{movie.title}</p>
-                                                        <p>{movie.rating}</p>
-                                                        <p>{movie.release_date}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                }
-                            })
-                        }
-                    </div>
-                    <button className="carousel-control-prev" type="button" data-bs-target="#topFiveWatchListcarousel" data-bs-slide="prev">
-                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Previous</span>
-                    </button>
-                    <button className="carousel-control-next" type="button" data-bs-target="#topFiveWatchListcarousel" data-bs-slide="next">
-                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span className="visually-hidden">Next</span>
-                    </button>
-                </div>
-                {
-                    this.state.allWatchedMovies.length === 0 ? <div className="container mt-3 text-center">
+                <Carousel id="topFiveWatchListcarousel"
+                fade
+                interval={3000}
+                wrap>
+                    {this.state.topFiveMovies.map((movie, index) => (
+                        <Carousel.Item key={index}>
+                            <img
+                                alt={movie.title}
+                                src={this.imageUrl(movie.backDropUrl)}
+                                className="d-block w-100"
+                            />
+                            <Carousel.Caption className="d-none d-md-block">
+                                <div className="card w-25">
+                                    <div className="card-body">
+                                        <img
+                                            alt={movie.title}
+                                            src={this.imageUrl(movie.imageUrl)}
+                                            className="img-fluid"
+                                        />
+                                    </div>
+                                    <div className="card-footer text-body-secondary">
+                                        <p>{movie.title}</p>
+                                        <p>{movie.rating}</p>
+                                        <p>{movie.release_date}</p>
+                                    </div>
+                                </div>
+                            </Carousel.Caption>
+                        </Carousel.Item>
+                    ))}
+                </Carousel>
+    
+                {this.state.allWatchedMovies.length === 0 ? (
+                    <div className="container mt-3 text-center">
                         <h3>You have not watched any movies yet!</h3>
                     </div>
-                        :
-                        <span></span>
-                }
-
+                ) : (
+                    <span></span>
+                )}
             </>
-        )
-    }
+        );
+    };
 
     emptyBanner = () => {
         return (
@@ -341,7 +387,7 @@ class Dashboard extends Component {
             toastMsg: message
         })
         var successToastElement = document.getElementById('toastComponent')
-        var successToast = bootstrap.Toast.getOrCreateInstance(successToastElement)
+        var successToast = Toast.getOrCreateInstance(successToastElement)
         successToast.show()
     }
 

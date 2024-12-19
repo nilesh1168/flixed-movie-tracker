@@ -1,5 +1,6 @@
 import { Component } from "react";
 import SearchMovies from "./SearchMovies"
+import { Redirect } from "react-router-dom";
 // import WatchedMovies from "./WatchedMovies"
 // import WatchList from "./WatchList"
 
@@ -118,7 +119,7 @@ class Home extends Component {
         }
         else {
             console.log("not logged home!!")
-            return null
+            return <Redirect to="/" />
         }
     }
 

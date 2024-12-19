@@ -34,10 +34,11 @@
 .flixed_footer{
     margin-top: auto;
     display: flex;
-    height: 80px;
+    /* height: 80px; */
     justify-content: space-evenly;
     align-items: center;
     background-color: #EAE7DC;
+    /* padding-top: 10px; */
 }
 
 .flixed_main{

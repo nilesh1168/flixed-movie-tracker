@@ -9,6 +9,7 @@ import Home from './components/Home'
 import Dashboard from './components/Dashboard'
 import TMDB_Configuration from './components/config'
 import UnderConstruction from './components/UnderConstruction'
+import LandingPage from './components/LandingPage'
 // import { isEqual } from "lodash";
 import jwt_decode from "jwt-decode";
 import {
@@ -168,6 +169,9 @@ class App extends React.Component {
           <NavBar id="navbar" user={this.state.user} handle_login={this.state.handle_login} logged_in={this.state.logged_in} handle_logout={this.handle_logout} />
           <div id="main" className={styles.flixed_main}>
             <Switch>
+              <Route exact path="/">
+                <LandingPage />
+              </Route>
               <Route path='/home'>
                 <Home logged_in={this.state.logged_in} configs={App.tmdb_config} />
               </Route>
@@ -186,10 +190,13 @@ class App extends React.Component {
             </Switch>
             {
               this.state.logged_in ? <Redirect to="/home" /> :
-                <Redirect to="/login" />
+                <Redirect to="/" />
             }
           </div>
-          <Footer/>
+          <div className="container my-3">
+                <hr style={{ borderTop: "1px solid #8e8d8a", width: "40%", margin: "0 auto" }} />
+          </div>
+          <Footer />
         </div>
       </Router>
 
