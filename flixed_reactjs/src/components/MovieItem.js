@@ -3,7 +3,7 @@
 // import Accordion from 'react-bootstrap/Accordion';
 import Constants from "./constants"
 function MovieItem(props) {
-    var img_src = props.secure_base_url + props.image_size + "/" + props.poster_path
+    var img_src = props.secure_base_url + props.image_size + props.poster_path
     var id = ""
     var data_target = ""
     if (Constants.MOVIE === props.type) {
