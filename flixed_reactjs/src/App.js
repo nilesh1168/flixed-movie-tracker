@@ -28,6 +28,7 @@ class App extends React.Component {
       user: '',
       error: [],
       unauthorized_user: false,
+      loading: false
     }
     this.handle_login = this.handle_login.bind(this)
     this.handle_logout = this.handle_logout.bind(this)
@@ -68,6 +69,7 @@ class App extends React.Component {
       })
     }
     else {
+      this.setState({ loading: true });
       fetch(`${App.tmdb_config.base_url}/token-auth/`, {
         method: 'POST',
         headers: {
@@ -100,7 +102,7 @@ class App extends React.Component {
             });
             console.log("login success!!")
           }
-        })
+        }).finally(()=> this.setState({ loading: false }));
     }
   };
 
@@ -110,6 +112,7 @@ class App extends React.Component {
       error: ''
     })
     if (data.password === data.confirm_password) {
+      this.setState({ loading: true });
       fetch(`${App.tmdb_config.base_url}/users/`, {
         method: 'POST',
         headers: {
@@ -131,7 +134,7 @@ class App extends React.Component {
               error: json
             })
           }
-        })
+        }).finally(()=> this.setState({ loading: false }));
     } else {
       this.setState({
         error: "Passwords do not match!"
@@ -176,10 +179,10 @@ class App extends React.Component {
                 <Home logged_in={this.state.logged_in} configs={App.tmdb_config} />
               </Route>
               <Route path="/login">
-                <LoginForm handle_login={this.handle_login} error={this.state.error} />
+                <LoginForm handle_login={this.handle_login} error={this.state.error} loading={this.state.loading}/>
               </Route>
               <Route path="/register">
-                <RegisterForm handle_signup={this.handle_signup} error={this.state.error} />
+                <RegisterForm handle_signup={this.handle_signup} error={this.state.error} loading={this.state.loading}/>
               </Route>
               <Route path="/dashboard">
                 <Dashboard configs={App.tmdb_config} />

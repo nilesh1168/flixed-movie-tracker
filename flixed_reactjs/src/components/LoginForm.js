@@ -28,7 +28,7 @@ class LoginForm extends React.Component {
             "username": this.state.username,
             "password": this.state.password
         }
-        this.props.handle_login(e, data)
+        this.props.handle_login(e, data, this.state.loading)
     }
 
     render() {
@@ -61,14 +61,16 @@ class LoginForm extends React.Component {
                                     <form>
                                         <div className="mb-3">
                                             <label className="form-label">Username</label>
-                                            <input type="text" className="form-control" id="username" value={this.state.username} onChange={this.handle_change} />
+                                            <input type="text" className="form-control" id="username" value={this.state.username} onChange={this.handle_change} disabled = {this.props.loading} />
                                         </div>
 
                                         <div className="mb-3">
                                             <label className="form-label">Password</label>
-                                            <input type="password" className="form-control" id="password" value={this.state.password} onChange={this.handle_change} />
+                                            <input type="password" className="form-control" id="password" value={this.state.password} onChange={this.handle_change} disabled = {this.props.loading} />
                                         </div>
-                                        <button type='button' className='btn btn-outline-dark my-4 mx-auto d-block' onClick={e => this.validate(e)}>Submit</button>
+                                        <button type='button' className='btn btn-outline-dark my-4 mx-auto d-block' onClick={e => this.validate(e)}>
+                                            {this.props.loading ? <><span className="spinner-border spinner-border-sm" aria-hidden="true"></span> loading.. </> : <>Login</>}
+                                        </button>
                                         <div className='row'>
                                             <div className='container text-center'>
                                                 <p style={{ color: "red" }}>{this.props.error}</p>

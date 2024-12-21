@@ -73,21 +73,21 @@ class RegisterForm extends React.Component {
                                                 <div className='mb-3'>
                                                     <label className='form-label'>Username</label>
                                                     <input className='form-control' name="username" value={this.state.username}
-                                                        onChange={this.handle_change} type="text" placeholder="Username" />
+                                                        onChange={this.handle_change} type="text" placeholder="Username" disabled = {this.props.loading}/>
                                                     {this.props.error.length !== 0 ? this.render_errors(this.props.error['username']) : <></>}   
                                                 </div>
 
                                                 <div className='mb-3'>
                                                     <label className='form-label'>First Name</label>
                                                     <input className='form-control' name="first_name" value={this.state.first_name}
-                                                        onChange={this.handle_change} type="text" placeholder="First Name" />
+                                                        onChange={this.handle_change} type="text" placeholder="First Name" disabled = {this.props.loading}/>
                                                     {this.props.error.length !== 0 ? this.render_errors(this.props.error['first_name']) : <></>}
                                                 </div>
 
                                                 <div className='mb-3 '>
                                                     <label className='form-label'>Password</label>
                                                     <input className='form-control' name="password" value={this.state.password}
-                                                        onChange={this.handle_change} type="password" placeholder="Password" />
+                                                        onChange={this.handle_change} type="password" placeholder="Password" disabled = {this.props.loading}/>
                                                     {this.props.error.length !== 0 ? this.render_errors(this.props.error['password']) : <></>}
                                                 </div>
                                             </div>
@@ -95,21 +95,21 @@ class RegisterForm extends React.Component {
                                                 <div className="mb-3">
                                                     <label className='form-label'>Email</label>
                                                     <input className='form-control' name="email" value={this.state.email}
-                                                        onChange={this.handle_change} type="text" placeholder="Email" />
+                                                        onChange={this.handle_change} type="text" placeholder="Email" disabled = {this.props.loading}/>
                                                     {this.props.error.length !== 0 ? this.render_errors(this.props.error['email']) : <></>}
                                                 </div>
 
                                                 <div className="mb-3">
                                                     <label className='form-label'>Last Name</label>
                                                     <input className='form-control' name="last_name" value={this.state.last_name}
-                                                        onChange={this.handle_change} type="text" placeholder="Last Name" />
+                                                        onChange={this.handle_change} type="text" placeholder="Last Name" disabled = {this.props.loading}/>
                                                     {this.props.error.length !== 0 ? this.render_errors(this.props.error['last_name']) : <></>}
                                                 </div>
 
                                                 <div className="mb-3">
                                                     <label className='form-label'>Confirm Password</label>
                                                     <input className='form-control' name="confirm_password" value={this.state.confirm_password}
-                                                        onChange={this.handle_change} type="password" placeholder="Confirm Password" />
+                                                        onChange={this.handle_change} type="password" placeholder="Confirm Password" disabled = {this.props.loading}/>
                                                     {this.props.error.length !== 0 ? this.render_errors(this.props.error['confirm_password']) : <></>}
                                                 </div>
                                             </div>
@@ -119,7 +119,9 @@ class RegisterForm extends React.Component {
                                             <label><p style={{ color: "red" }}>{this.state.error}</p></label>
                                         </div>
 
-                                        <button type='button' className='btn btn-outline-dark my-4 mx-auto d-block' variant="primary" onClick={e => this.validate(e)}>Submit</button>
+                                        <button type='button' className='btn btn-outline-dark my-4 mx-auto d-block' variant="primary" onClick={e => this.validate(e)}>
+                                            {this.props.loading ? <><span className="spinner-border spinner-border-sm" aria-hidden="true"></span> loading.. </> : <>Register</>}
+                                        </button>
                                     </form>
                                 </div>
                             </div>
