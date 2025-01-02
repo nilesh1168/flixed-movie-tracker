@@ -8,19 +8,19 @@ from django.db.models import Q, Sum
 def getTotalWatchTime(request):
     # get the total watch time for all watched movies till date
     totalWatchTime = WatchedMovie.objects.filter(user=request.user).aggregate(Sum('runtime'))
-    return Response(totalWatchTime, status = status.HTTP_200_OK)
+    return Response({'totalWatchTime':totalWatchTime}, status = status.HTTP_200_OK)
 
 @api_view(['GET'])
 def getTotalWatchedMoviesCount(request):
     # get count of total movies watched till date 
     watchedMovies = WatchedMovie.objects.filter(user=request.user)
-    return Response(len(watchedMovies), status = status.HTTP_200_OK)
+    return Response({'count':len(watchedMovies)}, status = status.HTTP_200_OK)
 
 @api_view(['GET'])
 def getWatchListCount(request):
     # get count of all the movies the use wants to watch.
     watchList = WatchList.objects.filter(user=request.user)
-    return Response(len(watchList), status = status.HTTP_200_OK)
+    return Response({'count':len(watchList)}, status = status.HTTP_200_OK)
 
 @api_view(['GET'])
 def getMostRewatchedMovies(request):
