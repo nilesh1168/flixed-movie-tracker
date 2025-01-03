@@ -7,9 +7,10 @@ import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import Home from './components/Home'
 import Dashboard from './components/Dashboard'
-import TMDB_Configuration from './components/config'
-import UnderConstruction from './components/UnderConstruction'
+import TMDB_Configuration from './utils/config'
+// import UnderConstruction from './components/UnderConstruction'
 import LandingPage from './components/LandingPage'
+import Statistics from './components/Statistics'
 // import { isEqual } from "lodash";
 import jwt_decode from "jwt-decode";
 import {
@@ -188,7 +189,8 @@ class App extends React.Component {
                 <Dashboard configs={App.tmdb_config} />
               </Route>
               <Route path="/statistics">
-                <UnderConstruction />
+                {/* <UnderConstruction /> */}
+                <Statistics configs={App.tmdb_config}/>
               </Route>
             </Switch>
             {
