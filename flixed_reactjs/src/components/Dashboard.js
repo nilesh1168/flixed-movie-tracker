@@ -324,6 +324,18 @@ class Dashboard extends Component {
         )
     }
 
+    toastComponent = () => {
+        return <div className="toast-container position-fixed bottom-0 end-0 p-3">
+                            <div id="toastComponent" className="toast align-items-center text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div className="d-flex">
+                                    <div className="toast-body">
+                                        {this.state.toastMsg}
+                                    </div>
+                                    <button type="button" className="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        </div>
+    }
 
     watchedMovieCards = () => {
         return (
@@ -386,7 +398,19 @@ class Dashboard extends Component {
 
             // if watched movies is emtpy return message and carousal
             else if (this.state.topFiveMovies.length !== 0 && this.state.allWatchedMovies.length === 0) {
-                return this.topFiveCarousal()
+                return (<>
+                    {this.topFiveCarousal()}
+                    <div className="container-fluid">
+                            <div className="row">
+                                    <h2 className="text-center">WatchList</h2>
+                                    <WatchList handleWatchedListAdd={this.handleWatchedListAdd}
+                                        handleWatchListDelete={this.handleWatchListDelete}
+                                        watchList={this.state.topFiveMovies} configs={this.props.configs} />
+                            </div>
+                        </div>
+                        {this.toastComponent()}
+                </>
+                )
             }
             // if both are not empty display both top 5 movvies carousal and watched movies cards
             else {
@@ -411,16 +435,7 @@ class Dashboard extends Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="toast-container position-fixed bottom-0 end-0 p-3">
-                            <div id="toastComponent" className="toast align-items-center text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
-                                <div className="d-flex">
-                                    <div className="toast-body">
-                                        {this.state.toastMsg}
-                                    </div>
-                                    <button type="button" className="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                                </div>
-                            </div>
-                        </div>
+                        {this.toastComponent()}
                     </>
                 )
             }
