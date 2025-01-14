@@ -8,6 +8,7 @@
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#try-flixed">Try Flixed</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -37,14 +38,19 @@
 
 
 
+
+
 <!-- ABOUT THE PROJECT -->
-### Flixed
+### Flixed - Track, Watch, and Relive Your Favorite Movies
 
 - Keeps track of all movies watched  and want to watch.
 - Personalised movie tracker.
 - Search for movies.
 - Add them to Watch list.
 - Add them to Watched list.
+
+### Try Flixed
+  [Flixed - Track, Watch, and Relive Your Favorite Movies](http://nilesh-suryawaanshi.tech/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
