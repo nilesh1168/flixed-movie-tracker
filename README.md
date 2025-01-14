@@ -9,8 +9,6 @@
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#try-flixed">Try Flixed</a></li>
-      </ul>
-      <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
