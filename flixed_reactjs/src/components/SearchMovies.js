@@ -2,7 +2,7 @@
 import MovieItem from "./MovieItem";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Toast } from 'bootstrap/dist/js/bootstrap'
-import Constants from "./constants";
+import Constants from "../utils/constants";
 
 
 function SearchMovies(props) {

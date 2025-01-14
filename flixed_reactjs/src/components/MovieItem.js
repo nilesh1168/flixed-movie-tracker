@@ -1,7 +1,7 @@
 // import { Card, Col } from "react-bootstrap";
 // import { Container } from 'react-bootstrap';
 // import Accordion from 'react-bootstrap/Accordion';
-import Constants from "./constants"
+import Constants from "../utils/constants"
 function MovieItem(props) {
     var img_src = props.secure_base_url + props.image_size + props.poster_path
     var id = ""

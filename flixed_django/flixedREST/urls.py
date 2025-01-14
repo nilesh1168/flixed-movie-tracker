@@ -22,7 +22,8 @@ urlpatterns = [
     path('movies/watched/totaltime',statsAPI.getTotalWatchTime,name='total-watch-time-view'),
     path('movies/watched/totalcount',statsAPI.getTotalWatchedMoviesCount,name='total-watched-count-view'),
     path('movie/watched/mostwatchedgenres', statsAPI.getMostWatchedGenresCount, name='most-watched-genres-count-view'),
-    path('movie/watched/mostwatchedmovies',statsAPI.getMostRewatchedMovies, name='most-rewatched-movies-view')
+    path('movie/watched/mostwatchedmovies',statsAPI.getMostRewatchedMovies, name='most-rewatched-movies-view'),
+    path('movies/watched/<int:year>', statsAPI.getMonthlyWatchedMoviesByYear, name='monthly-watched-movies')
 ]
 
 

@@ -5,8 +5,9 @@ import { isEqual } from "lodash";
 import { Toast } from 'bootstrap/dist/js/bootstrap'
 // import { Col, Container, Row, Card, Stack } from "react-bootstrap";
 import WatchList from "./WatchList"
-import TMDB_Configuration from "./config";
-import Constants from "./constants";
+import TMDB_Configuration from "../utils/config";
+import Constants from "../utils/constants";
+import Util from "../utils/util";
 import { Carousel } from 'react-bootstrap';
 
 class Dashboard extends Component {
@@ -37,24 +38,9 @@ class Dashboard extends Component {
         // this.toast = this.toast.bind(this)
     }
 
-    getRequestOptions(method) {
-        var token = this.getToken()
-        return {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                Authorization: `Bearer ${token}`
-            }
-        }
-    }
-
-    getToken() {
-        return `${localStorage.getItem('token')}`;
-    }
-
     incrementWatchCount(movieId) {
         var url = `${this.props.configs.base_url}/movies/watched/` + movieId + '/'
-        var options = this.getRequestOptions('PUT')
+        var options = Util.getRequestOptions('PUT')
         var incrementWatchedCountRequest = new Request(url, options)
         fetch(incrementWatchedCountRequest).then(response => {
             if (response.status === 200) {
@@ -113,7 +99,7 @@ class Dashboard extends Component {
     }
 
     getWatchedMovies() {
-        var options = this.getRequestOptions('GET')
+        var options = Util.getRequestOptions('GET')
         var url = this.state.curr
         var getWatchedMoviesRequest = new Request(url, options)
         fetch(getWatchedMoviesRequest).then(response => {
@@ -170,11 +156,11 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        var token = this.getToken()
+        var token = Util.getToken()
         // var user = jwt_decode(token).username
 
         if (token.length !== 0 || token !== "") {
-            var options = this.getRequestOptions('GET')
+            var options = Util.getRequestOptions('GET')
 
             var getTopFiveMoviesRequest = new Request(`${this.props.configs.base_url}/movies/watch_list/top_five`, options)
             fetch(getTopFiveMoviesRequest).then(response => {
@@ -198,9 +184,6 @@ class Dashboard extends Component {
         }
     }
 
-    imageUrl = (url) => {
-        return this.props.configs.images.secure_base_url + "original" + url
-    }
 
     // topFiveCarousal = () => {
     //     return (
@@ -299,15 +282,15 @@ class Dashboard extends Component {
                         <Carousel.Item key={index}>
                             <img
                                 alt={movie.title}
-                                src={this.imageUrl(movie.backDropUrl)}
+                                src={Util.imageUrl(movie.backDropUrl)}
                                 className="d-block w-100"
                             />
                             <Carousel.Caption className="d-none d-md-block">
-                                <div className="card w-25">
+                                <div className="card w-25 shadow">
                                     <div className="card-body">
                                         <img
                                             alt={movie.title}
-                                            src={this.imageUrl(movie.imageUrl)}
+                                            src={Util.imageUrl(movie.imageUrl)}
                                             className="img-fluid"
                                         />
                                     </div>
