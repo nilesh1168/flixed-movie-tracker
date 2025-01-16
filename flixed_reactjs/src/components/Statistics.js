@@ -29,6 +29,7 @@ class Statistics extends Component {
     this.state = {
       moviesWatched: 0,
       hoursSpent: 0,
+      minutesSpent: 0,
       mostRewatchedMovies: [],
       genreLabels: [],
       genreCount: [],
@@ -64,7 +65,8 @@ class Statistics extends Component {
     }).then(response => {
       // console.log(response)
       this.setState({
-        hoursSpent: (response.totalWatchTime / 60).toFixed(2)
+        hoursSpent: Math.floor(response.totalWatchTime / 60),
+        minutesSpent: (response.totalWatchTime % 60)
       })
     })
   }
@@ -172,7 +174,7 @@ class Statistics extends Component {
               <div className="card text-center shadow-sm">
                 <div className="card-body">
                   <h5 className="card-title">Hours Spent Watching</h5>
-                  <p className="card-text display-4">{this.state.hoursSpent}</p>
+                  <p className="card-text display-4">{this.state.hoursSpent} hours {this.state.minutesSpent} minutes</p>
                 </div>
               </div>
             </div>
