@@ -11,6 +11,7 @@ import {
 } from "chart.js";
 import { Bar, Doughnut } from "react-chartjs-2";
 import Util from "../utils/util";
+import TMDB_Configuration from "../utils/config";
 
 // Register required Chart.js components
 ChartJS.register(
@@ -146,13 +147,12 @@ class Statistics extends Component {
         },
       ],
     };
-
     const genreData = {
       labels: this.state.genreLabels,
       datasets: [
         {
           data: this.state.genreCount,
-          backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"],
+          backgroundColor: Util.getUniqueColors(TMDB_Configuration.CONFIGS.doughnutChartColors, this.state.genreCount.length)// ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"],
         },
       ],
     };

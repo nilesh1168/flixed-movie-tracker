@@ -46,7 +46,19 @@ class TMDB_Configuration{
                 "w300",
                 "original"
             ]
-        }
+        },
+        doughnutChartColors : [
+            "rgba(255, 87, 51, 1)",   // Vibrant Orange
+            "rgba(51, 87, 255, 1)",   // Strong Blue
+            "rgba(255, 51, 161, 1)",  // Hot Pink
+            "rgba(51, 255, 245, 1)",  // Aqua
+            "rgba(255, 199, 51, 1)",  // Golden Yellow
+            "rgba(255, 153, 51, 1)",  // Warm Amber
+            "rgba(153, 51, 255, 1)",  // Lavender
+            "rgba(255, 51, 204, 1)",  // Magenta
+            "rgba(102, 255, 51, 1)",  // Spring Green
+            "rgba(51, 153, 255, 1)"   // Light Royal Blue
+          ]
     }
     
     static getConfigs(){
