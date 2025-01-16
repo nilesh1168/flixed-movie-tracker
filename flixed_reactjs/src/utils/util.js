@@ -19,6 +19,15 @@ class Util{
     static imageUrl = (url) => {
         return TMDB_Configuration.CONFIGS.images.secure_base_url + "original" + url
     }
+
+    static getUniqueColors(colorList, n) {
+        if (n > colorList.length) {
+          throw new Error("Requested number of colors exceeds the available unique colors.");
+        }
+      
+        const shuffledColors = [...colorList].sort(() => 0.5 - Math.random());
+        return shuffledColors.slice(0, n);
+      }
 }
 
 export default Util
