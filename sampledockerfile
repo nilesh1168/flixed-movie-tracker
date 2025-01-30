@@ -1,0 +1,24 @@
+# Note: This is just a sample docker file which is for reference. Altough it is syntactically correct, it only runs a default django app
+
+FROM python:3.14-rc
+
+# create a new directory
+RUN mkdir django-app
+
+# Create a virtual environment
+RUN python -m venv django-env
+
+# Set the PATH variable to django-env bin folder
+ENV PATH="/django-env/bin:$PATH"
+
+# Activate the virtual environment and install Django
+RUN pip install django
+
+# Copy the Django project files to the container
+COPY . ./django-app
+
+# Expose the port Django runs on
+EXPOSE 8000
+
+# Run the Django application
+CMD ["python","./django-app/manage.py", "runserver", "0.0.0.0:8000"]
