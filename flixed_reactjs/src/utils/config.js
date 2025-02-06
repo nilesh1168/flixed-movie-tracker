@@ -2,6 +2,7 @@ import Constants from "./constants"
 
 class TMDB_Configuration{
     static CONFIGS = {
+        calendar_months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         base_url: process.env.REACT_APP_FLIXED_REST_BASE_URL,
         default_lang: "en-US",
         default_page_number: 1,
