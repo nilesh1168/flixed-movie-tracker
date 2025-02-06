@@ -34,7 +34,7 @@ class Statistics extends Component {
       mostRewatchedMovies: [],
       genreLabels: [],
       genreCount: [],
-      movieCount: [],
+      movieCount: {},
       noMoviesWatched: true
     }
   }
@@ -119,7 +119,7 @@ class Statistics extends Component {
     }).then(response => {
       console.log(response)
       this.setState({
-        movieCount: Object.values(response)
+        movieCount: response
       })
     })
   }
@@ -138,7 +138,7 @@ class Statistics extends Component {
   render() {
 
     const monthlyMoviesData = {
-      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      labels: TMDB_Configuration.CONFIGS.calendar_months,
       datasets: [
         {
           label: "Movies Watched",
