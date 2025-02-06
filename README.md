@@ -157,7 +157,7 @@ Below is the list of environment variables required for your React project:
   ```bash
   REACT_APP_FLIXED_REST_BASE_URL=https://api.flixed.com
   REACT_APP_TMDB_IMG_BASE_URL=https://image.tmdb.org/t/p/original
-  REACT_APP_TMDB_SEC_IMG_BASE_URL=https://image.tmdb.org/t/p/w500
+  REACT_APP_TMDB_SEC_IMG_BASE_URL=https://image.tmdb.org/t/p/
   ```
 ### Installation
 
