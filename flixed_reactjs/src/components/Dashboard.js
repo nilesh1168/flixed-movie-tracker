@@ -354,7 +354,7 @@ class Dashboard extends Component {
                             this.state.allWatchedMovies.map((movie) => {
                                 // console.log(movie);
                                 return (
-                                    <MovieItem key={movie.id} id={movie.id} type={Constants.MOVIE} poster_path={movie.imageUrl} title={movie.title} release_date={movie.release_date} secure_base_url={this.props.configs.images.secure_base_url} image_size={this.props.configs.default_img_size} parent={Constants.WATCHED} incrementWatchCount={this.incrementWatchCount} timesWatched = {movie.times_watched}/>
+                                    <MovieItem key={movie.id} id={movie.id} type={Constants.MOVIE} poster_path={movie.imageUrl} title={movie.title} release_date={movie.release_date} secure_base_url={this.props.configs.images.secure_base_url} image_size={this.props.configs.default_img_size} parent={Constants.WATCHED} incrementWatchCount={this.incrementWatchCount} timesWatched = {movie.times_watched} runtime={movie.runtime}/>
                                 );
                             })
                         }

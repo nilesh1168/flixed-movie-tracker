@@ -3,15 +3,15 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from flixedREST.models import WatchedMovie, WatchList
 from .serializers import WatchedMovieSerializer
-from django.db.models import Q, Sum, Count
+from django.db.models import Q, Sum, Count, F
 from django.db.models.functions import TruncMonth
 import calendar
 
 @api_view(['GET'])
 def getTotalWatchTime(request):
     # get the total watch time for all watched movies till date
-    totalWatchTime = WatchedMovie.objects.filter(user=request.user).aggregate(Sum('runtime'))
-    return Response({'totalWatchTime':totalWatchTime['runtime__sum']}, status = status.HTTP_200_OK)
+    totalWatchTime = WatchedMovie.objects.filter(user=request.user).aggregate(total_runtime=Sum(F('runtime') * F('times_watched')))
+    return Response({'totalWatchTime':totalWatchTime['total_runtime']}, status = status.HTTP_200_OK)
 
 @api_view(['GET'])
 def getTotalWatchedMoviesCount(request):
