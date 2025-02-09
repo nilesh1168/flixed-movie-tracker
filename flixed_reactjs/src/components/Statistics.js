@@ -174,7 +174,7 @@ class Statistics extends Component {
               <div className="card text-center shadow-sm">
                 <div className="card-body">
                   <h5 className="card-title">Hours Spent Watching</h5>
-                  <p className="card-text display-4">{this.state.hoursSpent} hours {this.state.minutesSpent} minutes</p>
+                  <p className="card-text display-4">{this.state.hoursSpent} hours {this.state.minutesSpent} mins</p>
                 </div>
               </div>
             </div>

@@ -31,7 +31,7 @@ function MovieItem(props) {
                         </div>
                         <div className="col-md-5 my-1">
                             {
-                                Constants.MOVIE === props.type ? <><p>Title : {props.title}</p><p>Release Date : {props.release_date}</p></> : <> <p>Name : {props.name}</p><p>First Air Date: {props.first_air_date}</p></>
+                                Constants.MOVIE === props.type ? <><p>Title : {props.title}</p><p>Release Date : {props.release_date}</p><p>Runtime: {props.runtime} mins</p> </> : <> <p>Name : {props.name}</p><p>First Air Date: {props.first_air_date}</p></>
                             }
                             <p>Type : {props.type.toUpperCase()}</p>
                             {
