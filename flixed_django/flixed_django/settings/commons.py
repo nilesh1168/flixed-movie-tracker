@@ -114,12 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-ALLOWED_HOSTS = os.getenv('FLIXED_REACT_URL').split(',') # REACT_HOST
-
-CORS_ORIGIN_WHITELIST = tuple(
-       os.getenv("CORS_ORIGIN_WHITELIST").split(',')
-)
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 

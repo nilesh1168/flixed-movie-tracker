@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # load dev env variables
 load_dotenv(BASE_DIR / 'django.env.dev')
@@ -12,6 +12,12 @@ load_dotenv(BASE_DIR / 'django.env.dev')
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+
+ALLOWED_HOSTS = os.getenv('FLIXED_REACT_URL').split(',') # REACT_HOST
+
+CORS_ORIGIN_WHITELIST = tuple(
+       os.getenv("CORS_ORIGIN_WHITELIST").split(',')
+)
 
 DATABASES = {
     'default': {
