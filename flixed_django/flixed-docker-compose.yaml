@@ -27,11 +27,6 @@ services:
       - "8080:8000"
     volumes:
       - ./static:/django_app/staticfiles
-  # node:
-  #   image: node:22.13-alpine
-  #   container_name: node-react
-  #   ports:
-  #     - "3000:3000"
   frontend-proxy:
     image: nginx:latest
     ports:
