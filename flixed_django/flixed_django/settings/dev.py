@@ -33,9 +33,3 @@ DATABASES = {
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['127.0.0.1'] # REACT_HOST
-
-CORS_ORIGIN_WHITELIST = (
-       'http://localhost:3000',
-)
