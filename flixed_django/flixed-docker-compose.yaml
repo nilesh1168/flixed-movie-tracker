@@ -11,20 +11,37 @@ services:
     image: dpage/pgadmin4:latest
     container_name: pgadmin-postgres
     env_file: pgadmin.env.dev
+    depends_on:
+      - postgres
     ports:
       - "5050:80"
     volumes:
-      - pgadmin-data:/var/lib/pgadmin
-  # python-django:
-  #   image: python:3.12.8-alpine
-  #   container_name: python-django
-  #   ports:
-  #     - "8000:8000"
+      - pgadmin-data:/var/lib/pgadm
+  python-django:
+    image: flixed-django-image:1.0
+    container_name: python-django
+    env_file: django.env.docker
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8000"
+    volumes:
+      - ./static:/django_app/staticfiles
   # node:
   #   image: node:22.13-alpine
   #   container_name: node-react
   #   ports:
   #     - "3000:3000"
+  frontend-proxy:
+    image: nginx:latest
+    ports:
+      - "8001:80"
+    depends_on:
+      - python-django
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./static:/static:ro
+
 volumes:
   postgres-data:
   pgadmin-data:
