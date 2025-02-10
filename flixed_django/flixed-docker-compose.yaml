@@ -23,8 +23,6 @@ services:
     env_file: django.env.docker
     depends_on:
       - postgres
-    ports:
-      - "8080:8000"
     volumes:
       - ./static:/django_app/staticfiles
   frontend-proxy:
