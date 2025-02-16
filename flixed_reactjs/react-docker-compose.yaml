@@ -1,0 +1,8 @@
+services:
+  flixed-react:
+    image: flixed_react:1.0
+    container_name: flixed-reactjs
+    env_file: .env.production  
+    ports:
+      - "8002:80"
+    

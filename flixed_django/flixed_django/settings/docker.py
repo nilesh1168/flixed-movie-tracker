@@ -1,13 +1,15 @@
 from .commons import *
-import dj_database_url, os
 from dotenv import load_dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-# load prod env variables
-load_dotenv(BASE_DIR / 'django.env.prod')
+# load dev env variables
+load_dotenv(BASE_DIR / 'django.env.docker')
+
+# Database
+# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
@@ -20,8 +22,22 @@ CORS_ORIGIN_WHITELIST = tuple(
 CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS").split(',')
 
 DATABASES = {
-    'default': dj_database_url.parse(os.getenv('RENDER_DB'))
+    'default': {
+
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+        'NAME': os.getenv('DJANGO_DB_NAME'),
+
+        'USER': os.getenv('DJANGO_DB_USERNAME'),
+
+        'PASSWORD': os.getenv('DJANGO_DB_PWD'),
+
+        'HOST': os.getenv('DJANGO_DB_HOST'),
+
+        'PORT': os.getenv('DJANGO_DB_PORT'),
+
+    }
 }
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
