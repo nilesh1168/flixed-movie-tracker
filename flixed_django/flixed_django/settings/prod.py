@@ -11,11 +11,13 @@ load_dotenv(BASE_DIR / 'django.env.prod')
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
-ALLOWED_HOSTS = os.getenv('FLIXED_REACT_URL').split(',') # REACT_HOST
+ALLOWED_HOSTS = os.getenv('FLIXED_DRF_URL').split(',') # REACT_HOST
 
 CORS_ORIGIN_WHITELIST = tuple(
        os.getenv("CORS_ORIGIN_WHITELIST").split(',')
 )
+
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS").split(',')
 
 DATABASES = {
     'default': dj_database_url.parse(os.getenv('RENDER_DB'))

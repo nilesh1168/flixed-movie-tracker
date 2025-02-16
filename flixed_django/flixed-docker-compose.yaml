@@ -18,7 +18,7 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadm
   python-django:
-    image: flixed-django-image:1.0
+    image: flixed-django:1.0
     container_name: python-django
     env_file: django.env.docker
     depends_on:
@@ -27,6 +27,7 @@ services:
       - ./static:/django_app/staticfiles
   frontend-proxy:
     image: nginx:latest
+    container_name: django-frontend-proxy
     ports:
       - "8001:80"
     depends_on:
@@ -34,6 +35,12 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - ./static:/static:ro
+  # node-react:
+  #   image: flixed-react:1.0
+  #   container_name: flixed-reactjs
+  #   env_file: /Users/nilesh/Work/flixed-movie-tracker/flixed_reactjs/.env.development
+  #   ports:
+  #     - "8002:80"
 
 volumes:
   postgres-data:
