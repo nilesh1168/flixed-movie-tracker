@@ -1,0 +1,57 @@
+services:
+  postgres:
+    container_name: postgres-database
+    image: postgres:16.6
+    env_file: postgres.env.dev
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  pgAdmin:
+    container_name: pgAdmin-postgres
+    image: dpage/pgadmin4:latest
+    env_file: pgadmin.env.dev
+    volumes:
+      - pgadmin-data:/var/lib/pgadm
+    ports:
+      - "8001:80"
+    depends_on:
+      - postgres
+
+  flixed-django:
+    container_name: flixed-django
+    image: flixed-django:1.0
+    env_file: /Users/nilesh/Work/flixed-movie-tracker/flixed_django/django.env.docker
+    volumes:
+      - /Users/nilesh/Work/flixed-movie-tracker/flixed_django/static:/django_app/staticfiles
+    ports:
+      - "8002:8000"
+    depends_on:
+      - postgres
+
+  django-proxy:
+    container_name: django-proxy
+    image: nginx:latest
+    env_file: /Users/nilesh/Work/flixed-movie-tracker/flixed_django/django.env.docker
+    volumes:
+      - /Users/nilesh/Work/flixed-movie-tracker/flixed_django/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /Users/nilesh/Work/flixed-movie-tracker/flixed_django/static:/static:ro
+    ports:
+      - "8003:80"
+    depends_on:
+      - flixed-django
+
+  flixed-react:
+    container_name: flixed-react
+    image: flixed-react:1.0
+    env_file: /Users/nilesh/Work/flixed-movie-tracker/flixed_reactjs/.env.production
+    # volumes:
+    ports:
+      - "8004:80"
+    depends_on:
+      - django-proxy
+
+volumes:
+  postgres-data:
+  pgadmin-data:
