@@ -337,10 +337,11 @@ This section tells you about how to deploy this application on a system.
 ## Roadmap
 
 - [x] Add back to top links
-- [ ] Dashboard with graphs and information
-- [ ] Add charts and comparisons in a page called statistics
+- [x] Dashboard with graphs and information
+- [x] Add charts and comparisons in a page called statistics
 - [x] Display movies with poster; Use TMDB API
 - [ ] Optimise component loading for huge data
+- [ ] Update API contract to a specific standard response
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
