@@ -71,13 +71,18 @@ class App extends React.Component {
     }
     else {
       this.setState({ loading: true });
-      fetch(`${App.tmdb_config.base_url}/token-auth/`, {
+      let loginUrl = `${App.tmdb_config.base_url}/token-auth/`
+      let options = {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(data)
-      })
+      }
+
+      let loginRequest = new Request(loginUrl, options)
+
+      fetch(loginRequest)
         .then(res => {
           if (res.status === 401) {
             this.setState({
