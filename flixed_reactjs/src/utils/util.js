@@ -20,14 +20,19 @@ class Util{
         return TMDB_Configuration.CONFIGS.images.secure_base_url + "original" + url
     }
 
-    static getUniqueColors(colorList, n) {
-        if (n > colorList.length) {
-          throw new Error("Requested number of colors exceeds the available unique colors.");
-        }
-      
-        const shuffledColors = [...colorList].sort(() => 0.5 - Math.random());
-        return shuffledColors.slice(0, n);
-      }
+    static getUniqueColors(genreList) {
+        const colorList = [];
+        const genreSet = new Set(genreList)
+        let hash = 0, s = 70, l = 50;
+        genreSet.forEach(genre => {
+            for (let i = 0; i < genre.length; i++) {
+                hash = genre.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            const hue = hash % 360;
+            colorList.push(`hsl(${hue}, ${s}%, ${l}%)`)
+        });
+        return colorList;
+      }  
 }
 
 export default Util

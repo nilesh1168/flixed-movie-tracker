@@ -152,7 +152,7 @@ class Statistics extends Component {
       datasets: [
         {
           data: this.state.genreCount,
-          backgroundColor: Util.getUniqueColors(TMDB_Configuration.CONFIGS.doughnutChartColors, this.state.genreCount.length)// ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"],
+          backgroundColor: Util.getUniqueColors(this.state.genreLabels)
         },
       ],
     };
